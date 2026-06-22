@@ -1,0 +1,27 @@
+spring:
+  application:
+    name: nanxin-catbook
+  datasource:
+    url: jdbc:mysql://localhost:3306/nanxin_maopu_v2?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+    username: root
+    password: ${DB_PASSWORD:zhiya8933319}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+        format_sql: true
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: Asia/Shanghai
+
+server:
+  port: 8080
+
+app:
+  jwt:
+    secret: ${JWT_SECRET:NanXinCatBook2025SecretKeyForJWTTokenGeneration}
+    expiration-ms: 86400000
