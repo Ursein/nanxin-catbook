@@ -117,7 +117,7 @@ onMounted(() => {
 
     <!-- Main Content -->
     <main class="main-content">
-      <router-view v-slot="{ Component }">
+      <router-view :key="$route.fullPath" v-slot="{ Component }">
         <transition name="page" mode="out-in">
           <component :is="Component" />
         </transition>
