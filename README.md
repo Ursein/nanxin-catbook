@@ -87,17 +87,79 @@ cos(θ) = (A · B) / (|A| · |B|)
 
 ---
 
-## 运行方式
+## 小组协作指南
+
+### 1. 环境准备
+
+需要安装以下工具：
+
+| 工具 | 用途 | 下载 |
+|:----|:----|:----|
+| JDK 17+ | 后端运行 | https://adoptium.net |
+| Maven 3.9+ | 后端构建 | https://maven.apache.org |
+| MySQL 8.0 | 数据库 | https://dev.mysql.com/downloads |
+| Node.js 18+ | 前端运行 | https://nodejs.org |
+| Git | 代码管理 | https://git-scm.com |
+
+### 2. 克隆仓库
 
 ```bash
-# 后端（需要 MySQL 8，先执行 schema.sql 建库）
+git clone https://github.com/Ursein/nanxin-catbook.git
+cd nanxin-catbook
+```
+
+### 3. 创建数据库
+
+打开 MySQL 命令行：
+```bash
+# 建库
+mysql -u root -p -e "CREATE DATABASE IF NOT EXISTS nanxin_maopu_v2 DEFAULT CHARACTER SET utf8mb4;"
+
+# 建表
+mysql -u root -p nanxin_maopu_v2 < backend/src/main/resources/schema.sql
+```
+
+### 4. 配置数据库密码
+
+编辑 `backend/src/main/resources/application.yml`，把数据库密码改成你自己的：
+
+```yaml
+spring:
+  datasource:
+    password: 你的密码
+```
+
+### 5. 启动后端
+
+```bash
 cd backend
 mvn spring-boot:run
+```
 
-# 前端
+看到 `Started NanxinCatbookApplication` 就说明成功了，后端跑在 `http://localhost:8080`。
+
+### 6. 启动前端
+
+```bash
 cd frontend
-npm install
+npm install        # 第一次需要装依赖
 npm run dev
+```
+
+打开 `http://localhost:5173` 就能看到页面了。
+
+### 7. 改代码
+
+- **前端页面** → `frontend/src/views/` 下的 `.vue` 文件，改完浏览器自动刷新
+- **后端接口** → `backend/src/main/java/com/nanxin/catbook/` 下的 Java 文件，改完自动重启
+- **文档** → `docs/` 下的 Markdown 文件
+
+### 8. 提交代码
+
+```bash
+git add .
+git commit -m "改了什么"
+git push
 ```
 
 ---
