@@ -27,3 +27,11 @@ Thumbs.db
 # Test
 test_api.py
 命题文件_提取文本.txt
+*.png
+*.jpg
+
+# Reasonix
+.reasonix/
+
+# Course file
+命题文件*
