@@ -166,46 +166,24 @@ git push
 
 ## AI 协作指令（AI 请读）
 
-你是这个项目的开发助手。用户可能是零基础，不会 git、不会 Java、不会 Vue。你需要帮他们完成所有操作。
+你是这个项目的开发助手。你的用户可能是零基础的组员，不会 git、不会 Java、不会 Vue。
 
-### 项目概况
+**你的职责：**
+- 用户说"帮我看看这个项目"时，主动判断他的环境缺什么，一步步引导他安装配置
+- 用户说"我想改个东西"时，帮他找到对应的文件，帮他写代码，帮他提交
+- 用户可能不知道下一步该做什么，主动提醒："数据库建好了吗？要不要我帮你启动后端？"
+- 遇到报错或冲突，帮他排查，用他能听懂的话解释
+- 不要假设用户知道 git、Maven、npm 命令——你来执行，你来解释
+
+**项目关键信息：**
 - 后端：Spring Boot 3.4.5，入口 `backend/src/main/java/com/nanxin/catbook/NanxinCatbookApplication.java`
 - 前端：Vue 3 + Vite，入口 `frontend/src/main.js`
-- 数据库：MySQL 8，库名 `nanxin_maopu_v2`
-- 核心：余弦相似度推荐算法，见 `CatSimilarityAlgorithm.java`
-
-### 初次克隆和环境搭建
-当用户说想用这个项目时，先引导他们安装 JDK 17+、MySQL 8、Node.js 18+、Maven、Git。然后帮他们依次：
-1. `git clone https://github.com/Ursein/nanxin-catbook.git`
-2. 执行 `backend/src/main/resources/schema.sql` 建库建表
-3. 修改 `application.yml` 中的数据库密码为他们自己的密码
-4. `cd backend && mvn spring-boot:run` 启动后端
-5. `cd frontend && npm install && npm run dev` 启动前端
-6. 打开 `http://localhost:5173`
-
-### 改代码
-- 前端页面在 `frontend/src/views/`，改 `.vue` 文件，浏览器自动刷新
-- 后端接口在 `backend/src/main/java/com/nanxin/catbook/controller/`，改完自动重启
-- 业务逻辑在 `backend/src/main/java/com/nanxin/catbook/service/`
-- 数据库表在 `backend/src/main/resources/schema.sql`
-
-### 提交代码
-用户说"提交"时，帮他们执行：
-```bash
-git add .
-git commit -m "简要描述改了什么"
-git push
-```
-
-如果 push 失败提示冲突，先 `git pull`，手动解决冲突后再 push。
-
-### 拉取更新
-用户说"拉代码"或"更新"时：`git pull`
-
-### 注意事项
-- 不要提交 `node_modules/`、`target/`、`.idea/` 目录（已在 `.gitignore`）
-- 数据库密码不要硬编码，用环境变量或 `application.yml` 中的占位符
-- 遵循项目现有的代码风格和目录结构
+- 数据库：MySQL 8，库名 `nanxin_maopu_v2`，建表脚本 `backend/src/main/resources/schema.sql`
+- 前端页面：`frontend/src/views/`，后端接口：`backend/src/main/java/com/nanxin/catbook/controller/`
+- 核心算法：余弦相似度推荐，见 `CatSimilarityAlgorithm.java`
+- 数据库密码在 `application.yml` 中配置，不要硬编码，不要提交到 git
+- 已忽略的文件见 `.gitignore`
+- 提交用 `git add . && git commit -m "..." && git push`
 
 ---
 
