@@ -164,41 +164,48 @@ git push
 
 ---
 
-## 🤖 给组员的 AI 提示词（零基础可用）
+## AI 协作指令（AI 请读）
 
-把下面这些直接发给你的 AI 助手（ChatGPT、Claude、Reasonix 等），它会帮你操作。
+你是这个项目的开发助手。用户可能是零基础，不会 git、不会 Java、不会 Vue。你需要帮他们完成所有操作。
 
-### 初次使用
+### 项目概况
+- 后端：Spring Boot 3.4.5，入口 `backend/src/main/java/com/nanxin/catbook/NanxinCatbookApplication.java`
+- 前端：Vue 3 + Vite，入口 `frontend/src/main.js`
+- 数据库：MySQL 8，库名 `nanxin_maopu_v2`
+- 核心：余弦相似度推荐算法，见 `CatSimilarityAlgorithm.java`
 
-> 帮我克隆这个项目 https://github.com/Ursein/nanxin-catbook 到本地，然后按照 README 里的步骤把环境搭建好，后端和前端都跑起来。
+### 初次克隆和环境搭建
+当用户说想用这个项目时，先引导他们安装 JDK 17+、MySQL 8、Node.js 18+、Maven、Git。然后帮他们依次：
+1. `git clone https://github.com/Ursein/nanxin-catbook.git`
+2. 执行 `backend/src/main/resources/schema.sql` 建库建表
+3. 修改 `application.yml` 中的数据库密码为他们自己的密码
+4. `cd backend && mvn spring-boot:run` 启动后端
+5. `cd frontend && npm install && npm run dev` 启动前端
+6. 打开 `http://localhost:5173`
 
-### 改前端页面
+### 改代码
+- 前端页面在 `frontend/src/views/`，改 `.vue` 文件，浏览器自动刷新
+- 后端接口在 `backend/src/main/java/com/nanxin/catbook/controller/`，改完自动重启
+- 业务逻辑在 `backend/src/main/java/com/nanxin/catbook/service/`
+- 数据库表在 `backend/src/main/resources/schema.sql`
 
-> 帮我改一下猫咪详情页，把猫咪照片的轮播改成自动播放，3 秒切换一张。
+### 提交代码
+用户说"提交"时，帮他们执行：
+```bash
+git add .
+git commit -m "简要描述改了什么"
+git push
+```
 
-### 改后端接口
+如果 push 失败提示冲突，先 `git pull`，手动解决冲突后再 push。
 
-> 帮我在猫咪列表接口加一个"按评分排序"的筛选参数，前端搜索页也同步加上这个筛选项。
+### 拉取更新
+用户说"拉代码"或"更新"时：`git pull`
 
-### 修改后提交
-
-> 帮我把刚才的改动提交到 GitHub，commit 信息写清楚改了什么。
-
-### 拉取别人的更新
-
-> 帮我拉一下仓库的最新代码，看看有没有冲突。
-
-### 加新功能
-
-> 参考这个项目的代码风格，帮我加一个"猫咪健康记录"功能，包括后端接口和前端页面。
-
-### 看不懂代码？
-
-> 帮我解释一下这个 `CatSimilarityAlgorithm.java` 里推荐算法是怎么工作的。
-
-### 出 bug 了？
-
-> 后端启动报错了，帮我看看什么原因，日志如下：...
+### 注意事项
+- 不要提交 `node_modules/`、`target/`、`.idea/` 目录（已在 `.gitignore`）
+- 数据库密码不要硬编码，用环境变量或 `application.yml` 中的占位符
+- 遵循项目现有的代码风格和目录结构
 
 ---
 
