@@ -51,9 +51,7 @@ export const catApi = {
 export const photoApi = {
   list: (catId) => api.get(`/cats/${catId}/photos`),
   upload: (catId, formData) =>
-    api.post(`/cats/${catId}/photos`, formData, {
-      headers: { 'Content-Type': 'multipart/form-data' },
-    }),
+    api.post(`/cats/${catId}/photos`, formData),
   approve: (id) => api.put(`/photos/${id}/approve`),
   reject: (id, reason) => api.put(`/photos/${id}/reject`, { reason }),
   remove: (id) => api.delete(`/photos/${id}`),
