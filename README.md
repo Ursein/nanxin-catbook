@@ -20,13 +20,13 @@
 ## 功能列表
 
 1. **用户注册登录** — 注册、登录、退出；三级角色权限（USER / VERIFIED / ADMIN）
-2. **猫咪档案管理** — 添加/编辑/删除猫咪；记录亲缘关系；管理猫咪状态
+2. **猫咪档案管理** — 添加/编辑/删除（软删除）猫咪；记录亲缘关系；管理猫咪状态
 3. **猫咪搜索筛选** — 列表分页；状态 Tab 分类；毛色分类；关键词搜索；条件筛选
 4. **相似度推荐** — 特征提取 → One-Hot 编码 → 余弦相似度 → 热度因子融合 → Top-N 推荐
-5. **留言评论** — 发表/查看/删除留言
-6. **照片管理** — 上传、审核（PENDING→APPROVED/REJECTED）、删除；照片点赞
-7. **关注猫咪** — 关注/取消关注；已关注列表
-8. **猫友评分** — 1-5 星评分；统计平均分与评分人数
+5. **留言评论** — 发表/查看/删除留言（管理员可删）；评论显示用户名
+6. **照片管理** — 上传/展示/删除；自动生成压缩图；照片点赞；封面图设置与兜底
+7. **关注猫咪** — 关注/取消关注；已关注列表页（`/my-follows`）
+8. **五维猫友评分** — 猫德/颜值/社交/干饭/活力 (1-5星)；综合评分取五维均值
 9. **行为日志** — 自动记录浏览、搜索、点赞、评分、关注等行为
 
 ---
@@ -60,10 +60,17 @@ nanxin-catbook/
 │       └── schema.sql              # 数据库建表脚本
 ├── frontend/                       # Vue 3 前端
 │   └── src/
-│       ├── router/                 # 路由配置
+│       ├── router/                 # 路由配置（9条路由）
 │       ├── api/                    # Axios + API封装
-│       └── views/                  # 8个页面组件
-└── docs/
+│       └── views/                  # 9个页面组件
+│           ├── Home.vue            # 首页（状态Tab + 卡片网格）
+│           ├── CatDetail.vue       # 详情页（照片轮播/评分/关注/评论）
+│           ├── Search.vue          # 搜索页
+│           ├── AddCat.vue          # 添加猫咪
+│           ├── EditCat.vue         # 编辑猫咪（含照片管理+封面设置）
+│           ├── MyFollows.vue       # 我的关注
+│           ├── Login.vue / Register.vue / About.vue
+├── docs/
     ├── 需求分析/
     ├── 概要设计/
     ├── 详细设计/
@@ -83,7 +90,19 @@ cos(θ) = (A · B) / (|A| · |B|)
 
 - α=0.7, β₁=β₂=β₃=0.1（可配置）
 - 特征：毛色标签、性格标签、位置、性别（One-Hot编码）
-- 热度：点赞数、关注数、评分均分（Min-Max归一化）
+- 热度：点赞数、关注数、五维评分均分（Min-Max归一化）
+
+### 五维评分体系
+
+| 维度 | 含义 | 说明 |
+|:----:|:----|:----|
+| r1 | 猫德 | 性格温顺程度 |
+| r2 | 颜值 | 外观好看程度 |
+| r3 | 社交 | 亲人程度 |
+| r4 | 干饭 | 胃口好坏 |
+| r5 | 活力 | 活跃程度 |
+
+综合评分 = (r1 + r2 + r3 + r4 + r5) / 5
 
 ---
 
@@ -179,8 +198,11 @@ git push
 - 后端：Spring Boot 3.4.5，入口 `backend/src/main/java/com/nanxin/catbook/NanxinCatbookApplication.java`
 - 前端：Vue 3 + Vite，入口 `frontend/src/main.js`
 - 数据库：MySQL 8，库名 `nanxin_maopu_v2`，建表脚本 `backend/src/main/resources/schema.sql`
-- 前端页面：`frontend/src/views/`，后端接口：`backend/src/main/java/com/nanxin/catbook/controller/`
+- 前端页面：`frontend/src/views/`（9个页面），后端接口：`backend/src/main/java/com/nanxin/catbook/controller/`
 - 核心算法：余弦相似度推荐，见 `CatSimilarityAlgorithm.java`
+- 照片存储：本地 `backend/uploads/` 目录，通过 `/uploads/` 访问，上传自动生成压缩图
+- 猫咪删除为软删除（`deleted=1`），数据不丢失
+- 评分体系：五维评分（猫德/颜值/社交/干饭/活力），综合评分取均值
 - 数据库密码在 `application.yml` 中配置，不要硬编码，不要提交到 git
 - 已忽略的文件见 `.gitignore`
 - 提交用 `git add . && git commit -m "..." && git push`
