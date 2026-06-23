@@ -123,7 +123,7 @@ onMounted(() => {
             @click="goToDetail(cat.id)"
           >
             <!-- Cover Photo Placeholder -->
-            <div class="card-bg" :style="cat.coverPhotoUrl ? { backgroundImage: `url(${cat.coverPhotoUrl})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {}">
+            <div class="card-bg" :class="{ 'has-photo': cat.coverPhotoUrl }" :style="cat.coverPhotoUrl ? { backgroundImage: `url(${cat.coverPhotoUrl})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {}">
               <div class="card-overlay" />
               <div class="card-content">
                 <!-- Status Tag -->
@@ -335,8 +335,16 @@ onMounted(() => {
   transition: opacity 0.5s ease;
 }
 
+.card-bg.has-photo::before {
+  opacity: 0;
+}
+
 .cat-card:hover .card-bg::before {
   opacity: 0.8;
+}
+
+.cat-card:hover .card-bg.has-photo::before {
+  opacity: 0;
 }
 
 /* Different color gradients for each cell */

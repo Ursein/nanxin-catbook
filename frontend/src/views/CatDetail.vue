@@ -481,13 +481,15 @@ onMounted(() => {
 /* --- Photo Section --- */
 .photo-section {
   width: 100%;
-  max-height: 65vh;
+  max-height: 50vh;
   overflow: hidden;
 }
 
 .photo-carousel {
   position: relative;
   width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
   overflow: hidden;
 }
 
@@ -498,14 +500,16 @@ onMounted(() => {
 
 .photo-slide {
   min-width: 100%;
-  height: 65vh;
+  height: 50vh;
+  max-height: 500px;
 }
 
 .photo-img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   display: block;
+  background: #0d0d0d;
 }
 
 .photo-placeholder {
@@ -1028,7 +1032,8 @@ onMounted(() => {
 @media (max-width: 768px) {
   .photo-slide,
   .photo-placeholder {
-    height: 50vh;
+    height: 40vh;
+    max-height: 350px;
   }
 
   .cat-name {
