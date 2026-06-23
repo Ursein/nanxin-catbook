@@ -7,7 +7,9 @@ const router = useRouter()
 const loading = ref(false)
 const form = ref({
   name: '', nickname: '', gender: 'MALE', colourTags: '',
-  personalityTags: '', locationArea: '', sterilized: false, status: 'ACTIVE',
+  personalityTags: '', personalityDesc: '', locationArea: '',
+  locationDetail: '', birthYear: null, weight: null,
+  sterilized: false, status: 'ACTIVE',
 })
 
 const genders = ['MALE', 'FEMALE', 'UNKNOWN']
@@ -58,6 +60,22 @@ const submit = async () => {
         <div class="form-row">
           <label class="form-label">区域</label>
           <input v-model="form.locationArea" class="form-input" placeholder="中苑/西苑/东苑/图书馆" />
+        </div>
+        <div class="form-row">
+          <label class="form-label">具体位置</label>
+          <input v-model="form.locationDetail" class="form-input" placeholder="例如：图书馆东侧花坛" />
+        </div>
+        <div class="form-row">
+          <label class="form-label">出生年份</label>
+          <input v-model="form.birthYear" type="number" class="form-input" placeholder="例如：2022" />
+        </div>
+        <div class="form-row">
+          <label class="form-label">体重 (kg)</label>
+          <input v-model="form.weight" type="number" step="0.1" class="form-input" placeholder="例如：4.5" />
+        </div>
+        <div class="form-row">
+          <label class="form-label">性格描述</label>
+          <textarea v-model="form.personalityDesc" class="form-input form-textarea" placeholder="详细描述猫咪的性格特点..." rows="3" />
         </div>
         <div class="form-row">
           <label class="form-label">状态</label>
@@ -121,6 +139,11 @@ const submit = async () => {
 }
 .form-input::placeholder {
   color: var(--text-tertiary);
+}
+.form-textarea {
+  resize: vertical;
+  min-height: 5rem;
+  line-height: 1.6;
 }
 .form-checkbox {
   width: 1.25rem;

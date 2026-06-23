@@ -6,7 +6,7 @@ import { catApi } from '@/api'
 const route = useRoute()
 const router = useRouter()
 const loading = ref(false)
-const form = ref({ name: '', nickname: '', gender: 'MALE', colourTags: '', personalityTags: '', locationArea: '', sterilized: false, status: 'ACTIVE' })
+const form = ref({ name: '', nickname: '', gender: 'MALE', colourTags: '', personalityTags: '', personalityDesc: '', locationArea: '', locationDetail: '', birthYear: null, weight: null, sterilized: false, status: 'ACTIVE' })
 const genders = ['MALE', 'FEMALE', 'UNKNOWN']
 const statuses = ['ACTIVE', 'SEEKING_ADOPT', 'MISSING', 'DECEASED']
 
@@ -17,7 +17,9 @@ onMounted(async () => {
     form.value = {
       name: d.name || '', nickname: d.nickname || '', gender: d.gender || 'MALE',
       colourTags: d.colourTags || '', personalityTags: d.personalityTags || '',
-      locationArea: d.locationArea || '', sterilized: d.sterilized || false,
+      personalityDesc: d.personalityDesc || '', locationArea: d.locationArea || '',
+      locationDetail: d.locationDetail || '', birthYear: d.birthYear || null,
+      weight: d.weight || null, sterilized: d.sterilized || false,
       status: d.status || 'ACTIVE',
     }
   } catch (err) {
@@ -52,6 +54,10 @@ const submit = async () => {
         <div class="form-row"><label class="form-label">毛色标签</label><input v-model="form.colourTags" class="form-input" placeholder="橘色;白色" /></div>
         <div class="form-row"><label class="form-label">性格标签</label><input v-model="form.personalityTags" class="form-input" placeholder="亲人;可抱" /></div>
         <div class="form-row"><label class="form-label">区域</label><input v-model="form.locationArea" class="form-input" /></div>
+        <div class="form-row"><label class="form-label">具体位置</label><input v-model="form.locationDetail" class="form-input" placeholder="例如：图书馆东侧花坛" /></div>
+        <div class="form-row"><label class="form-label">出生年份</label><input v-model="form.birthYear" type="number" class="form-input" placeholder="例如：2022" /></div>
+        <div class="form-row"><label class="form-label">体重 (kg)</label><input v-model="form.weight" type="number" step="0.1" class="form-input" placeholder="例如：4.5" /></div>
+        <div class="form-row"><label class="form-label">性格描述</label><textarea v-model="form.personalityDesc" class="form-input form-textarea" placeholder="详细描述猫咪的性格特点..." rows="3" /></div>
         <div class="form-row"><label class="form-label">状态</label><select v-model="form.status" class="form-input"><option v-for="s in statuses" :key="s" :value="s">{{ s === 'ACTIVE' ? '在校' : s === 'SEEKING_ADOPT' ? '待领养' : s === 'MISSING' ? '失踪' : '离世' }}</option></select></div>
         <div class="form-row"><label class="form-label">已绝育</label><input v-model="form.sterilized" type="checkbox" class="form-checkbox" /></div>
         <button class="btn-pill accent form-btn" :disabled="loading" @click="submit">{{ loading ? '保存中...' : '保存' }}</button>
@@ -70,4 +76,5 @@ const submit = async () => {
 .form-input:focus { border-color: var(--border-hover); }
 .form-checkbox { width: 1.25rem; height: 1.25rem; accent-color: var(--accent); }
 .form-btn { margin-top: 0.5rem; justify-content: center; width: 100%; }
+.form-textarea { resize: vertical; min-height: 5rem; line-height: 1.6; }
 </style>
