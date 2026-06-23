@@ -4,13 +4,19 @@ import com.nanxin.catbook.config.CurrentUser;
 import com.nanxin.catbook.dto.ApiResponse;
 import com.nanxin.catbook.dto.PhotoItem;
 import com.nanxin.catbook.entity.Photo;
+import com.nanxin.catbook.repository.PhotoLikeRepository;
 import com.nanxin.catbook.repository.PhotoRepository;
 import com.nanxin.catbook.service.PhotoService;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,14 +26,22 @@ public class PhotoController {
 
     private final PhotoService photoService;
     private final PhotoRepository photoRepository;
+    private final PhotoLikeRepository photoLikeRepository;
 
-    public PhotoController(PhotoService photoService, PhotoRepository photoRepository) {
+    @Value("${app.upload.dir}")
+    private String uploadDir;
+
+    public PhotoController(PhotoService photoService, PhotoRepository photoRepository,
+                           PhotoLikeRepository photoLikeRepository) {
         this.photoService = photoService;
         this.photoRepository = photoRepository;
+        this.photoLikeRepository = photoLikeRepository;
     }
 
     @GetMapping("/cats/{catId}/photos")
-    public ResponseEntity<ApiResponse<List<PhotoItem>>> listPhotos(@PathVariable Long catId) {
+    public ResponseEntity<ApiResponse<List<PhotoItem>>> listPhotos(
+            @PathVariable Long catId, HttpServletRequest request) {
+        Long userId = CurrentUser.getId(request);
         List<Photo> photos = photoRepository.findByCatIdAndStatusOrderBySortOrder(catId, Photo.PhotoStatus.APPROVED);
         List<PhotoItem> items = photos.stream().map(p -> {
             PhotoItem pi = new PhotoItem();
@@ -36,6 +50,9 @@ public class PhotoController {
             pi.setDescription(p.getDescription());
             pi.setStatus(p.getStatus().name());
             pi.setLikeCount(p.getLikeCount());
+            if (userId != null) {
+                pi.setIsLiked(photoLikeRepository.existsByPhotoIdAndUserId(p.getId(), userId));
+            }
             return pi;
         }).collect(Collectors.toList());
         return ResponseEntity.ok(ApiResponse.success(items));
@@ -51,8 +68,25 @@ public class PhotoController {
         if (userId == null) {
             return ResponseEntity.status(401).body(ApiResponse.error(401, "请先登录"));
         }
-        // 简化：直接保存路径
-        String filePath = "/uploads/" + System.currentTimeMillis() + "_" + file.getOriginalFilename();
+        // 确保上传目录存在
+        Path uploadPath = Paths.get(uploadDir);
+        try {
+            Files.createDirectories(uploadPath);
+        } catch (IOException e) {
+            return ResponseEntity.status(500).body(ApiResponse.error(500, "无法创建上传目录"));
+        }
+
+        // 保存文件到磁盘
+        String originalName = file.getOriginalFilename();
+        String safeName = System.currentTimeMillis() + "_" + (originalName != null ? originalName.replaceAll("[^a-zA-Z0-9._-]", "_") : "photo");
+        String filePath = "/uploads/" + safeName;
+        Path targetPath = uploadPath.resolve(safeName);
+        try {
+            file.transferTo(targetPath.toFile());
+        } catch (IOException e) {
+            return ResponseEntity.status(500).body(ApiResponse.error(500, "文件保存失败"));
+        }
+
         Photo photo = photoService.upload(catId, userId, filePath, description);
         PhotoItem pi = new PhotoItem();
         pi.setId(photo.getId());

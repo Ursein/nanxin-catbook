@@ -23,18 +23,20 @@ public class CatService {
     private final CatFollowRepository catFollowRepository;
     private final CatRatingRepository catRatingRepository;
     private final PhotoLikeRepository photoLikeRepository;
+    private final UserRepository userRepository;
     private final CatSimilarityAlgorithm similarityAlgorithm;
 
     public CatService(CatRepository catRepository, PhotoRepository photoRepository,
                       CommentRepository commentRepository, CatFollowRepository catFollowRepository,
                       CatRatingRepository catRatingRepository, PhotoLikeRepository photoLikeRepository,
-                      CatSimilarityAlgorithm similarityAlgorithm) {
+                      UserRepository userRepository, CatSimilarityAlgorithm similarityAlgorithm) {
         this.catRepository = catRepository;
         this.photoRepository = photoRepository;
         this.commentRepository = commentRepository;
         this.catFollowRepository = catFollowRepository;
         this.catRatingRepository = catRatingRepository;
         this.photoLikeRepository = photoLikeRepository;
+        this.userRepository = userRepository;
         this.similarityAlgorithm = similarityAlgorithm;
     }
 
@@ -116,6 +118,10 @@ public class CatService {
             ci.setId(c.getId());
             ci.setContent(c.getContent());
             ci.setCreatedAt(c.getCreatedAt() != null ? c.getCreatedAt().toString() : null);
+            // 获取评论者的用户名
+            ci.setUsername(userRepository.findById(c.getUserId())
+                    .map(u -> u.getNickname() != null ? u.getNickname() : u.getUsername())
+                    .orElse("未知用户"));
             return ci;
         }).collect(Collectors.toList()));
 
