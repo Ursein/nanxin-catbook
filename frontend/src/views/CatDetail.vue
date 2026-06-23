@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { catApi, commentApi, followApi, ratingApi } from '@/api'
+import { catApi, commentApi, followApi, ratingApi, photoApi } from '@/api'
 
 const route = useRoute()
 const router = useRouter()
@@ -11,7 +11,10 @@ const activePhoto = ref(0)
 const isFollowed = ref(false)
 const userRating = ref(0)
 const isAdmin = ref(false)
+const isLoggedIn = ref(!!localStorage.getItem('token'))
 const commentText = ref('')
+const uploading = ref(false)
+const fileInput = ref(null)
 
 const loadDetail = async () => {
   loading.value = true
@@ -113,6 +116,48 @@ const deleteCat = async () => {
   }
 }
 
+const triggerUpload = () => {
+  fileInput.value?.click()
+}
+
+const handleFileUpload = async (e) => {
+  const file = e.target.files?.[0]
+  if (!file) return
+  uploading.value = true
+  try {
+    const formData = new FormData()
+    formData.append('file', file)
+    await photoApi.upload(cat.value.id, formData)
+    loadDetail()
+  } catch (err) {
+    alert('上传失败: ' + (err.response?.data?.message || '未知错误'))
+  } finally {
+    uploading.value = false
+    e.target.value = ''
+  }
+}
+
+const togglePhotoLike = async (photoId) => {
+  try {
+    await photoApi.like(photoId)
+    loadDetail()
+  } catch (err) {
+    if (err.response?.status === 401) {
+      router.push('/login')
+    }
+  }
+}
+
+const deleteComment = async (commentId) => {
+  if (!confirm('确定删除这条留言？')) return
+  try {
+    await commentApi.remove(commentId)
+    loadDetail()
+  } catch (err) {
+    alert('删除失败')
+  }
+}
+
 onMounted(() => {
   checkAdmin()
   loadDetail()
@@ -159,6 +204,16 @@ onMounted(() => {
             →
           </button>
 
+          <!-- Like button -->
+          <button
+            v-if="cat.photos[activePhoto]"
+            class="photo-like-btn"
+            :class="{ liked: cat.photos[activePhoto].isLiked }"
+            @click="togglePhotoLike(cat.photos[activePhoto].id)"
+          >
+            ❤ {{ cat.photos[activePhoto].likeCount || 0 }}
+          </button>
+
           <!-- Dots -->
           <div class="photo-dots">
             <button
@@ -169,6 +224,22 @@ onMounted(() => {
               @click="activePhoto = i"
             />
           </div>
+        </div>
+      </section>
+
+      <!-- Upload Photo -->
+      <section v-if="isLoggedIn" class="upload-section">
+        <div class="container">
+          <input
+            ref="fileInput"
+            type="file"
+            accept="image/*"
+            style="display: none"
+            @change="handleFileUpload"
+          />
+          <button class="btn-pill" :disabled="uploading" @click="triggerUpload">
+            {{ uploading ? '上传中...' : '📸 上传照片' }}
+          </button>
         </div>
       </section>
 
@@ -305,7 +376,15 @@ onMounted(() => {
                   >
                     <div class="comment-header">
                       <span class="comment-user">{{ comment.username }}</span>
-                      <span class="comment-time">{{ comment.createdAt }}</span>
+                      <div class="comment-header-right">
+                        <span class="comment-time">{{ comment.createdAt }}</span>
+                        <button
+                          v-if="isAdmin"
+                          class="comment-delete-btn"
+                          @click="deleteComment(comment.id)"
+                          title="删除"
+                        >✕</button>
+                      </div>
                     </div>
                     <p class="comment-content">{{ comment.content }}</p>
                   </div>
@@ -443,6 +522,41 @@ onMounted(() => {
 
 .photo-prev { left: 1rem; }
 .photo-next { right: 1rem; }
+
+/* Photo Like Button */
+.photo-like-btn {
+  position: absolute;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 2;
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  color: var(--text-tertiary);
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.photo-like-btn:hover {
+  color: #ef4444;
+  border-color: rgba(239, 68, 68, 0.3);
+}
+.photo-like-btn.liked {
+  color: #ef4444;
+  border-color: rgba(239, 68, 68, 0.3);
+  background: rgba(239, 68, 68, 0.08);
+}
+
+/* Upload Section */
+.upload-section {
+  padding: 1rem 0;
+}
+.upload-section .container {
+  display: flex;
+  justify-content: center;
+}
 
 /* Dots */
 .photo-dots {
@@ -712,6 +826,27 @@ onMounted(() => {
   display: flex;
   justify-content: space-between;
   margin-bottom: 0.375rem;
+}
+
+.comment-header-right {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.comment-delete-btn {
+  background: none;
+  border: none;
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+  cursor: pointer;
+  padding: 0.125rem 0.375rem;
+  border-radius: 0.25rem;
+  transition: all 0.2s;
+}
+.comment-delete-btn:hover {
+  color: #ef4444;
+  background: rgba(239, 68, 68, 0.08);
 }
 
 .comment-user {
