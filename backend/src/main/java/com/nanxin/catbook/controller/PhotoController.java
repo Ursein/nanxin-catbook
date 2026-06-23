@@ -18,6 +18,7 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -84,9 +85,9 @@ public class PhotoController {
         String filePath = "/uploads/" + baseName;
         Path targetPath = uploadPath.resolve(baseName);
         try {
-            file.transferTo(targetPath.toFile());
+            Files.copy(file.getInputStream(), targetPath, StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
-            return ResponseEntity.status(500).body(ApiResponse.error(500, "文件保存失败"));
+            return ResponseEntity.status(500).body(ApiResponse.error(500, "文件保存失败: " + e.getMessage()));
         }
 
         // 生成压缩图（最大宽 800px）
