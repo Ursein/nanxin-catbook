@@ -104,6 +104,7 @@ public class CatService {
             PhotoItem pi = new PhotoItem();
             pi.setId(p.getId());
             pi.setUrl(p.getFilePath());
+            pi.setCompressedUrl(p.getFilePathCompressed() != null ? p.getFilePathCompressed() : p.getFilePath());
             pi.setDescription(p.getDescription());
             pi.setStatus(p.getStatus().name());
             pi.setLikeCount(p.getLikeCount());

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -47,6 +48,7 @@ public class PhotoController {
             PhotoItem pi = new PhotoItem();
             pi.setId(p.getId());
             pi.setUrl(p.getFilePath());
+            pi.setCompressedUrl(p.getFilePathCompressed() != null ? p.getFilePathCompressed() : p.getFilePath());
             pi.setDescription(p.getDescription());
             pi.setStatus(p.getStatus().name());
             pi.setLikeCount(p.getLikeCount());
@@ -78,16 +80,33 @@ public class PhotoController {
 
         // 保存文件到磁盘
         String originalName = file.getOriginalFilename();
-        String safeName = System.currentTimeMillis() + "_" + (originalName != null ? originalName.replaceAll("[^a-zA-Z0-9._-]", "_") : "photo");
-        String filePath = "/uploads/" + safeName;
-        Path targetPath = uploadPath.resolve(safeName);
+        String baseName = System.currentTimeMillis() + "_" + (originalName != null ? originalName.replaceAll("[^a-zA-Z0-9._-]", "_") : "photo");
+        String filePath = "/uploads/" + baseName;
+        Path targetPath = uploadPath.resolve(baseName);
         try {
             file.transferTo(targetPath.toFile());
         } catch (IOException e) {
             return ResponseEntity.status(500).body(ApiResponse.error(500, "文件保存失败"));
         }
 
+        // 生成压缩图（最大宽 800px）
+        String compressedName = "comp_" + baseName;
+        String compressedPath = "/uploads/" + compressedName;
+        Path compressedTarget = uploadPath.resolve(compressedName);
+        try (InputStream is = file.getInputStream()) {
+            net.coobird.thumbnailator.Thumbnails.of(is)
+                    .width(800)
+                    .keepAspectRatio(true)
+                    .outputQuality(0.8)
+                    .toFile(compressedTarget.toFile());
+        } catch (Exception e) {
+            // 压缩失败时不阻塞，回退使用原图
+            compressedPath = filePath;
+        }
+
         Photo photo = photoService.upload(catId, userId, filePath, description);
+        photo.setFilePathCompressed(compressedPath);
+        photoRepository.save(photo);
         PhotoItem pi = new PhotoItem();
         pi.setId(photo.getId());
         pi.setUrl(photo.getFilePath());

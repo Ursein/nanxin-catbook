@@ -21,6 +21,9 @@ public class Photo {
     @Column(nullable = false, length = 255)
     private String filePath;
 
+    @Column(length = 255)
+    private String filePathCompressed;
+
     @Column(length = 200)
     private String description;
 

@@ -199,7 +199,7 @@ onMounted(() => {
             >
               <img
                 v-if="photo.url"
-                :src="photo.url"
+                :src="photo.compressedUrl || photo.url"
                 :alt="photo.description || '猫咪照片'"
                 class="photo-img"
               />
