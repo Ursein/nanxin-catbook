@@ -21,7 +21,19 @@ public class CatRating {
     private Long userId;
 
     @Column(nullable = false)
-    private Integer rating;
+    private Integer r1; // 猫德
+
+    @Column(nullable = false)
+    private Integer r2; // 颜值
+
+    @Column(nullable = false)
+    private Integer r3; // 社交
+
+    @Column(nullable = false)
+    private Integer r4; // 干饭
+
+    @Column(nullable = false)
+    private Integer r5; // 活力
 
     private LocalDateTime createdAt;
 }

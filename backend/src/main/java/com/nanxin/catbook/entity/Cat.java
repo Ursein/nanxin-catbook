@@ -94,6 +94,21 @@ public class Cat {
     private Integer ratingCount = 0;
 
     @Column(precision = 3, scale = 2)
+    private BigDecimal avgR1 = BigDecimal.ZERO;
+
+    @Column(precision = 3, scale = 2)
+    private BigDecimal avgR2 = BigDecimal.ZERO;
+
+    @Column(precision = 3, scale = 2)
+    private BigDecimal avgR3 = BigDecimal.ZERO;
+
+    @Column(precision = 3, scale = 2)
+    private BigDecimal avgR4 = BigDecimal.ZERO;
+
+    @Column(precision = 3, scale = 2)
+    private BigDecimal avgR5 = BigDecimal.ZERO;
+
+    @Column(precision = 3, scale = 2)
     private BigDecimal avgRating = BigDecimal.ZERO;
 
     private Long creatorId;

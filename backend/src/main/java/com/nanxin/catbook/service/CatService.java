@@ -92,6 +92,11 @@ public class CatService {
         resp.setFollowCount(cat.getFollowCount());
         resp.setRatingCount(cat.getRatingCount());
         resp.setAvgRating(cat.getAvgRating() != null ? cat.getAvgRating().doubleValue() : 0.0);
+        resp.setAvgR1(cat.getAvgR1() != null ? cat.getAvgR1().doubleValue() : 0.0);
+        resp.setAvgR2(cat.getAvgR2() != null ? cat.getAvgR2().doubleValue() : 0.0);
+        resp.setAvgR3(cat.getAvgR3() != null ? cat.getAvgR3().doubleValue() : 0.0);
+        resp.setAvgR4(cat.getAvgR4() != null ? cat.getAvgR4().doubleValue() : 0.0);
+        resp.setAvgR5(cat.getAvgR5() != null ? cat.getAvgR5().doubleValue() : 0.0);
 
         // 照片
         List<Photo> photos = photoRepository.findByCatIdAndStatusOrderBySortOrder(catId, Photo.PhotoStatus.APPROVED);
@@ -133,8 +138,13 @@ public class CatService {
         // 关注状态
         if (userId != null) {
             resp.setIsFollowed(catFollowRepository.existsByUserIdAndCatId(userId, catId));
-            Optional<CatRating> myRating = catRatingRepository.findByUserIdAndCatId(userId, catId);
-            myRating.ifPresent(r -> resp.setMyRating(r.getRating()));
+            catRatingRepository.findByUserIdAndCatId(userId, catId).ifPresent(r -> {
+                resp.setMyR1(r.getR1());
+                resp.setMyR2(r.getR2());
+                resp.setMyR3(r.getR3());
+                resp.setMyR4(r.getR4());
+                resp.setMyR5(r.getR5());
+            });
         }
 
         // 推荐猫咪

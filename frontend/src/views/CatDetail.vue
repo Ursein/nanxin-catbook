@@ -9,7 +9,6 @@ const cat = ref(null)
 const loading = ref(true)
 const activePhoto = ref(0)
 const isFollowed = ref(false)
-const userRating = ref(0)
 const isAdmin = ref(false)
 const isLoggedIn = ref(!!localStorage.getItem('token'))
 const commentText = ref('')
@@ -22,7 +21,6 @@ const loadDetail = async () => {
     const res = await catApi.detail(route.params.id)
     cat.value = res.data
     isFollowed.value = res.data.isFollowed || false
-    userRating.value = res.data.myRating || 0
   } catch (err) {
     console.error('Failed to load cat:', err)
   } finally {
@@ -55,13 +53,23 @@ const toggleFollow = async () => {
   }
 }
 
-const setRating = async (val) => {
+const ratingDims = [
+  { key: 'r1', label: '猫德' },
+  { key: 'r2', label: '颜值' },
+  { key: 'r3', label: '社交' },
+  { key: 'r4', label: '干饭' },
+  { key: 'r5', label: '活力' },
+]
+
+const setRating = async (dim, val) => {
   try {
-    await ratingApi.submit(cat.value.id, val)
-    userRating.value = val
-    cat.value.avgRating = val
-    cat.value.ratingCount = (cat.value.ratingCount || 0) + (cat.value.myRating ? 0 : 1)
-    cat.value.myRating = val
+    const ratings = {}
+    for (const d of ratingDims) {
+      ratings[d.key] = dim === d.key ? val : (cat.value['my' + d.key.toUpperCase()] || 0)
+    }
+    await ratingApi.submit(cat.value.id, ratings)
+    cat.value['my' + dim.toUpperCase()] = val
+    loadDetail()
   } catch (err) {
     console.error('Rating failed:', err)
   }
@@ -346,16 +354,18 @@ onMounted(() => {
                 </button>
 
                 <div class="rating-group">
-                  <span class="rating-label">评分：</span>
-                  <button
-                    v-for="star in 5"
-                    :key="star"
-                    class="star-btn"
-                    :class="{ active: star <= userRating }"
-                    @click="setRating(star)"
-                  >
-                    ★
-                  </button>
+                  <div v-for="dim in ratingDims" :key="dim.key" class="rating-dim">
+                    <span class="rating-label">{{ dim.label }}</span>
+                    <div class="dim-stars">
+                      <button
+                        v-for="star in 5"
+                        :key="star"
+                        class="star-btn"
+                        :class="{ active: star <= (cat['my' + dim.key.toUpperCase()] || 0) }"
+                        @click="setRating(dim.key, star)"
+                      >★</button>
+                    </div>
+                  </div>
                 </div>
               </div>
 
@@ -758,8 +768,8 @@ onMounted(() => {
 /* Actions */
 .cat-actions {
   display: flex;
-  align-items: center;
-  gap: 1.5rem;
+  flex-direction: column;
+  gap: 1rem;
   padding: 1.25rem 0;
   border-top: 1px solid var(--border-subtle);
   border-bottom: 1px solid var(--border-subtle);
@@ -768,14 +778,25 @@ onMounted(() => {
 
 .rating-group {
   display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.rating-dim {
+  display: flex;
   align-items: center;
-  gap: 0.25rem;
+  gap: 0.75rem;
 }
 
 .rating-label {
   font-size: 0.8125rem;
   color: var(--text-tertiary);
-  margin-right: 0.25rem;
+  min-width: 3rem;
+}
+
+.dim-stars {
+  display: flex;
+  gap: 0.125rem;
 }
 
 .star-btn {
@@ -785,6 +806,8 @@ onMounted(() => {
   color: var(--text-tertiary);
   cursor: pointer;
   transition: all 0.2s ease;
+  padding: 0;
+  line-height: 1;
 }
 
 .star-btn.active {

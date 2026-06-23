@@ -78,9 +78,8 @@ export const followApi = {
 
 // 评分
 export const ratingApi = {
-  submit: (catId, rating) => api.post(`/cats/${catId}/rating`, { rating }),
+  submit: (catId, ratings) => api.post(`/cats/${catId}/rating`, ratings),
   stats: (catId) => api.get(`/cats/${catId}/rating`),
-  mine: (catId) => api.get(`/cats/${catId}/rating/mine`),
 }
 
 // 认证

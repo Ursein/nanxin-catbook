@@ -26,7 +26,7 @@ public class RatingController {
         if (userId == null) {
             return ResponseEntity.status(401).body(ApiResponse.error(401, "请先登录"));
         }
-        ratingService.submit(userId, catId, req.getRating());
+        ratingService.submit(userId, catId, req.getR1(), req.getR2(), req.getR3(), req.getR4(), req.getR5());
         return ResponseEntity.ok(ApiResponse.success(null));
     }
 
@@ -36,16 +36,5 @@ public class RatingController {
         Long userId = CurrentUser.getId(request);
         RatingStatsResponse resp = ratingService.getStats(catId, userId);
         return ResponseEntity.ok(ApiResponse.success(resp));
-    }
-
-    @GetMapping("/cats/{catId}/rating/mine")
-    public ResponseEntity<ApiResponse<Integer>> mine(
-            @PathVariable Long catId, HttpServletRequest request) {
-        Long userId = CurrentUser.getId(request);
-        if (userId == null) {
-            return ResponseEntity.status(401).body(ApiResponse.error(401, "请先登录"));
-        }
-        Integer myRating = ratingService.getMyRating(userId, catId);
-        return ResponseEntity.ok(ApiResponse.success(myRating));
     }
 }
