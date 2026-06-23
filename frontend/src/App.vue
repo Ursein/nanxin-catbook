@@ -82,6 +82,7 @@ onMounted(() => {
 
         <div class="nav-actions">
           <template v-if="user">
+            <router-link to="/my-follows" class="nav-link">关注</router-link>
             <router-link to="/add" class="nav-link">+ 添加</router-link>
             <span class="nav-user">{{ user.username }}</span>
             <button class="nav-logout" @click="logout">退出</button>
@@ -110,6 +111,25 @@ onMounted(() => {
             >
               {{ link.name }}
             </button>
+            <template v-if="user">
+              <button class="menu-link" :class="{ active: route.path === '/my-follows' }" @click="navigate('/my-follows')">
+                我的关注
+              </button>
+              <button class="menu-link" :class="{ active: route.path === '/add' }" @click="navigate('/add')">
+                + 添加猫咪
+              </button>
+              <button class="menu-link menu-logout" @click="logout">
+                退出登录
+              </button>
+            </template>
+            <template v-else>
+              <button class="menu-link" :class="{ active: route.path === '/login' }" @click="navigate('/login')">
+                登录
+              </button>
+              <button class="menu-link" :class="{ active: route.path === '/register' }" @click="navigate('/register')">
+                注册
+              </button>
+            </template>
           </div>
         </div>
       </div>
@@ -328,7 +348,13 @@ onMounted(() => {
 .menu-link:hover,
 .menu-link.active {
   color: var(--text-primary);
-  background: rgba(255, 255, 255, 0.06);
+  background: rgba(0, 0, 0, 0.06);
+}
+
+.menu-logout {
+  color: var(--text-tertiary) !important;
+  font-size: 1rem !important;
+  margin-top: 0.5rem;
 }
 
 /* Menu Transition */

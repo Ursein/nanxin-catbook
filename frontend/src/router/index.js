@@ -41,6 +41,11 @@ const routes = [
     name: 'EditCat',
     component: () => import('@/views/EditCat.vue'),
   },
+  {
+    path: '/my-follows',
+    name: 'MyFollows',
+    component: () => import('@/views/MyFollows.vue'),
+  },
 ]
 
 const router = createRouter({
