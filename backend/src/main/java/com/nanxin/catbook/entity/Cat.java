@@ -98,6 +98,8 @@ public class Cat {
 
     private Long creatorId;
 
+    private Integer deleted = 0;
+
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;

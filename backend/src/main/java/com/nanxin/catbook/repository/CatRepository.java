@@ -16,10 +16,14 @@ public interface CatRepository extends JpaRepository<Cat, Long> {
 
     List<Cat> findByStatus(Cat.CatStatus status);
 
+    @Query("SELECT c FROM Cat c WHERE c.status = :status AND (c.deleted IS NULL OR c.deleted != 1)")
+    List<Cat> findActiveByStatus(@Param("status") Cat.CatStatus status);
+
     @Query("SELECT c FROM Cat c WHERE " +
            "(:keyword IS NULL OR c.name LIKE %:keyword% OR c.nickname LIKE %:keyword% OR c.colourTags LIKE %:keyword%) AND " +
            "(:status IS NULL OR c.status = :status) AND " +
-           "(:location IS NULL OR c.locationArea = :location)")
+           "(:location IS NULL OR c.locationArea = :location) AND " +
+           "(c.deleted IS NULL OR c.deleted != 1)")
     Page<Cat> search(@Param("keyword") String keyword,
                      @Param("status") Cat.CatStatus status,
                      @Param("location") String location,

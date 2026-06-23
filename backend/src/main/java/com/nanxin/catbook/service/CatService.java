@@ -45,14 +45,8 @@ public class CatService {
         PageRequest pageReq = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
         Cat.CatStatus status = statusStr != null ? Cat.CatStatus.valueOf(statusStr) : null;
 
-        Page<Cat> catPage;
-        if (keyword != null || status != null || location != null) {
-            catPage = catRepository.search(keyword, status, location, pageReq);
-        } else if (status != null) {
-            catPage = catRepository.findByStatus(status, pageReq);
-        } else {
-            catPage = catRepository.findByStatus(Cat.CatStatus.ACTIVE, pageReq);
-        }
+        // 统一使用 search 查询（含 deleted 过滤）
+        Page<Cat> catPage = catRepository.search(keyword, status, location, pageReq);
 
         List<CatItem> items = catPage.getContent().stream()
                 .map(this::toCatItem)
@@ -70,6 +64,9 @@ public class CatService {
     public CatDetailResponse getCatDetail(Long catId, Long userId) {
         Cat cat = catRepository.findById(catId)
                 .orElseThrow(() -> new IllegalArgumentException("猫咪不存在"));
+        if (cat.getDeleted() != null && cat.getDeleted() == 1) {
+            throw new IllegalArgumentException("猫咪不存在");
+        }
 
         CatDetailResponse resp = new CatDetailResponse();
         resp.setId(cat.getId());
@@ -162,11 +159,11 @@ public class CatService {
 
     @Transactional
     public void deleteCat(Long catId) {
-        commentRepository.deleteByCatId(catId);
-        photoLikeRepository.deleteByPhotoId(catId);
-        catFollowRepository.deleteByCatId(catId);
-        catRatingRepository.deleteByCatId(catId);
-        catRepository.deleteById(catId);
+        Cat cat = catRepository.findById(catId)
+                .orElseThrow(() -> new IllegalArgumentException("猫咪不存在"));
+        cat.setDeleted(1);
+        cat.setUpdatedAt(LocalDateTime.now());
+        catRepository.save(cat);
     }
 
     private void applyRequest(Cat cat, CatRequest req) {

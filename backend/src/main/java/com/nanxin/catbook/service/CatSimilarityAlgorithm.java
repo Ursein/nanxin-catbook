@@ -48,9 +48,12 @@ public class CatSimilarityAlgorithm {
         // 1. 获取目标猫咪
         Cat target = catRepository.findById(targetCatId)
                 .orElseThrow(() -> new IllegalArgumentException("猫咪不存在"));
+        if (target.getDeleted() != null && target.getDeleted() == 1) {
+            throw new IllegalArgumentException("猫咪不存在");
+        }
 
-        // 2. 获取所有活跃猫咪作为候选池
-        List<Cat> allCats = catRepository.findByStatus(Cat.CatStatus.ACTIVE);
+        // 2. 获取所有活跃猫咪作为候选池（排除已删除）
+        List<Cat> allCats = catRepository.findActiveByStatus(Cat.CatStatus.ACTIVE);
         allCats = allCats.stream()
                 .filter(c -> !c.getId().equals(targetCatId))
                 .collect(Collectors.toList());
