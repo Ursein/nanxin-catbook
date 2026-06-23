@@ -151,8 +151,14 @@ const handleFileUpload = async (e) => {
 
 const togglePhotoLike = async (photoId) => {
   try {
-    await photoApi.like(photoId)
-    loadDetail()
+    const res = await photoApi.like(photoId)
+    const liked = res.data // true=点赞, false=取消
+    // 只更新当前照片的状态，不刷新整个页面
+    const photo = cat.value.photos?.find(p => p.id === photoId)
+    if (photo) {
+      photo.isLiked = liked
+      photo.likeCount = (photo.likeCount || 0) + (liked ? 1 : -1)
+    }
   } catch (err) {
     if (err.response?.status === 401) {
       router.push('/login')
