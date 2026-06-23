@@ -1,12 +1,15 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { catApi } from '@/api'
+import { catApi, photoApi } from '@/api'
 
 const route = useRoute()
 const router = useRouter()
 const loading = ref(false)
-const form = ref({ name: '', nickname: '', gender: 'MALE', colourTags: '', personalityTags: '', personalityDesc: '', locationArea: '', locationDetail: '', birthYear: null, weight: null, sterilized: false, status: 'ACTIVE' })
+const photos = ref([])
+const uploading = ref(false)
+const fileInput = ref(null)
+const form = ref({ name: '', nickname: '', gender: 'MALE', colourTags: '', personalityTags: '', personalityDesc: '', locationArea: '', locationDetail: '', birthYear: null, weight: null, sterilized: false, status: 'ACTIVE', coverPhotoId: null })
 const genders = ['MALE', 'FEMALE', 'UNKNOWN']
 const statuses = ['ACTIVE', 'SEEKING_ADOPT', 'MISSING', 'DECEASED']
 
@@ -20,8 +23,11 @@ onMounted(async () => {
       personalityDesc: d.personalityDesc || '', locationArea: d.locationArea || '',
       locationDetail: d.locationDetail || '', birthYear: d.birthYear || null,
       weight: d.weight || null, sterilized: d.sterilized || false,
-      status: d.status || 'ACTIVE',
+      status: d.status || 'ACTIVE', coverPhotoId: d.coverPhotoId || null,
     }
+    // 加载已有照片
+    const photoRes = await photoApi.list(route.params.id)
+    photos.value = photoRes.data || []
   } catch (err) {
     alert('加载失败')
     router.push('/')
@@ -40,6 +46,29 @@ const submit = async () => {
     loading.value = false
   }
 }
+
+const triggerUpload = () => fileInput.value?.click()
+
+const handleFileUpload = async (e) => {
+  const file = e.target.files?.[0]
+  if (!file) return
+  uploading.value = true
+  try {
+    const formData = new FormData()
+    formData.append('file', file)
+    const res = await photoApi.upload(route.params.id, formData)
+    if (res.data) photos.value.push(res.data)
+  } catch (err) {
+    alert('上传失败')
+  } finally {
+    uploading.value = false
+    e.target.value = ''
+  }
+}
+
+const setCover = (photoId) => {
+  form.value.coverPhotoId = photoId
+}
 </script>
 
 <template>
@@ -47,6 +76,37 @@ const submit = async () => {
     <div class="container">
       <span class="eyebrow">猫咪档案</span>
       <h1 class="add-title">编辑猫咪</h1>
+
+      <!-- 照片管理 -->
+      <section class="photo-manage">
+        <h2 class="section-label">照片管理</h2>
+        <div class="photo-grid">
+          <div
+            v-for="photo in photos"
+            :key="photo.id"
+            class="photo-item"
+            :class="{ 'is-cover': form.coverPhotoId === photo.id }"
+          >
+            <img :src="photo.url" class="photo-thumb" alt="猫咪照片" />
+            <div class="photo-overlay">
+              <button
+                v-if="form.coverPhotoId !== photo.id"
+                class="photo-action"
+                @click="setCover(photo.id)"
+              >设为封面</button>
+              <span v-else class="photo-action active">⭐ 封面</span>
+            </div>
+          </div>
+        </div>
+        <input
+          ref="fileInput" type="file" accept="image/*" style="display:none"
+          @change="handleFileUpload"
+        />
+        <button class="btn-pill" :disabled="uploading" @click="triggerUpload" style="margin-top:0.75rem">
+          {{ uploading ? '上传中...' : '📸 上传新照片' }}
+        </button>
+      </section>
+
       <div class="add-form">
         <div class="form-row"><label class="form-label">名字 *</label><input v-model="form.name" class="form-input" /></div>
         <div class="form-row"><label class="form-label">昵称</label><input v-model="form.nickname" class="form-input" /></div>
@@ -69,12 +129,27 @@ const submit = async () => {
 <style scoped>
 .add-page { padding: var(--section-py) 0; }
 .add-title { font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; letter-spacing: -0.03em; margin: 0.75rem 0 2rem; }
+
+/* Photo Management */
+.photo-manage { margin-bottom: 2rem; }
+.section-label { font-size: 0.875rem; font-weight: 700; color: var(--text-secondary); margin-bottom: 0.75rem; }
+.photo-grid { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+.photo-item { position: relative; width: 120px; height: 120px; border-radius: var(--radius-sm); overflow: hidden; border: 2px solid transparent; transition: all 0.3s; }
+.photo-item.is-cover { border-color: var(--accent); }
+.photo-thumb { width: 100%; height: 100%; object-fit: cover; display: block; }
+.photo-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s; }
+.photo-item:hover .photo-overlay { opacity: 1; }
+.photo-action { padding: 0.375rem 0.75rem; border-radius: 999px; font-size: 0.75rem; font-weight: 500; border: 1px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.15); color: #fff; cursor: pointer; backdrop-filter: blur(4px); }
+.photo-action:hover { background: rgba(255,255,255,0.3); }
+.photo-action.active { border-color: var(--accent); background: var(--accent); color: #fff; }
+
 .add-form { max-width: 480px; display: flex; flex-direction: column; gap: 1rem; }
 .form-row { display: flex; flex-direction: column; gap: 0.375rem; }
 .form-label { font-size: 0.8125rem; color: var(--text-secondary); font-weight: 500; }
 .form-input { padding: 0.75rem 1rem; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle); background: var(--glass-bg); color: var(--text-primary); font-family: var(--font-body); font-size: 0.9375rem; outline: none; transition: border-color 0.3s; }
 .form-input:focus { border-color: var(--border-hover); }
+.form-input::placeholder { color: var(--text-tertiary); }
+.form-textarea { resize: vertical; min-height: 5rem; line-height: 1.6; }
 .form-checkbox { width: 1.25rem; height: 1.25rem; accent-color: var(--accent); }
 .form-btn { margin-top: 0.5rem; justify-content: center; width: 100%; }
-.form-textarea { resize: vertical; min-height: 5rem; line-height: 1.6; }
 </style>

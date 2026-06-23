@@ -62,7 +62,10 @@ const goToDetail = (id) => router.push(`/cat/${id}`)
             class="result-card"
             @click="goToDetail(cat.id)"
           >
-            <div class="result-placeholder" />
+            <div
+              class="result-placeholder"
+              :style="cat.coverPhotoUrl ? { backgroundImage: `url(${cat.coverPhotoUrl})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {}"
+            />
             <div class="result-info">
               <h3 class="result-name">{{ cat.name }}</h3>
               <p class="result-meta">{{ cat.locationArea }} · {{ cat.colourTags }}</p>

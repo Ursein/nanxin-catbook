@@ -123,7 +123,7 @@ onMounted(() => {
             @click="goToDetail(cat.id)"
           >
             <!-- Cover Photo Placeholder -->
-            <div class="card-bg">
+            <div class="card-bg" :style="cat.coverPhotoUrl ? { backgroundImage: `url(${cat.coverPhotoUrl})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {}">
               <div class="card-overlay" />
               <div class="card-content">
                 <!-- Status Tag -->

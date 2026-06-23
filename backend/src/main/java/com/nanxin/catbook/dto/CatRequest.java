@@ -13,4 +13,5 @@ public class CatRequest {
     private String personalityDesc; private Boolean sterilized;
     private String status; private Long fatherId; private Long motherId;
     private String notes; private BigDecimal weight;
+    private Long coverPhotoId;
 }

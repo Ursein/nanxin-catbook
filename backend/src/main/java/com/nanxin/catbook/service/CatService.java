@@ -186,6 +186,7 @@ public class CatService {
         cat.setMotherId(req.getMotherId());
         cat.setNotes(req.getNotes());
         if (req.getWeight() != null) cat.setWeight(req.getWeight());
+        if (req.getCoverPhotoId() != null) cat.setCoverPhotoId(req.getCoverPhotoId());
     }
 
     private CatItem toCatItem(Cat cat) {
@@ -201,6 +202,11 @@ public class CatService {
         item.setLikeCount(cat.getLikeCount());
         item.setFollowCount(cat.getFollowCount());
         item.setAvgRating(cat.getAvgRating() != null ? cat.getAvgRating().doubleValue() : 0.0);
+        // 封面图URL
+        if (cat.getCoverPhotoId() != null) {
+            photoRepository.findById(cat.getCoverPhotoId()).ifPresent(p ->
+                item.setCoverPhotoUrl(p.getFilePath()));
+        }
         return item;
     }
 }

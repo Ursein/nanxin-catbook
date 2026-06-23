@@ -189,7 +189,13 @@ onMounted(() => {
               :key="photo.id"
               class="photo-slide"
             >
-              <div class="photo-placeholder" :style="{ background: photoGradient(i) }">
+              <img
+                v-if="photo.url"
+                :src="photo.url"
+                :alt="photo.description || '猫咪照片'"
+                class="photo-img"
+              />
+              <div v-else class="photo-placeholder" :style="{ background: photoGradient(i) }">
                 <span class="photo-emoji">🐱</span>
                 <p class="photo-desc">{{ photo.description }}</p>
               </div>
@@ -472,6 +478,13 @@ onMounted(() => {
 .photo-slide {
   min-width: 100%;
   height: 65vh;
+}
+
+.photo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 .photo-placeholder {

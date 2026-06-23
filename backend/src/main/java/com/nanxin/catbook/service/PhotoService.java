@@ -32,7 +32,7 @@ public class PhotoService {
         photo.setUploaderId(userId);
         photo.setFilePath(filePath);
         photo.setDescription(description);
-        photo.setStatus(Photo.PhotoStatus.PENDING);
+        photo.setStatus(Photo.PhotoStatus.APPROVED);
         photo.setCreatedAt(LocalDateTime.now());
         return photoRepository.save(photo);
     }
