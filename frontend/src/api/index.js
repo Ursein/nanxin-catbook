@@ -8,12 +8,16 @@ const api = axios.create({
   },
 })
 
-// 请求拦截器：自动附加 JWT Token
+// 请求拦截器：自动附加 JWT Token，并处理 FormData 的 Content-Type
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('token')
     if (token) {
       config.headers.Authorization = `Bearer ${token}`
+    }
+    // FormData 需要浏览器自动设置 Content-Type（含 boundary），不能手动指定
+    if (config.data instanceof FormData) {
+      delete config.headers['Content-Type']
     }
     return config
   },
