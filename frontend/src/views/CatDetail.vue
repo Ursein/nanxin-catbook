@@ -65,10 +65,14 @@ const setRating = async (dim, val) => {
   try {
     const ratings = {}
     for (const d of ratingDims) {
-      ratings[d.key] = dim === d.key ? val : (cat.value['my' + d.key.toUpperCase()] || 0)
+      if (dim === d.key) {
+        ratings[d.key] = val
+      } else {
+        const prev = cat.value['my' + d.key.toUpperCase()]
+        if (prev && prev > 0) ratings[d.key] = prev
+      }
     }
     await ratingApi.submit(cat.value.id, ratings)
-    cat.value['my' + dim.toUpperCase()] = val
     loadDetail()
   } catch (err) {
     console.error('Rating failed:', err)
@@ -345,13 +349,19 @@ onMounted(() => {
 
               <!-- Actions: Follow + Rating -->
               <div class="cat-actions">
-                <button
-                  class="btn-pill"
-                  :class="{ accent: isFollowed }"
-                  @click="toggleFollow"
-                >
-                  {{ isFollowed ? '已关注 ✓' : '关注' }}
-                </button>
+                <div class="actions-top">
+                  <button
+                    class="btn-pill"
+                    :class="{ accent: isFollowed }"
+                    @click="toggleFollow"
+                  >
+                    {{ isFollowed ? '已关注 ✓' : '🐾 关注' }}
+                  </button>
+                  <div class="overall-rating">
+                    <span class="overall-score">{{ cat.avgRating || '0' }}</span>
+                    <span class="overall-label">综合评分</span>
+                  </div>
+                </div>
 
                 <div class="rating-group">
                   <div v-for="dim in ratingDims" :key="dim.key" class="rating-dim">
@@ -365,6 +375,7 @@ onMounted(() => {
                         @click="setRating(dim.key, star)"
                       >★</button>
                     </div>
+                    <span class="dim-avg">{{ cat['avg' + dim.key.toUpperCase()] || '0' }}</span>
                   </div>
                 </div>
               </div>
@@ -776,22 +787,47 @@ onMounted(() => {
   margin-bottom: 2rem;
 }
 
+.actions-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.overall-rating {
+  display: flex;
+  align-items: baseline;
+  gap: 0.375rem;
+}
+
+.overall-score {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--accent);
+}
+
+.overall-label {
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+}
+
 .rating-group {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.375rem;
 }
 
 .rating-dim {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.5rem;
 }
 
 .rating-label {
-  font-size: 0.8125rem;
+  font-size: 0.75rem;
   color: var(--text-tertiary);
-  min-width: 3rem;
+  min-width: 2.5rem;
 }
 
 .dim-stars {
@@ -799,10 +835,17 @@ onMounted(() => {
   gap: 0.125rem;
 }
 
+.dim-avg {
+  font-size: 0.6875rem;
+  color: var(--text-tertiary);
+  min-width: 1.5rem;
+  text-align: right;
+}
+
 .star-btn {
   background: none;
   border: none;
-  font-size: 1.25rem;
+  font-size: 1rem;
   color: var(--text-tertiary);
   cursor: pointer;
   transition: all 0.2s ease;

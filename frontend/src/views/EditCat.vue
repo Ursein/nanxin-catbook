@@ -67,7 +67,7 @@ const handleFileUpload = async (e) => {
 }
 
 const setCover = (photoId) => {
-  form.value.coverPhotoId = photoId
+  form.value.coverPhotoId = form.value.coverPhotoId === photoId ? null : photoId
 }
 </script>
 
