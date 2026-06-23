@@ -19,4 +19,5 @@ public class CatDetailResponse {
     private List<PhotoItem> photos;
     private List<CommentItem> comments;
     private List<RecommendItem> recommendCats;
+    private String coverPhotoUrl;
 }

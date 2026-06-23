@@ -108,6 +108,14 @@ public class CatService {
             return pi;
         }).collect(Collectors.toList()));
 
+        // 封面图：优先 coverPhotoId，无则取第一张 APPROVED 照片
+        if (cat.getCoverPhotoId() != null) {
+            photoRepository.findById(cat.getCoverPhotoId()).ifPresent(p ->
+                resp.setCoverPhotoUrl(p.getFilePath()));
+        } else if (!photos.isEmpty()) {
+            resp.setCoverPhotoUrl(photos.get(0).getFilePath());
+        }
+
         // 评论
         List<Comment> comments = commentRepository.findByCatIdOrderByCreatedAtDesc(catId);
         resp.setComments(comments.stream().map(c -> {
@@ -203,6 +211,14 @@ public class CatService {
         if (cat.getCoverPhotoId() != null) {
             photoRepository.findById(cat.getCoverPhotoId()).ifPresent(p ->
                 item.setCoverPhotoUrl(p.getFilePath()));
+        }
+        if (item.getCoverPhotoUrl() == null) {
+            // 无封面图时取第一张 APPROVED 照片
+            List<Photo> photos = photoRepository.findByCatIdAndStatusOrderBySortOrder(
+                    cat.getId(), Photo.PhotoStatus.APPROVED);
+            if (!photos.isEmpty()) {
+                item.setCoverPhotoUrl(photos.get(0).getFilePath());
+            }
         }
         return item;
     }
