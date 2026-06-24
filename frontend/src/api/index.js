@@ -1,4 +1,9 @@
 import axios from 'axios'
+import { getMockCatList, getMockCatDetail, getMockRecommend, getMockLogin, getMockRegister, getMockMe, getMockUpdateMe, getMockFollow, getMockUnfollow, getMockFollowStatus, getMockMyFollows, getMockRatingStats, getMockRatingSubmit, getMockCommentCreate, getMockCommentRemove, getMockPhotoList, getMockPhotoUpload, getMockPhotoLike, getMockPhotoUnlike, getMockPhotoApprove, getMockPhotoReject, getMockPhotoRemove, getMockMyCats, getMockMyRatings } from '@/mock/data'
+
+// 设置为 true 时完全使用 mock 数据（不尝试请求后端）
+// 设置为 false 时先尝试后端，失败后降级到 mock
+const ALWAYS_MOCK = false
 
 const api = axios.create({
   baseURL: '/api/v1',
@@ -39,62 +44,150 @@ api.interceptors.response.use(
 
 export default api
 
+// 辅助函数：API 失败时降级到 mock
+function withMockFallback(realFn, mockFn) {
+  return async (...args) => {
+    if (ALWAYS_MOCK) return mockFn(...args)
+    try {
+      return await realFn(...args)
+    } catch {
+      console.warn('API 不可用，使用 mock 数据')
+      return mockFn(...args)
+    }
+  }
+}
+
+// 空操作（写操作在后端不可用时静默忽略）
+function noop() {
+  return Promise.resolve({ data: null })
+}
+
 // ===== API 接口 =====
 
-// 猫咪
+// 猫咪（支持 mock 降级）
 export const catApi = {
-  list: (params) => api.get('/cats', { params }),
-  detail: (id) => api.get(`/cats/${id}`),
-  create: (data) => api.post('/cats', data),
-  update: (id, data) => api.put(`/cats/${id}`, data),
-  remove: (id) => api.delete(`/cats/${id}`),
-  recommend: (id) => api.get(`/cats/${id}/recommend`),
+  list: withMockFallback(
+    (params) => api.get('/cats', { params }),
+    getMockCatList
+  ),
+  detail: withMockFallback(
+    (id) => api.get(`/cats/${id}`),
+    getMockCatDetail
+  ),
+  create: noop,
+  update: noop,
+  remove: noop,
+  recommend: withMockFallback(
+    (id) => api.get(`/cats/${id}/recommend`),
+    getMockRecommend
+  ),
 }
 
-// 照片
+// 照片（支持 mock）
 export const photoApi = {
-  list: (catId) => api.get(`/cats/${catId}/photos`),
-  upload: (catId, formData) =>
-    api.post(`/cats/${catId}/photos`, formData),
-  approve: (id) => api.put(`/photos/${id}/approve`),
-  reject: (id, reason) => api.put(`/photos/${id}/reject`, { reason }),
-  remove: (id) => api.delete(`/photos/${id}`),
-  like: (id) => api.post(`/photos/${id}/like`),
-  unlike: (id) => api.delete(`/photos/${id}/like`),
+  list: withMockFallback(
+    (catId) => api.get(`/cats/${catId}/photos`),
+    getMockPhotoList
+  ),
+  upload: withMockFallback(
+    (catId, formData) => api.post(`/cats/${catId}/photos`, formData),
+    getMockPhotoUpload
+  ),
+  approve: withMockFallback(
+    (id) => api.put(`/photos/${id}/approve`),
+    getMockPhotoApprove
+  ),
+  reject: withMockFallback(
+    (id, reason) => api.put(`/photos/${id}/reject`, { reason }),
+    getMockPhotoReject
+  ),
+  remove: withMockFallback(
+    (id) => api.delete(`/photos/${id}`),
+    getMockPhotoRemove
+  ),
+  like: withMockFallback(
+    (id) => api.post(`/photos/${id}/like`),
+    getMockPhotoLike
+  ),
+  unlike: withMockFallback(
+    (id) => api.delete(`/photos/${id}/like`),
+    getMockPhotoUnlike
+  ),
 }
 
-// 评论
+// 评论（支持 mock）
 export const commentApi = {
   list: (catId) => api.get(`/cats/${catId}/comments`),
-  create: (catId, content) => api.post(`/cats/${catId}/comments`, { content }),
-  remove: (id) => api.delete(`/comments/${id}`),
+  create: withMockFallback(
+    (catId, content) => api.post(`/cats/${catId}/comments`, { content }),
+    getMockCommentCreate
+  ),
+  remove: withMockFallback(
+    (id) => api.delete(`/comments/${id}`),
+    getMockCommentRemove
+  ),
 }
 
-// 关注
+// 关注（支持 mock）
 export const followApi = {
-  follow: (catId) => api.post(`/cats/${catId}/follow`),
-  unfollow: (catId) => api.delete(`/cats/${catId}/follow`),
-  status: (catId) => api.get(`/cats/${catId}/follow/status`),
-  myFollows: () => api.get('/user/follows'),
+  follow: withMockFallback(
+    (catId) => api.post(`/cats/${catId}/follow`),
+    getMockFollow
+  ),
+  unfollow: withMockFallback(
+    (catId) => api.delete(`/cats/${catId}/follow`),
+    getMockUnfollow
+  ),
+  status: withMockFallback(
+    (catId) => api.get(`/cats/${catId}/follow/status`),
+    getMockFollowStatus
+  ),
+  myFollows: withMockFallback(
+    () => api.get('/user/follows'),
+    getMockMyFollows
+  ),
 }
 
-// 评分
+// 评分（支持 mock）
 export const ratingApi = {
-  submit: (catId, ratings) => api.post(`/cats/${catId}/rating`, ratings),
-  stats: (catId) => api.get(`/cats/${catId}/rating`),
+  submit: withMockFallback(
+    (catId, ratings) => api.post(`/cats/${catId}/rating`, ratings),
+    getMockRatingSubmit
+  ),
+  stats: withMockFallback(
+    (catId) => api.get(`/cats/${catId}/rating`),
+    getMockRatingStats
+  ),
 }
 
-// 认证
+// 认证（支持 mock）
 export const authApi = {
-  login: (username, password) => api.post('/auth/login', { username, password }),
-  register: (username, password, email) =>
-    api.post('/auth/register', { username, password, email }),
-  me: () => api.get('/auth/me'),
-  updateMe: (data) => api.put('/auth/me', data),
+  login: withMockFallback(
+    (username, password) => api.post('/auth/login', { username, password }),
+    getMockLogin
+  ),
+  register: withMockFallback(
+    (username, password, email) => api.post('/auth/register', { username, password, email }),
+    getMockRegister
+  ),
+  me: withMockFallback(
+    () => api.get('/auth/me'),
+    getMockMe
+  ),
+  updateMe: withMockFallback(
+    (data) => api.put('/auth/me', data),
+    getMockUpdateMe
+  ),
 }
 
-// 用户
+// 用户（支持 mock）
 export const userApi = {
-  myCats: () => api.get('/user/cats'),
-  myRatings: () => api.get('/user/ratings'),
+  myCats: withMockFallback(
+    () => api.get('/user/cats'),
+    getMockMyCats
+  ),
+  myRatings: withMockFallback(
+    () => api.get('/user/ratings'),
+    getMockMyRatings
+  ),
 }

@@ -7,10 +7,9 @@ const route = useRoute()
 const router = useRouter()
 const cat = ref(null)
 const loading = ref(true)
-const activePhoto = ref(0)
+const isLoggedIn = ref(!!localStorage.getItem('token'))
 const isFollowed = ref(false)
 const isAdmin = ref(false)
-const isLoggedIn = ref(!!localStorage.getItem('token'))
 const commentText = ref('')
 const uploading = ref(false)
 const fileInput = ref(null)
@@ -62,6 +61,10 @@ const ratingDims = [
 ]
 
 const setRating = async (dim, val) => {
+  if (!isLoggedIn.value) {
+    router.push('/login')
+    return
+  }
   try {
     const ratings = {}
     for (const d of ratingDims) {
@@ -81,17 +84,60 @@ const setRating = async (dim, val) => {
 
 const goToCat = (id) => router.push(`/cat/${id}`)
 
+// 无限轮播
+const totalPhotos = () => cat.value?.photos?.length || 0
+const displayIndex = ref(1)
+const isTransitioning = ref(false)
+let resetTimer = null
+
+const trackTransform = () => `translateX(-${displayIndex.value * 100}%)`
+
 const prevPhoto = () => {
-  if (cat.value?.photos) {
-    activePhoto.value = activePhoto.value === 0
-      ? cat.value.photos.length - 1 : activePhoto.value - 1
-  }
+  if (totalPhotos() <= 1 || isTransitioning.value) return
+  isTransitioning.value = true
+  displayIndex.value--
+  scheduleReset()
 }
+
 const nextPhoto = () => {
-  if (cat.value?.photos) {
-    activePhoto.value = cat.value.photos.length - 1 === activePhoto.value
-      ? 0 : activePhoto.value + 1
-  }
+  if (totalPhotos() <= 1 || isTransitioning.value) return
+  isTransitioning.value = true
+  displayIndex.value++
+  scheduleReset()
+}
+
+const scheduleReset = () => {
+  clearTimeout(resetTimer)
+  resetTimer = setTimeout(() => {
+    isTransitioning.value = false
+    const n = totalPhotos()
+    if (displayIndex.value === 0) {
+      displayIndex.value = n
+    } else if (displayIndex.value === n + 1) {
+      displayIndex.value = 1
+    }
+  }, 600)
+}
+
+const realIndex = () => {
+  const n = totalPhotos()
+  if (displayIndex.value === 0) return n - 1
+  if (displayIndex.value === n + 1) return 0
+  return displayIndex.value - 1
+}
+
+const loopPhotos = () => {
+  const p = cat.value?.photos
+  if (!p || p.length === 0) return []
+  if (p.length === 1) return p
+  return [p[p.length - 1], ...p, p[0]]
+}
+
+const goToSlide = (i) => {
+  if (isTransitioning.value) return
+  isTransitioning.value = true
+  displayIndex.value = i + 1
+  scheduleReset()
 }
 
 const statusLabel = (s) => {
@@ -200,11 +246,12 @@ onMounted(() => {
         <div class="photo-carousel">
           <div
             class="photo-track"
-            :style="{ transform: `translateX(-${activePhoto * 100}%)` }"
+            :class="{ 'no-transition': !isTransitioning }"
+            :style="{ transform: trackTransform() }"
           >
             <div
-              v-for="(photo, i) in cat.photos"
-              :key="photo.id"
+              v-for="(photo, i) in loopPhotos()"
+              :key="i"
               class="photo-slide"
             >
               <img
@@ -230,12 +277,12 @@ onMounted(() => {
 
           <!-- Like button -->
           <button
-            v-if="cat.photos[activePhoto]"
+            v-if="cat.photos[realIndex()]"
             class="photo-like-btn"
-            :class="{ liked: cat.photos[activePhoto].isLiked }"
-            @click="togglePhotoLike(cat.photos[activePhoto].id)"
+            :class="{ liked: cat.photos[realIndex()].isLiked }"
+            @click="togglePhotoLike(cat.photos[realIndex()].id)"
           >
-            ❤ {{ cat.photos[activePhoto].likeCount || 0 }}
+            ❤ {{ cat.photos[realIndex()].likeCount || 0 }}
           </button>
 
           <!-- Dots -->
@@ -244,8 +291,8 @@ onMounted(() => {
               v-for="(_, i) in cat.photos"
               :key="i"
               class="dot"
-              :class="{ active: activePhoto === i }"
-              @click="activePhoto = i"
+              :class="{ active: realIndex() === i }"
+              @click="goToSlide(i)"
             />
           </div>
         </div>
@@ -368,13 +415,17 @@ onMounted(() => {
               <!-- Rating -->
               <div class="cat-actions">
                 <h2 class="section-title">猫友评分</h2>
-                <div class="rating-group">
+                <p v-if="!isLoggedIn" class="rating-login-hint">
+                  请先<a href="/login" @click.prevent="router.push('/login')">登录</a>后评分
+                </p>
+                <div class="rating-group" :class="{ disabled: !isLoggedIn }">
                   <div v-for="dim in ratingDims" :key="dim.key" class="rating-dim">
                     <span class="rating-label">{{ dim.label }}</span>
                     <div class="dim-stars">
                       <button
                         v-for="star in 5"
                         :key="star"
+                        type="button"
                         class="star-btn"
                         :class="{ active: star <= (cat['my' + dim.key.toUpperCase()] || 0) }"
                         @click="setRating(dim.key, star)"
@@ -504,6 +555,10 @@ onMounted(() => {
 .photo-track {
   display: flex;
   transition: transform 0.6s var(--ease-spring);
+}
+
+.photo-track.no-transition {
+  transition: none;
 }
 
 .photo-slide {
@@ -837,6 +892,22 @@ onMounted(() => {
   gap: 0.5rem 2rem;
 }
 
+.rating-group.disabled {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.rating-login-hint {
+  font-size: 0.875rem;
+  color: var(--text-tertiary);
+  margin-bottom: 0.75rem;
+}
+
+.rating-login-hint a {
+  color: var(--accent);
+  cursor: pointer;
+}
+
 .rating-dim {
   display: flex;
   align-items: center;
@@ -867,12 +938,14 @@ onMounted(() => {
 .star-btn {
   background: none;
   border: none;
-  font-size: 1rem;
-  color: var(--text-tertiary);
+  font-size: 1.125rem;
+  color: var(--border-subtle);
   cursor: pointer;
   transition: all 0.2s ease;
-  padding: 0;
+  padding: 0.125rem 0.25rem;
   line-height: 1;
+  position: relative;
+  z-index: 1;
 }
 
 .star-btn.active {
