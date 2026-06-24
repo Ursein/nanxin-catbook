@@ -56,6 +56,20 @@ public class UserService {
         return toUserInfo(user);
     }
 
+    public UserInfo updateMe(Long userId, UpdateUserRequest req) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("用户不存在"));
+        if (req.getNickname() != null) {
+            user.setNickname(req.getNickname());
+        }
+        if (req.getEmail() != null) {
+            user.setEmail(req.getEmail());
+        }
+        user.setUpdatedAt(java.time.LocalDateTime.now());
+        user = userRepository.save(user);
+        return toUserInfo(user);
+    }
+
     private UserInfo toUserInfo(User user) {
         UserInfo info = new UserInfo();
         info.setId(user.getId());

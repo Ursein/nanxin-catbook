@@ -28,4 +28,6 @@ public interface CatRepository extends JpaRepository<Cat, Long> {
                      @Param("status") Cat.CatStatus status,
                      @Param("location") String location,
                      Pageable pageable);
+
+    List<Cat> findByCreatorIdAndDeleted(Long creatorId, Integer deleted);
 }

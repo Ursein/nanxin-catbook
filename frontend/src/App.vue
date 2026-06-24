@@ -82,9 +82,7 @@ onMounted(() => {
 
         <div class="nav-actions">
           <template v-if="user">
-            <router-link to="/my-follows" class="nav-link">关注</router-link>
-            <router-link to="/add" class="nav-link">+ 添加</router-link>
-            <span class="nav-user">{{ user.username }}</span>
+            <router-link to="/my" class="nav-link" :class="{ active: route.path === '/my' }">我的</router-link>
             <button class="nav-logout" @click="logout">退出</button>
           </template>
           <router-link v-else to="/login" class="nav-link">登录</router-link>
@@ -112,11 +110,8 @@ onMounted(() => {
               {{ link.name }}
             </button>
             <template v-if="user">
-              <button class="menu-link" :class="{ active: route.path === '/my-follows' }" @click="navigate('/my-follows')">
-                我的关注
-              </button>
-              <button class="menu-link" :class="{ active: route.path === '/add' }" @click="navigate('/add')">
-                + 添加猫咪
+              <button class="menu-link" :class="{ active: route.path === '/my' }" @click="navigate('/my')">
+                我的
               </button>
               <button class="menu-link menu-logout" @click="logout">
                 退出登录

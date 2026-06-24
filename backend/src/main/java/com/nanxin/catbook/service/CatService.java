@@ -185,6 +185,12 @@ public class CatService {
         catRepository.save(cat);
     }
 
+    public List<CatItem> getMyCats(Long userId) {
+        return catRepository.findByCreatorIdAndDeleted(userId, 0).stream()
+                .map(this::toCatItem)
+                .collect(Collectors.toList());
+    }
+
     private void applyRequest(Cat cat, CatRequest req) {
         cat.setName(req.getName());
         cat.setNickname(req.getNickname());

@@ -39,4 +39,15 @@ public class AuthController {
         UserInfo user = userService.getCurrentUser(userId);
         return ResponseEntity.ok(ApiResponse.success(user));
     }
+
+    @PutMapping("/me")
+    public ResponseEntity<ApiResponse<UserInfo>> updateMe(
+            @Valid @RequestBody UpdateUserRequest req, HttpServletRequest request) {
+        Long userId = CurrentUser.getId(request);
+        if (userId == null) {
+            return ResponseEntity.status(401).body(ApiResponse.error(401, "未登录"));
+        }
+        UserInfo user = userService.updateMe(userId, req);
+        return ResponseEntity.ok(ApiResponse.success(user));
+    }
 }

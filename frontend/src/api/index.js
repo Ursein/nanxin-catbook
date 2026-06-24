@@ -92,3 +92,9 @@ export const authApi = {
   me: () => api.get('/auth/me'),
   updateMe: (data) => api.put('/auth/me', data),
 }
+
+// 用户
+export const userApi = {
+  myCats: () => api.get('/user/cats'),
+  myRatings: () => api.get('/user/ratings'),
+}

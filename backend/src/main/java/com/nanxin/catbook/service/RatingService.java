@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class RatingService {
@@ -109,5 +110,9 @@ public class RatingService {
 
     private double val(Double d) {
         return d != null ? d : 0.0;
+    }
+
+    public List<CatRating> getMyRatings(Long userId) {
+        return catRatingRepository.findByUserId(userId);
     }
 }

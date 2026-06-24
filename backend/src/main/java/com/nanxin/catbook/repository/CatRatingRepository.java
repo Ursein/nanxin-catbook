@@ -3,10 +3,12 @@ package com.nanxin.catbook.repository;
 import com.nanxin.catbook.entity.CatRating;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import java.util.List;
 import java.util.Optional;
 
 public interface CatRatingRepository extends JpaRepository<CatRating, Long> {
     Optional<CatRating> findByUserIdAndCatId(Long userId, Long catId);
+    List<CatRating> findByUserId(Long userId);
     long countByCatId(Long catId);
     void deleteByCatId(Long catId);
 
