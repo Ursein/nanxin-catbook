@@ -2,6 +2,7 @@ package com.nanxin.catbook.service;
 
 import com.nanxin.catbook.dto.RecommendItem;
 import com.nanxin.catbook.entity.Cat;
+import com.nanxin.catbook.entity.Photo;
 import com.nanxin.catbook.repository.*;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,7 @@ import java.util.stream.Collectors;
 public class CatSimilarityAlgorithm {
 
     private final CatRepository catRepository;
+    private final PhotoRepository photoRepository;
     private final PhotoLikeRepository photoLikeRepository;
     private final CatFollowRepository catFollowRepository;
     private final CatRatingRepository catRatingRepository;
@@ -29,10 +31,12 @@ public class CatSimilarityAlgorithm {
     private static final double BETA3 = 0.1;    // 评分热度
 
     public CatSimilarityAlgorithm(CatRepository catRepository,
+                                   PhotoRepository photoRepository,
                                    PhotoLikeRepository photoLikeRepository,
                                    CatFollowRepository catFollowRepository,
                                    CatRatingRepository catRatingRepository) {
         this.catRepository = catRepository;
+        this.photoRepository = photoRepository;
         this.photoLikeRepository = photoLikeRepository;
         this.catFollowRepository = catFollowRepository;
         this.catRatingRepository = catRatingRepository;
@@ -104,6 +108,8 @@ public class CatSimilarityAlgorithm {
                     item.setName(cat != null ? cat.getName() : "未知");
                     item.setNickname(cat != null ? cat.getNickname() : null);
                     item.setScore(entry.getValue());
+                    // 封面图
+                    item.setCoverPhotoUrl(getCoverPhotoUrl(cat));
                     return item;
                 })
                 .collect(Collectors.toList());
@@ -254,5 +260,18 @@ public class CatSimilarityAlgorithm {
             }
         }
         return normalized;
+    }
+
+    /** 获取猫咪封面图 URL */
+    private String getCoverPhotoUrl(Cat cat) {
+        if (cat == null) return null;
+        if (cat.getCoverPhotoId() != null) {
+            return photoRepository.findById(cat.getCoverPhotoId())
+                    .map(Photo::getFilePath)
+                    .orElse(null);
+        }
+        List<Photo> photos = photoRepository.findByCatIdAndStatusOrderBySortOrder(
+                cat.getId(), Photo.PhotoStatus.APPROVED);
+        return photos.isEmpty() ? null : photos.get(0).getFilePath();
     }
 }

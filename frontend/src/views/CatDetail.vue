@@ -275,32 +275,44 @@ onMounted(() => {
             <div class="info-main">
               <!-- Header -->
               <div class="info-header">
-                <div class="info-title-row">
-                  <h1 class="cat-name">{{ cat.name }}</h1>
-                  <span v-if="cat.nickname" class="cat-nickname">{{ cat.nickname }}</span>
-                  <span class="status-tag" :class="cat.status">
-                    {{ statusLabel(cat.status) }}
-                  </span>
-                  <template v-if="isAdmin">
-                    <button class="admin-btn" @click="router.push('/edit/' + cat.id)">编辑</button>
-                    <button class="admin-btn danger" @click="deleteCat">删除</button>
-                  </template>
+                <div class="info-header-left">
+                  <div class="info-title-row">
+                    <h1 class="cat-name">{{ cat.name }}</h1>
+                    <span v-if="cat.nickname" class="cat-nickname">{{ cat.nickname }}</span>
+                    <span class="status-tag" :class="cat.status">
+                      {{ statusLabel(cat.status) }}
+                    </span>
+                    <template v-if="isAdmin">
+                      <button class="admin-btn" @click="router.push('/edit/' + cat.id)">编辑</button>
+                      <button class="admin-btn danger" @click="deleteCat">删除</button>
+                    </template>
+                  </div>
+
+                  <!-- Stats -->
+                  <div class="cat-stats">
+                    <div class="stat-item">
+                      <span class="stat-value">{{ cat.likeCount }}</span>
+                      <span class="stat-label">点赞</span>
+                    </div>
+                    <div class="stat-item">
+                      <span class="stat-value">{{ cat.followCount }}</span>
+                      <span class="stat-label">关注</span>
+                    </div>
+                  </div>
                 </div>
 
-                <!-- Stats -->
-                <div class="cat-stats">
-                  <div class="stat-item">
-                    <span class="stat-value">{{ cat.likeCount }}</span>
-                    <span class="stat-label">点赞</span>
+                <div class="info-header-right">
+                  <div class="overall-rating">
+                    <span class="overall-score">{{ cat.avgRating || '0' }}</span>
+                    <span class="overall-label">综合评分</span>
                   </div>
-                  <div class="stat-item">
-                    <span class="stat-value">{{ cat.followCount }}</span>
-                    <span class="stat-label">关注</span>
-                  </div>
-                  <div class="stat-item">
-                    <span class="stat-value">{{ cat.avgRating }}</span>
-                    <span class="stat-label">评分</span>
-                  </div>
+                  <button
+                    class="btn-pill"
+                    :class="{ accent: isFollowed }"
+                    @click="toggleFollow"
+                  >
+                    {{ isFollowed ? '已关注 ✓' : '🐾 关注' }}
+                  </button>
                 </div>
               </div>
 
@@ -353,22 +365,9 @@ onMounted(() => {
                 <p class="section-text">{{ cat.personalityDesc }}</p>
               </div>
 
-              <!-- Actions: Follow + Rating -->
+              <!-- Rating -->
               <div class="cat-actions">
-                <div class="actions-top">
-                  <button
-                    class="btn-pill"
-                    :class="{ accent: isFollowed }"
-                    @click="toggleFollow"
-                  >
-                    {{ isFollowed ? '已关注 ✓' : '🐾 关注' }}
-                  </button>
-                  <div class="overall-rating">
-                    <span class="overall-score">{{ cat.avgRating || '0' }}</span>
-                    <span class="overall-label">综合评分</span>
-                  </div>
-                </div>
-
+                <h2 class="section-title">猫友评分</h2>
                 <div class="rating-group">
                   <div v-for="dim in ratingDims" :key="dim.key" class="rating-dim">
                     <span class="rating-label">{{ dim.label }}</span>
@@ -437,7 +436,10 @@ onMounted(() => {
                       class="recommend-item"
                       @click="goToCat(rc.catId)"
                     >
-                      <div class="recommend-avatar" />
+                      <div class="recommend-avatar">
+                        <img v-if="rc.coverPhotoUrl" :src="rc.coverPhotoUrl" alt="" />
+                        <span v-else class="recommend-placeholder">🐱</span>
+                      </div>
                       <div class="recommend-info">
                         <span class="recommend-name">{{ rc.name }}</span>
                         <span v-if="rc.nickname" class="recommend-nickname">{{ rc.nickname }}</span>
@@ -642,7 +644,24 @@ onMounted(() => {
 
 /* --- Main Info --- */
 .info-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1.5rem;
   margin-bottom: 2rem;
+}
+
+.info-header-left {
+  flex: 1;
+  min-width: 0;
+}
+
+.info-header-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.75rem;
+  flex-shrink: 0;
 }
 
 .info-title-row {
@@ -692,7 +711,7 @@ onMounted(() => {
 .cat-stats {
   display: flex;
   gap: 2rem;
-  margin-top: 1.5rem;
+  margin-top: 1rem;
 }
 
 .stat-item {
@@ -788,20 +807,10 @@ onMounted(() => {
 
 /* Actions */
 .cat-actions {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  padding: 1.25rem 0;
+  padding: 0;
   border-top: 1px solid var(--border-subtle);
-  border-bottom: 1px solid var(--border-subtle);
+  padding-top: 1.5rem;
   margin-bottom: 2rem;
-}
-
-.actions-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
 }
 
 .overall-rating {
@@ -823,15 +832,18 @@ onMounted(() => {
 }
 
 .rating-group {
-  display: flex;
-  flex-direction: column;
-  gap: 0.375rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem 2rem;
 }
 
 .rating-dim {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  background: var(--glass-bg);
+  border-radius: var(--radius-sm);
 }
 
 .rating-label {
@@ -1000,6 +1012,21 @@ onMounted(() => {
   border-radius: 50%;
   background: var(--bg-card-hover);
   flex-shrink: 0;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.recommend-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.recommend-placeholder {
+  font-size: 1.25rem;
+  opacity: 0.6;
 }
 
 .recommend-info {
@@ -1046,6 +1073,16 @@ onMounted(() => {
     font-size: 1.75rem;
   }
 
+  .info-header {
+    flex-direction: column;
+  }
+
+  .info-header-right {
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+  }
+
   .cat-stats {
     gap: 1.5rem;
   }
@@ -1063,10 +1100,8 @@ onMounted(() => {
     min-width: calc(50% - 0.5rem);
   }
 
-  .cat-actions {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 1rem;
+  .rating-group {
+    grid-template-columns: 1fr;
   }
 
   .photo-nav {
