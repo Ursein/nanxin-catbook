@@ -51,9 +51,9 @@ public class CatSimilarityAlgorithm {
     public List<RecommendItem> recommend(Long targetCatId, int topN) {
         // 1. 获取目标猫咪
         Cat target = catRepository.findById(targetCatId)
-                .orElseThrow(() -> new IllegalArgumentException("猫咪不存在"));
+                .orElseThrow(() -> new IllegalArgumentException("Cat not found"));
         if (target.getDeleted() != null && target.getDeleted() == 1) {
-            throw new IllegalArgumentException("猫咪不存在");
+            throw new IllegalArgumentException("Cat not found");
         }
 
         // 2. 获取所有活跃猫咪作为候选池（排除已删除）
@@ -105,7 +105,7 @@ public class CatSimilarityAlgorithm {
                     Cat cat = catRepository.findById(entry.getKey()).orElse(null);
                     RecommendItem item = new RecommendItem();
                     item.setCatId(entry.getKey());
-                    item.setName(cat != null ? cat.getName() : "未知");
+                    item.setName(cat != null ? cat.getName() : "Unknown");
                     item.setNickname(cat != null ? cat.getNickname() : null);
                     item.setScore(entry.getValue());
                     // 封面图

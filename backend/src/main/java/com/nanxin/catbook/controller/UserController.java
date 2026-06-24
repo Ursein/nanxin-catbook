@@ -32,7 +32,7 @@ public class UserController {
     public ResponseEntity<ApiResponse<List<CatItem>>> myCats(HttpServletRequest request) {
         Long userId = CurrentUser.getId(request);
         if (userId == null) {
-            return ResponseEntity.status(401).body(ApiResponse.error(401, "请先登录"));
+            return ResponseEntity.status(401).body(ApiResponse.error(401, "Please login first"));
         }
         List<CatItem> cats = catService.getMyCats(userId);
         return ResponseEntity.ok(ApiResponse.success(cats));
@@ -43,7 +43,7 @@ public class UserController {
             HttpServletRequest request) {
         Long userId = CurrentUser.getId(request);
         if (userId == null) {
-            return ResponseEntity.status(401).body(ApiResponse.error(401, "请先登录"));
+            return ResponseEntity.status(401).body(ApiResponse.error(401, "Please login first"));
         }
         List<CatRating> ratings = ratingService.getMyRatings(userId);
         List<Map<String, Object>> result = ratings.stream().map(r -> {

@@ -69,14 +69,14 @@ public class PhotoController {
             HttpServletRequest request) {
         Long userId = CurrentUser.getId(request);
         if (userId == null) {
-            return ResponseEntity.status(401).body(ApiResponse.error(401, "请先登录"));
+            return ResponseEntity.status(401).body(ApiResponse.error(401, "Please login first"));
         }
         // 确保上传目录存在
         Path uploadPath = Paths.get(uploadDir);
         try {
             Files.createDirectories(uploadPath);
         } catch (IOException e) {
-            return ResponseEntity.status(500).body(ApiResponse.error(500, "无法创建上传目录"));
+            return ResponseEntity.status(500).body(ApiResponse.error(500, "Cannot create upload directory"));
         }
 
         // 保存文件到磁盘
@@ -87,7 +87,7 @@ public class PhotoController {
         try {
             Files.copy(file.getInputStream(), targetPath, StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
-            return ResponseEntity.status(500).body(ApiResponse.error(500, "文件保存失败: " + e.getMessage()));
+            return ResponseEntity.status(500).body(ApiResponse.error(500, "File save failed: " + e.getMessage()));
         }
 
         // 生成压缩图（最大宽 800px）
@@ -140,7 +140,7 @@ public class PhotoController {
     public ResponseEntity<ApiResponse<Boolean>> like(@PathVariable Long id, HttpServletRequest request) {
         Long userId = CurrentUser.getId(request);
         if (userId == null) {
-            return ResponseEntity.status(401).body(ApiResponse.error(401, "请先登录"));
+            return ResponseEntity.status(401).body(ApiResponse.error(401, "Please login first"));
         }
         boolean liked = photoService.toggleLike(id, userId);
         return ResponseEntity.ok(ApiResponse.success(liked));
@@ -150,7 +150,7 @@ public class PhotoController {
     public ResponseEntity<ApiResponse<Boolean>> unlike(@PathVariable Long id, HttpServletRequest request) {
         Long userId = CurrentUser.getId(request);
         if (userId == null) {
-            return ResponseEntity.status(401).body(ApiResponse.error(401, "请先登录"));
+            return ResponseEntity.status(401).body(ApiResponse.error(401, "Please login first"));
         }
         photoService.toggleLike(id, userId);
         return ResponseEntity.ok(ApiResponse.success(false));

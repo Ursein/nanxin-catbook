@@ -40,7 +40,7 @@ public class PhotoService {
     @Transactional
     public Photo approve(Long photoId, Long reviewerId) {
         Photo photo = photoRepository.findById(photoId)
-                .orElseThrow(() -> new IllegalArgumentException("照片不存在"));
+                .orElseThrow(() -> new IllegalArgumentException("Photo not found"));
         photo.setStatus(Photo.PhotoStatus.APPROVED);
         photo.setReviewerId(reviewerId);
         return photoRepository.save(photo);
@@ -49,7 +49,7 @@ public class PhotoService {
     @Transactional
     public Photo reject(Long photoId, Long reviewerId, String reason) {
         Photo photo = photoRepository.findById(photoId)
-                .orElseThrow(() -> new IllegalArgumentException("照片不存在"));
+                .orElseThrow(() -> new IllegalArgumentException("Photo not found"));
         photo.setStatus(Photo.PhotoStatus.REJECTED);
         photo.setReviewerId(reviewerId);
         photo.setRejectReason(reason);

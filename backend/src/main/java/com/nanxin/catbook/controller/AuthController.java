@@ -34,7 +34,7 @@ public class AuthController {
     public ResponseEntity<ApiResponse<UserInfo>> me(HttpServletRequest request) {
         Long userId = CurrentUser.getId(request);
         if (userId == null) {
-            return ResponseEntity.status(401).body(ApiResponse.error(401, "未登录"));
+            return ResponseEntity.status(401).body(ApiResponse.error(401, "Not logged in"));
         }
         UserInfo user = userService.getCurrentUser(userId);
         return ResponseEntity.ok(ApiResponse.success(user));
@@ -45,7 +45,7 @@ public class AuthController {
             @Valid @RequestBody UpdateUserRequest req, HttpServletRequest request) {
         Long userId = CurrentUser.getId(request);
         if (userId == null) {
-            return ResponseEntity.status(401).body(ApiResponse.error(401, "未登录"));
+            return ResponseEntity.status(401).body(ApiResponse.error(401, "Not logged in"));
         }
         UserInfo user = userService.updateMe(userId, req);
         return ResponseEntity.ok(ApiResponse.success(user));

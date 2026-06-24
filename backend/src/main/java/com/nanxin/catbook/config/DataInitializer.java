@@ -22,18 +22,18 @@ public class DataInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        // 初始化管理员账号（如果不存在）
+        // 初始化Administrator账号（如果不存在）
         if (!userRepository.existsByUsername("admin")) {
             User admin = new User();
             admin.setUsername("admin");
             admin.setPassword(encoder.encode("admin123"));
-            admin.setNickname("管理员");
+            admin.setNickname("Administrator");
             admin.setRole(User.Role.ADMIN);
             admin.setStatus(1);
             userRepository.save(admin);
-            log.info("管理员账号已创建: admin / admin123");
+            log.info("Admin account created: admin / admin123");
         } else {
-            log.info("管理员账号已存在，跳过初始化");
+            log.info("Admin account already exists, skipping initialization");
         }
     }
 }

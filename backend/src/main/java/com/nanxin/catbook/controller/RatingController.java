@@ -24,7 +24,7 @@ public class RatingController {
             HttpServletRequest request) {
         Long userId = CurrentUser.getId(request);
         if (userId == null) {
-            return ResponseEntity.status(401).body(ApiResponse.error(401, "请先登录"));
+            return ResponseEntity.status(401).body(ApiResponse.error(401, "Please login first"));
         }
         ratingService.submit(userId, catId, req.getR1(), req.getR2(), req.getR3(), req.getR4(), req.getR5());
         return ResponseEntity.ok(ApiResponse.success(null));

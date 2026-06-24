@@ -21,7 +21,7 @@ public class UserService {
 
     public void register(RegisterRequest req) {
         if (userRepository.existsByUsername(req.getUsername())) {
-            throw new IllegalArgumentException("用户名已存在");
+            throw new IllegalArgumentException("Username already exists");
         }
         User user = new User();
         user.setUsername(req.getUsername());
@@ -33,13 +33,13 @@ public class UserService {
 
     public AuthResponse login(LoginRequest req) {
         User user = userRepository.findByUsername(req.getUsername())
-                .orElseThrow(() -> new IllegalArgumentException("用户名或密码错误"));
+                .orElseThrow(() -> new IllegalArgumentException("Invalid username or password"));
 
         if (!encoder.matches(req.getPassword(), user.getPassword())) {
-            throw new IllegalArgumentException("用户名或密码错误");
+            throw new IllegalArgumentException("Invalid username or password");
         }
         if (user.getStatus() != 1) {
-            throw new IllegalArgumentException("账号已被禁用");
+            throw new IllegalArgumentException("Account disabled");
         }
 
         String role = user.getRole().name();
@@ -52,13 +52,13 @@ public class UserService {
 
     public UserInfo getCurrentUser(Long userId) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("用户不存在"));
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
         return toUserInfo(user);
     }
 
     public UserInfo updateMe(Long userId, UpdateUserRequest req) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("用户不存在"));
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
         if (req.getNickname() != null) {
             user.setNickname(req.getNickname());
         }

@@ -41,7 +41,7 @@ public class CommentController {
             HttpServletRequest request) {
         Long userId = CurrentUser.getId(request);
         if (userId == null) {
-            return ResponseEntity.status(401).body(ApiResponse.error(401, "请先登录"));
+            return ResponseEntity.status(401).body(ApiResponse.error(401, "Please login first"));
         }
         Comment comment = commentService.create(catId, userId, req.getContent());
         CommentItem ci = new CommentItem();

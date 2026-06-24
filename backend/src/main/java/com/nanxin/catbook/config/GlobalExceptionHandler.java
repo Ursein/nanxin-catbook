@@ -16,13 +16,13 @@ public class GlobalExceptionHandler {
         String msg = e.getBindingResult().getFieldErrors().stream()
                 .map(err -> err.getField() + ": " + err.getDefaultMessage())
                 .reduce((a, b) -> a + "; " + b)
-                .orElse("参数校验失败");
+                .orElse("Validation failed");
         return ResponseEntity.badRequest().body(ApiResponse.error(400, msg));
     }
 
     @ExceptionHandler(MaxUploadSizeExceededException.class)
     public ResponseEntity<ApiResponse<Void>> handleMaxUploadSize(MaxUploadSizeExceededException e) {
-        return ResponseEntity.badRequest().body(ApiResponse.error(400, "文件大小超过限制（最大 10MB）"));
+        return ResponseEntity.badRequest().body(ApiResponse.error(400, "File size exceeds limit (max 10MB)"));
     }
 
     @ExceptionHandler(IllegalArgumentException.class)

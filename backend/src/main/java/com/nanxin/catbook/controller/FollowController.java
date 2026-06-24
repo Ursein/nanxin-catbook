@@ -24,7 +24,7 @@ public class FollowController {
     public ResponseEntity<ApiResponse<Boolean>> follow(@PathVariable Long catId, HttpServletRequest request) {
         Long userId = CurrentUser.getId(request);
         if (userId == null) {
-            return ResponseEntity.status(401).body(ApiResponse.error(401, "请先登录"));
+            return ResponseEntity.status(401).body(ApiResponse.error(401, "Please login first"));
         }
         boolean followed = followService.toggleFollow(userId, catId);
         return ResponseEntity.ok(ApiResponse.success(followed));
@@ -34,7 +34,7 @@ public class FollowController {
     public ResponseEntity<ApiResponse<Boolean>> unfollow(@PathVariable Long catId, HttpServletRequest request) {
         Long userId = CurrentUser.getId(request);
         if (userId == null) {
-            return ResponseEntity.status(401).body(ApiResponse.error(401, "请先登录"));
+            return ResponseEntity.status(401).body(ApiResponse.error(401, "Please login first"));
         }
         followService.toggleFollow(userId, catId);
         return ResponseEntity.ok(ApiResponse.success(false));
@@ -53,7 +53,7 @@ public class FollowController {
     public ResponseEntity<ApiResponse<List<Long>>> myFollows(HttpServletRequest request) {
         Long userId = CurrentUser.getId(request);
         if (userId == null) {
-            return ResponseEntity.status(401).body(ApiResponse.error(401, "请先登录"));
+            return ResponseEntity.status(401).body(ApiResponse.error(401, "Please login first"));
         }
         List<Long> catIds = followService.getUserFollows(userId).stream()
                 .map(f -> f.getCatId())

@@ -50,7 +50,7 @@ public class CatController {
             @Valid @RequestBody CatRequest req, HttpServletRequest request) {
         Long userId = CurrentUser.getId(request);
         if (userId == null) {
-            return ResponseEntity.status(401).body(ApiResponse.error(401, "请先登录"));
+            return ResponseEntity.status(401).body(ApiResponse.error(401, "Please login first"));
         }
         CatItem item = catService.createCat(req, userId);
         return ResponseEntity.ok(ApiResponse.success(item));
@@ -62,7 +62,7 @@ public class CatController {
             HttpServletRequest request) {
         Long userId = CurrentUser.getId(request);
         if (userId == null) {
-            return ResponseEntity.status(401).body(ApiResponse.error(401, "请先登录"));
+            return ResponseEntity.status(401).body(ApiResponse.error(401, "Please login first"));
         }
         CatItem item = catService.updateCat(id, req, userId);
         return ResponseEntity.ok(ApiResponse.success(item));

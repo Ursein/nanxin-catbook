@@ -285,7 +285,7 @@ onMounted(() => {
 
 .cat-card-img {
   width: 100%;
-  height: 160px;
+  aspect-ratio: 4 / 3;
   background: var(--bg-card-hover);
   display: flex;
   align-items: center;

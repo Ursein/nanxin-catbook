@@ -63,9 +63,9 @@ public class CatService {
 
     public CatDetailResponse getCatDetail(Long catId, Long userId) {
         Cat cat = catRepository.findById(catId)
-                .orElseThrow(() -> new IllegalArgumentException("猫咪不存在"));
+                .orElseThrow(() -> new IllegalArgumentException("Cat not found"));
         if (cat.getDeleted() != null && cat.getDeleted() == 1) {
-            throw new IllegalArgumentException("猫咪不存在");
+            throw new IllegalArgumentException("Cat not found");
         }
 
         CatDetailResponse resp = new CatDetailResponse();
@@ -132,7 +132,7 @@ public class CatService {
             // 获取评论者的用户名
             ci.setUsername(userRepository.findById(c.getUserId())
                     .map(u -> u.getNickname() != null ? u.getNickname() : u.getUsername())
-                    .orElse("未知用户"));
+                    .orElse("Unknown user"));
             return ci;
         }).collect(Collectors.toList()));
 
@@ -169,7 +169,7 @@ public class CatService {
     @Transactional
     public CatItem updateCat(Long catId, CatRequest req, Long userId) {
         Cat cat = catRepository.findById(catId)
-                .orElseThrow(() -> new IllegalArgumentException("猫咪不存在"));
+                .orElseThrow(() -> new IllegalArgumentException("Cat not found"));
         applyRequest(cat, req);
         cat.setUpdatedAt(LocalDateTime.now());
         cat = catRepository.save(cat);
@@ -179,7 +179,7 @@ public class CatService {
     @Transactional
     public void deleteCat(Long catId) {
         Cat cat = catRepository.findById(catId)
-                .orElseThrow(() -> new IllegalArgumentException("猫咪不存在"));
+                .orElseThrow(() -> new IllegalArgumentException("Cat not found"));
         cat.setDeleted(1);
         cat.setUpdatedAt(LocalDateTime.now());
         catRepository.save(cat);
