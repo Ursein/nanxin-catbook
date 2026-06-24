@@ -82,6 +82,7 @@ export const authApi = {
   register: (username, password, email) => api.post('/auth/register', { username, password, email }),
   me: () => api.get('/auth/me'),
   updateMe: (data) => api.put('/auth/me', data),
+  uploadAvatar: (formData) => api.post('/auth/me/avatar', formData),
 }
 
 export const userApi = {

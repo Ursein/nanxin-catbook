@@ -68,6 +68,17 @@ const handleFileUpload = async (e) => {
 const setCover = (photoId) => {
   form.value.coverPhotoId = form.value.coverPhotoId === photoId ? null : photoId
 }
+
+const deletePhoto = async (photoId) => {
+  if (!confirm('Delete this photo?')) return
+  try {
+    await photoApi.remove(photoId)
+    photos.value = photos.value.filter(p => p.id !== photoId)
+    if (form.value.coverPhotoId === photoId) form.value.coverPhotoId = null
+  } catch (err) {
+    alert('Delete failed')
+  }
+}
 </script>
 
 <template>
@@ -83,6 +94,7 @@ const setCover = (photoId) => {
         <div class="photo-grid">
           <div v-for="photo in photos" :key="photo.id" class="photo-item" :class="{ 'is-cover': form.coverPhotoId === photo.id }">
             <img :src="photo.url" class="photo-thumb" alt="Cat photo" />
+            <button class="photo-delete-btn" @click.stop="deletePhoto(photo.id)" title="Delete">✕</button>
             <div class="photo-overlay">
               <button v-if="form.coverPhotoId !== photo.id" class="photo-action" @click="setCover(photo.id)">Set Cover</button>
               <span v-else class="photo-action active">⭐ Cover</span>
@@ -132,6 +144,27 @@ const setCover = (photoId) => {
 .photo-action { padding: 0.375rem 0.75rem; border-radius: 999px; font-size: 0.75rem; font-weight: 500; border: 1px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.15); color: #fff; cursor: pointer; backdrop-filter: blur(4px); }
 .photo-action:hover { background: rgba(255,255,255,0.3); }
 .photo-action.active { border-color: var(--accent); background: var(--accent); color: #fff; }
+.photo-delete-btn {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 50%;
+  border: none;
+  background: rgba(0,0,0,0.5);
+  color: #fff;
+  font-size: 0.625rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.2s;
+  z-index: 2;
+}
+.photo-item:hover .photo-delete-btn { opacity: 1; }
+.photo-delete-btn:hover { background: rgba(255,59,48,0.85); }
 .add-form { max-width: 640px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
 .form-row { display: flex; flex-direction: column; gap: 0.375rem; }
 .form-row.full-width { grid-column: 1 / -1; }

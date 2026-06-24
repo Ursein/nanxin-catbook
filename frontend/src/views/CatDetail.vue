@@ -458,7 +458,13 @@ onMounted(() => {
                     class="comment-item"
                   >
                     <div class="comment-header">
-                      <span class="comment-user">{{ comment.username }}</span>
+                      <div class="comment-header-left">
+                        <div class="comment-avatar">
+                          <img v-if="comment.avatar" :src="comment.avatar" alt="" />
+                          <span v-else>🐱</span>
+                        </div>
+                        <span class="comment-user">{{ comment.username }}</span>
+                      </div>
                       <div class="comment-header-right">
                         <span class="comment-time">{{ comment.createdAt }}</span>
                         <button
@@ -998,8 +1004,33 @@ onMounted(() => {
 
 .comment-header {
   display: flex;
+  align-items: center;
   justify-content: space-between;
   margin-bottom: 0.375rem;
+}
+
+.comment-header-left {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.comment-avatar {
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  background: var(--bg-card-hover);
+  flex-shrink: 0;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.875rem;
+}
+.comment-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .comment-header-right {

@@ -70,6 +70,15 @@ public class UserService {
         return toUserInfo(user);
     }
 
+    public UserInfo updateAvatar(Long userId, String avatarUrl) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+        user.setAvatar(avatarUrl);
+        user.setUpdatedAt(java.time.LocalDateTime.now());
+        user = userRepository.save(user);
+        return toUserInfo(user);
+    }
+
     private UserInfo toUserInfo(User user) {
         UserInfo info = new UserInfo();
         info.setId(user.getId());

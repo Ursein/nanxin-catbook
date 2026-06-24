@@ -129,6 +129,30 @@ const saveProfile = async () => {
   }
 }
 
+// Avatar upload
+const avatarInput = ref(null)
+const avatarUploading = ref(false)
+
+const triggerAvatarUpload = () => avatarInput.value?.click()
+
+const handleAvatarUpload = async (e) => {
+  const file = e.target.files?.[0]
+  if (!file) return
+  avatarUploading.value = true
+  try {
+    const formData = new FormData()
+    formData.append('file', file)
+    const res = await authApi.uploadAvatar(formData)
+    user.value = res.data
+    localStorage.setItem('user', JSON.stringify(res.data))
+  } catch (err) {
+    alert('Upload failed')
+  } finally {
+    avatarUploading.value = false
+    e.target.value = ''
+  }
+}
+
 // Navigation
 const goToDetail = (id) => router.push(`/cat/${id}`)
 const goToAdd = () => router.push('/add')
@@ -156,8 +180,9 @@ onMounted(async () => {
         <div class="container">
           <span class="eyebrow">My Profile</span>
           <div class="profile-card">
-            <div class="profile-avatar">
-              <span class="avatar-placeholder">🐱</span>
+            <div class="profile-avatar" @click="triggerAvatarUpload" :title="avatarUploading ? 'Uploading...' : 'Click to change avatar'">
+              <img v-if="user.avatar" :src="user.avatar" alt="Avatar" />
+              <span v-else class="avatar-placeholder">🐱</span>
             </div>
             <div class="profile-info">
               <h2 class="profile-name">{{ user.username }}</h2>
@@ -174,6 +199,13 @@ onMounted(async () => {
             </div>
           </div>
         </div>
+        <input
+          ref="avatarInput"
+          type="file"
+          accept="image/*"
+          style="display:none"
+          @change="handleAvatarUpload"
+        />
       </section>
 
       <!-- Stats Bar -->
@@ -415,6 +447,17 @@ onMounted(async () => {
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  overflow: hidden;
+  cursor: pointer;
+  transition: opacity 0.3s;
+}
+.profile-avatar:hover {
+  opacity: 0.85;
+}
+.profile-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .avatar-placeholder {

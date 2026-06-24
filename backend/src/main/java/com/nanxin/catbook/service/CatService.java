@@ -129,10 +129,11 @@ public class CatService {
             ci.setId(c.getId());
             ci.setContent(c.getContent());
             ci.setCreatedAt(c.getCreatedAt() != null ? c.getCreatedAt().toString() : null);
-            // 获取评论者的用户名
-            ci.setUsername(userRepository.findById(c.getUserId())
-                    .map(u -> u.getNickname() != null ? u.getNickname() : u.getUsername())
-                    .orElse("Unknown user"));
+            userRepository.findById(c.getUserId()).ifPresent(u -> {
+                ci.setUsername(u.getNickname() != null ? u.getNickname() : u.getUsername());
+                ci.setAvatar(u.getAvatar());
+            });
+            if (ci.getUsername() == null) ci.setUsername("Unknown user");
             return ci;
         }).collect(Collectors.toList()));
 
