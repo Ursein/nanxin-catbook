@@ -53,11 +53,11 @@ const toggleFollow = async () => {
 }
 
 const ratingDims = [
-  { key: 'r1', label: '猫德' },
-  { key: 'r2', label: '颜值' },
-  { key: 'r3', label: '社交' },
-  { key: 'r4', label: '干饭' },
-  { key: 'r5', label: '活力' },
+  { key: 'r1', label: 'Temper' },
+  { key: 'r2', label: 'Looks' },
+  { key: 'r3', label: 'Social' },
+  { key: 'r4', label: 'Appetite' },
+  { key: 'r5', label: 'Energy' },
 ]
 
 const setRating = async (dim, val) => {
@@ -84,7 +84,7 @@ const setRating = async (dim, val) => {
 
 const goToCat = (id) => router.push(`/cat/${id}`)
 
-// 无限轮播
+// Infinite carousel
 const totalPhotos = () => cat.value?.photos?.length || 0
 const displayIndex = ref(1)
 const isTransitioning = ref(false)
@@ -141,7 +141,7 @@ const goToSlide = (i) => {
 }
 
 const statusLabel = (s) => {
-  const map = { ACTIVE: '在校', SEEKING_ADOPT: '待领养', MISSING: '失踪', DECEASED: '离世' }
+  const map = { ACTIVE: 'On Campus', SEEKING_ADOPT: 'Adoptable', MISSING: 'Missing', DECEASED: 'Deceased' }
   return map[s] || s
 }
 
@@ -165,12 +165,12 @@ const checkAdmin = () => {
 }
 
 const deleteCat = async () => {
-  if (!confirm('确定要删除这只猫咪吗？')) return
+  if (!confirm('Delete this cat?')) return
   try {
     await catApi.remove(cat.value.id)
     router.push('/')
   } catch (err) {
-    alert('删除失败')
+    alert('Delete failed')
   }
 }
 
@@ -188,7 +188,7 @@ const handleFileUpload = async (e) => {
     await photoApi.upload(cat.value.id, formData)
     loadDetail()
   } catch (err) {
-    alert('上传失败: ' + (err.response?.data?.message || '未知错误'))
+    alert('Upload failed: ' + (err.response?.data?.message || 'Unknown'))
   } finally {
     uploading.value = false
     e.target.value = ''
@@ -198,8 +198,8 @@ const handleFileUpload = async (e) => {
 const togglePhotoLike = async (photoId) => {
   try {
     const res = await photoApi.like(photoId)
-    const liked = res.data // true=点赞, false=取消
-    // 只更新当前照片的状态，不刷新整个页面
+    const liked = res.data
+    // Update current photo only, don't reload entire page
     const photo = cat.value.photos?.find(p => p.id === photoId)
     if (photo) {
       photo.isLiked = liked
@@ -213,12 +213,12 @@ const togglePhotoLike = async (photoId) => {
 }
 
 const deleteComment = async (commentId) => {
-  if (!confirm('确定删除这条留言？')) return
+  if (!confirm('Delete this comment?')) return
   try {
     await commentApi.remove(commentId)
     loadDetail()
   } catch (err) {
-    alert('删除失败')
+    alert('Delete failed')
   }
 }
 
@@ -257,7 +257,7 @@ onMounted(() => {
               <img
                 v-if="photo.url"
                 :src="photo.compressedUrl || photo.url"
-                :alt="photo.description || '猫咪照片'"
+                :alt="photo.description || 'Cat photo'"
                 class="photo-img"
               />
               <div v-else class="photo-placeholder" :style="{ background: photoGradient(i) }">
@@ -309,7 +309,7 @@ onMounted(() => {
             @change="handleFileUpload"
           />
           <button class="btn-pill" :disabled="uploading" @click="triggerUpload">
-            {{ uploading ? '上传中...' : '📸 上传照片' }}
+            {{ uploading ? 'Uploading...' : '📸 Upload Photo' }}
           </button>
         </div>
       </section>
@@ -330,8 +330,8 @@ onMounted(() => {
                       {{ statusLabel(cat.status) }}
                     </span>
                     <template v-if="isAdmin">
-                      <button class="admin-btn" @click="router.push('/edit/' + cat.id)">编辑</button>
-                      <button class="admin-btn danger" @click="deleteCat">删除</button>
+                      <button class="admin-btn" @click="router.push('/edit/' + cat.id)">Edit</button>
+                      <button class="admin-btn danger" @click="deleteCat">Delete</button>
                     </template>
                   </div>
 
@@ -339,11 +339,11 @@ onMounted(() => {
                   <div class="cat-stats">
                     <div class="stat-item">
                       <span class="stat-value">{{ cat.likeCount }}</span>
-                      <span class="stat-label">点赞</span>
+                      <span class="stat-label">Likes</span>
                     </div>
                     <div class="stat-item">
                       <span class="stat-value">{{ cat.followCount }}</span>
-                      <span class="stat-label">关注</span>
+                      <span class="stat-label">Follows</span>
                     </div>
                   </div>
                 </div>
@@ -351,14 +351,14 @@ onMounted(() => {
                 <div class="info-header-right">
                   <div class="overall-rating">
                     <span class="overall-score">{{ cat.avgRating || '0' }}</span>
-                    <span class="overall-label">综合评分</span>
+                    <span class="overall-label">Overall</span>
                   </div>
                   <button
                     class="btn-pill"
                     :class="{ accent: isFollowed }"
                     @click="toggleFollow"
                   >
-                    {{ isFollowed ? '已关注 ✓' : '🐾 关注' }}
+                    {{ isFollowed ? 'Following ✓' : '🐾 Follow' }}
                   </button>
                 </div>
               </div>
@@ -367,31 +367,31 @@ onMounted(() => {
               <div class="cat-attributes">
                 <div class="attr-row">
                   <div class="attr-item">
-                    <span class="attr-label">性别</span>
-                    <span class="attr-value">{{ cat.gender === 'MALE' ? '男孩' : '女孩' }}</span>
+                    <span class="attr-label">Gender</span>
+                    <span class="attr-value">{{ cat.gender === 'MALE' ? 'Male' : 'Female' }}</span>
                   </div>
                   <div class="attr-item">
-                    <span class="attr-label">出生</span>
-                    <span class="attr-value">{{ cat.birthYear || '未知' }}</span>
+                    <span class="attr-label">Born</span>
+                    <span class="attr-value">{{ cat.birthYear || 'Unknown' }}</span>
                   </div>
                   <div class="attr-item">
-                    <span class="attr-label">体重</span>
-                    <span class="attr-value">{{ cat.weight ? cat.weight + 'kg' : '未知' }}</span>
+                    <span class="attr-label">Weight</span>
+                    <span class="attr-value">{{ cat.weight ? cat.weight + 'kg' : 'Unknown' }}</span>
                   </div>
                 </div>
                 <div class="attr-row">
                   <div class="attr-item">
-                    <span class="attr-label">毛色</span>
-                    <span class="attr-value">{{ cat.colourTags || '未知' }}</span>
+                    <span class="attr-label">Color</span>
+                    <span class="attr-value">{{ cat.colourTags || 'Unknown' }}</span>
                   </div>
                   <div class="attr-item">
-                    <span class="attr-label">绝育</span>
+                    <span class="attr-label">Neutered</span>
                     <span class="attr-value" :class="{ 'text-accent': cat.sterilized }">
-                      {{ cat.sterilized ? '已绝育' : '未绝育' }}
+                      {{ cat.sterilized ? 'Yes' : 'No' }}
                     </span>
                   </div>
                   <div class="attr-item">
-                    <span class="attr-label">位置</span>
+                    <span class="attr-label">Location</span>
                     <span class="attr-value">{{ cat.locationArea }}</span>
                   </div>
                 </div>
@@ -399,7 +399,7 @@ onMounted(() => {
 
               <!-- Personality -->
               <div class="cat-section">
-                <h2 class="section-title">性格</h2>
+                <h2 class="section-title">Personality</h2>
                 <div class="tag-group">
                   <span
                     v-for="tag in (cat.personalityTags || '').split(';').filter(t => t)"
@@ -414,9 +414,9 @@ onMounted(() => {
 
               <!-- Rating -->
               <div class="cat-actions">
-                <h2 class="section-title">猫友评分</h2>
+                <h2 class="section-title">Ratings</h2>
                 <p v-if="!isLoggedIn" class="rating-login-hint">
-                  请先<a href="/login" @click.prevent="router.push('/login')">登录</a>后评分
+                  Please <a href="/login" @click.prevent="router.push('/login')">login</a> to rate
                 </p>
                 <div class="rating-group" :class="{ disabled: !isLoggedIn }">
                   <div v-for="dim in ratingDims" :key="dim.key" class="rating-dim">
@@ -438,17 +438,17 @@ onMounted(() => {
 
               <!-- Comments -->
               <div class="cat-section">
-                <h2 class="section-title">留言</h2>
+                <h2 class="section-title">Comments</h2>
 
                 <div class="comment-input-wrapper">
                   <input
                     v-model="commentText"
                     type="text"
                     class="comment-input"
-                    placeholder="说点什么..."
+                    placeholder="Say something..."
                     @keyup.enter="submitComment"
                   />
-                  <button class="btn-pill" @click="submitComment">发送</button>
+                  <button class="btn-pill" @click="submitComment">Send</button>
                 </div>
 
                 <div class="comment-list">
@@ -465,7 +465,7 @@ onMounted(() => {
                           v-if="isAdmin"
                           class="comment-delete-btn"
                           @click="deleteComment(comment.id)"
-                          title="删除"
+                          title="Delete"
                         >✕</button>
                       </div>
                     </div>
@@ -479,7 +479,7 @@ onMounted(() => {
             <aside class="info-sidebar">
               <div class="double-bezel">
                 <div class="inner">
-                  <h3 class="sidebar-title">相似猫咪</h3>
+                  <h3 class="sidebar-title">Similar Cats</h3>
                   <div class="recommend-list">
                     <button
                       v-for="rc in cat.recommendCats"

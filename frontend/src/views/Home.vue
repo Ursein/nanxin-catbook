@@ -13,10 +13,10 @@ const hasMore = ref(true)
 const SIZE = 20
 
 const tabs = [
-  { key: 'ACTIVE', label: '在校', icon: '🐱' },
-  { key: 'SEEKING_ADOPT', label: '待领养', icon: '🏠' },
-  { key: 'MISSING', label: '失踪', icon: '🔍' },
-  { key: 'DECEASED', label: '喵星', icon: '🌈' },
+  { key: 'ACTIVE', label: 'On Campus', icon: '🐱' },
+  { key: 'SEEKING_ADOPT', label: 'Adoptable', icon: '🏠' },
+  { key: 'MISSING', label: 'Missing', icon: '🔍' },
+  { key: 'DECEASED', label: 'Deceased', icon: '🌈' },
 ]
 
 const switchTab = (key) => {
@@ -52,7 +52,7 @@ const goToDetail = (id) => {
 }
 
 const statusLabel = (status) => {
-  const map = { ACTIVE: '在校', SEEKING_ADOPT: '待领养', MISSING: '失踪', DECEASED: '离世' }
+  const map = { ACTIVE: 'On Campus', SEEKING_ADOPT: 'Adoptable', MISSING: 'Missing', DECEASED: 'Deceased' }
   return map[status] || status
 }
 
@@ -67,9 +67,9 @@ onMounted(() => {
     <section class="hero-section">
       <div class="container">
         <div class="hero-content">
-          <span class="eyebrow">南信大 · 校园猫咪图鉴</span>
-          <h1 class="hero-title">校园里的<span class="highlight">猫邻居</span></h1>
-          <p class="hero-sub">记录每一只在南信大生活过的猫咪，用温柔的方式认识它们</p>
+          <span class="eyebrow">NUIST &middot; Campus Cat Guide</span>
+          <h1 class="hero-title">Our Campus <span class="highlight">Cat Neighbors</span></h1>
+          <p class="hero-sub">Documenting every cat that has lived on the NUIST campus. Get to know them gently.</p>
         </div>
       </div>
     </section>
@@ -92,7 +92,7 @@ onMounted(() => {
 
         <!-- Active tab indicator -->
         <div class="tab-count">
-          <span v-if="!loading">{{ cats.length }} 只猫咪</span>
+          <span v-if="!loading">{{ cats.length }} cats</span>
         </div>
       </div>
     </section>
@@ -110,7 +110,7 @@ onMounted(() => {
         <!-- Empty State -->
         <div v-else-if="cats.length === 0" class="empty-state">
           <span class="empty-icon">🐱</span>
-          <p class="empty-text">这个分区暂时还没有猫咪</p>
+          <p class="empty-text">No cats in this category yet</p>
         </div>
 
         <!-- Bento Grid -->
@@ -139,7 +139,7 @@ onMounted(() => {
                     <span class="meta-dot">·</span>
                     <span>{{ cat.gender === 'MALE' ? '♂' : '♀' }}</span>
                     <span v-if="cat.sterilized" class="meta-dot">·</span>
-                    <span v-if="cat.sterilized" class="meta-sterilized">已绝育</span>
+                    <span v-if="cat.sterilized" class="meta-sterilized">Neutered</span>
                   </div>
                   <div class="card-stats">
                     <span>❤️ {{ cat.likeCount || 0 }}</span>
@@ -155,7 +155,7 @@ onMounted(() => {
         <!-- Load More -->
         <div v-if="hasMore && cats.length > 0" class="load-more">
           <button class="btn-pill" @click="loadCats">
-            加载更多
+            Load More
           </button>
         </div>
       </div>

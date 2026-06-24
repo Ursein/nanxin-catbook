@@ -13,11 +13,11 @@ const loading = ref(false)
 const register = async () => {
   error.value = ''
   if (!username.value || !password.value) {
-    error.value = '请输入用户名和密码'
+    error.value = 'Please enter username and password'
     return
   }
   if (password.value.length < 6) {
-    error.value = '密码至少6位'
+    error.value = 'Password must be at least 6 characters'
     return
   }
   loading.value = true
@@ -28,7 +28,7 @@ const register = async () => {
     localStorage.setItem('user', JSON.stringify(res.data.user))
     router.push('/')
   } catch (err) {
-    error.value = err.response?.data?.message || '注册失败'
+    error.value = err.response?.data?.message || 'Registration failed'
   } finally {
     loading.value = false
   }
@@ -38,18 +38,18 @@ const register = async () => {
 <template>
   <div class="auth-page">
     <div class="auth-card">
-      <span class="eyebrow">南信猫友记</span>
-      <h1 class="auth-title">注册</h1>
+      <span class="eyebrow">NanXin CatBook</span>
+      <h1 class="auth-title">Register</h1>
       <div class="auth-form">
-        <input v-model="username" type="text" class="auth-input" placeholder="用户名" />
-        <input v-model="email" type="email" class="auth-input" placeholder="邮箱（选填）" />
-        <input v-model="password" type="password" class="auth-input" placeholder="密码（至少6位）" />
+        <input v-model="username" type="text" class="auth-input" placeholder="Username" />
+        <input v-model="email" type="email" class="auth-input" placeholder="Email (optional)" />
+        <input v-model="password" type="password" class="auth-input" placeholder="Password (min 6 characters)" />
         <p v-if="error" class="auth-error">{{ error }}</p>
         <button class="btn-pill accent auth-btn" :disabled="loading" @click="register">
-          {{ loading ? '注册中...' : '注册' }}
+          {{ loading ? 'Registering...' : 'Register' }}
         </button>
         <p class="auth-switch">
-          已有账号？<router-link to="/login" class="auth-link">登录</router-link>
+          Already have an account? <router-link to="/login" class="auth-link">Login</router-link>
         </p>
       </div>
     </div>

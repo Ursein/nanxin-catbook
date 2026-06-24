@@ -18,9 +18,9 @@ const loading = ref(true)
 // Tabs
 const activeTab = ref('cats')
 const tabs = [
-  { key: 'cats', label: '我添加的猫咪' },
-  { key: 'follows', label: '我的关注' },
-  { key: 'ratings', label: '我的评分' },
+  { key: 'cats', label: 'My Cats' },
+  { key: 'follows', label: 'Following' },
+  { key: 'ratings', label: 'My Ratings' },
 ]
 
 // Tab data
@@ -43,12 +43,12 @@ const stats = computed(() => ({
 }))
 
 const roleLabel = (role) => {
-  const map = { USER: '普通用户', VERIFIED: '认证用户', ADMIN: '管理员' }
+  const map = { USER: 'User', VERIFIED: 'Verified', ADMIN: 'Admin' }
   return map[role] || role
 }
 
 const statusLabel = (status) => {
-  const map = { ACTIVE: '在校', SEEKING_ADOPT: '待领养', MISSING: '失踪', DECEASED: '离世' }
+  const map = { ACTIVE: 'On Campus', SEEKING_ADOPT: 'Adoptable', MISSING: 'Missing', DECEASED: 'Deceased' }
   return map[status] || status
 }
 
@@ -123,7 +123,7 @@ const saveProfile = async () => {
     localStorage.setItem('user', JSON.stringify(res.data))
     showEditModal.value = false
   } catch (err) {
-    editError.value = err.response?.data?.message || '保存失败'
+    editError.value = err.response?.data?.message || 'Save failed'
   } finally {
     editSaving.value = false
   }
@@ -147,14 +147,14 @@ onMounted(async () => {
   <div class="profile-page">
     <!-- Loading -->
     <div v-if="loading" class="empty-state">
-      <p class="empty-text">加载中...</p>
+      <p class="empty-text">Loading...</p>
     </div>
 
     <template v-else-if="user">
       <!-- Hero -->
       <section class="profile-hero">
         <div class="container">
-          <span class="eyebrow">个人中心</span>
+          <span class="eyebrow">My Profile</span>
           <div class="profile-card">
             <div class="profile-avatar">
               <span class="avatar-placeholder">🐱</span>
@@ -170,7 +170,7 @@ onMounted(async () => {
               </div>
             </div>
             <div class="profile-actions">
-              <button class="btn-pill outline" @click="openEdit">编辑资料</button>
+              <button class="btn-pill outline" @click="openEdit">Edit Profile</button>
             </div>
           </div>
         </div>
@@ -182,20 +182,20 @@ onMounted(async () => {
           <div class="stats-row">
             <div class="stat-item">
               <span class="stat-num">{{ stats.cats }}</span>
-              <span class="stat-label">添加猫咪</span>
+              <span class="stat-label">Cats Added</span>
             </div>
             <div class="stat-divider" />
             <div class="stat-item">
               <span class="stat-num">{{ stats.follows }}</span>
-              <span class="stat-label">关注猫咪</span>
+              <span class="stat-label">Following</span>
             </div>
             <div class="stat-divider" />
             <div class="stat-item">
               <span class="stat-num">{{ stats.ratings }}</span>
-              <span class="stat-label">评分记录</span>
+              <span class="stat-label">Ratings</span>
             </div>
             <div class="stat-spacer" />
-            <button class="btn-pill accent" @click="goToAdd">+ 添加猫咪</button>
+            <button class="btn-pill accent" @click="goToAdd">+ Add Cat</button>
           </div>
         </div>
       </section>
@@ -222,15 +222,15 @@ onMounted(async () => {
         <div class="container">
           <!-- Loading -->
           <div v-if="tabLoading[activeTab]" class="empty-state">
-            <p class="empty-text">加载中...</p>
+            <p class="empty-text">Loading...</p>
           </div>
 
           <!-- My Cats -->
           <template v-else-if="activeTab === 'cats'">
             <div v-if="myCats.length === 0" class="empty-state">
               <span class="empty-icon">🐱</span>
-              <p class="empty-text">还没有添加猫咪</p>
-              <button class="btn-pill accent" @click="goToAdd">去添加一只</button>
+              <p class="empty-text">No cats added yet</p>
+              <button class="btn-pill accent" @click="goToAdd">Add one now</button>
             </div>
             <div v-else class="card-grid">
               <button
@@ -260,8 +260,8 @@ onMounted(async () => {
           <template v-else-if="activeTab === 'follows'">
             <div v-if="myFollows.length === 0" class="empty-state">
               <span class="empty-icon">💛</span>
-              <p class="empty-text">还没有关注任何猫咪</p>
-              <button class="btn-pill accent" @click="router.push('/')">去发现猫咪</button>
+              <p class="empty-text">Not following any cats yet</p>
+              <button class="btn-pill accent" @click="router.push('/')">Discover cats</button>
             </div>
             <div v-else class="card-grid">
               <button
@@ -287,8 +287,8 @@ onMounted(async () => {
           <template v-else-if="activeTab === 'ratings'">
             <div v-if="myRatings.length === 0" class="empty-state">
               <span class="empty-icon">⭐</span>
-              <p class="empty-text">还没有给猫咪评过分</p>
-              <button class="btn-pill accent" @click="router.push('/')">去逛逛</button>
+              <p class="empty-text">No ratings yet</p>
+              <button class="btn-pill accent" @click="router.push('/')">Explore cats</button>
             </div>
             <div v-else class="rating-list">
               <div
@@ -298,36 +298,36 @@ onMounted(async () => {
                 @click="goToDetail(r.catId)"
               >
                 <div class="rating-header">
-                  <h3 class="rating-cat-name">{{ r.catName || '猫咪 #' + r.catId }}</h3>
+                  <h3 class="rating-cat-name">{{ r.catName || 'Cat #' + r.catId }}</h3>
                   <span class="rating-date">{{ r.createdAt?.slice(0, 10) }}</span>
                 </div>
                 <div class="rating-stars">
                   <div class="star-row">
-                    <span class="star-label">猫德</span>
+                    <span class="star-label">Temper</span>
                     <span class="star-bars">
                       <span v-for="i in 5" :key="i" class="star-dot" :class="{ filled: i <= r.r1 }" />
                     </span>
                   </div>
                   <div class="star-row">
-                    <span class="star-label">颜值</span>
+                    <span class="star-label">Looks</span>
                     <span class="star-bars">
                       <span v-for="i in 5" :key="i" class="star-dot" :class="{ filled: i <= r.r2 }" />
                     </span>
                   </div>
                   <div class="star-row">
-                    <span class="star-label">社交</span>
+                    <span class="star-label">Social</span>
                     <span class="star-bars">
                       <span v-for="i in 5" :key="i" class="star-dot" :class="{ filled: i <= r.r3 }" />
                     </span>
                   </div>
                   <div class="star-row">
-                    <span class="star-label">干饭</span>
+                    <span class="star-label">Appetite</span>
                     <span class="star-bars">
                       <span v-for="i in 5" :key="i" class="star-dot" :class="{ filled: i <= r.r4 }" />
                     </span>
                   </div>
                   <div class="star-row">
-                    <span class="star-label">活力</span>
+                    <span class="star-label">Energy</span>
                     <span class="star-bars">
                       <span v-for="i in 5" :key="i" class="star-dot" :class="{ filled: i <= r.r5 }" />
                     </span>
@@ -346,29 +346,29 @@ onMounted(async () => {
     <transition name="modal">
       <div v-if="showEditModal" class="modal-overlay" @click.self="showEditModal = false">
         <div class="modal-panel">
-          <h2 class="modal-title">编辑资料</h2>
+          <h2 class="modal-title">Edit Profile</h2>
           <div class="modal-body">
-            <label class="form-label">昵称</label>
+            <label class="form-label">Nickname</label>
             <input
               v-model="editForm.nickname"
               class="form-input"
-              placeholder="输入昵称"
+              placeholder="Enter nickname"
               maxlength="50"
             />
-            <label class="form-label">邮箱</label>
+            <label class="form-label">Email</label>
             <input
               v-model="editForm.email"
               class="form-input"
               type="email"
-              placeholder="输入邮箱"
+              placeholder="Enter email"
               maxlength="100"
             />
             <p v-if="editError" class="form-error">{{ editError }}</p>
           </div>
           <div class="modal-footer">
-            <button class="btn-pill outline" @click="showEditModal = false">取消</button>
+            <button class="btn-pill outline" @click="showEditModal = false">Cancel</button>
             <button class="btn-pill accent" :disabled="editSaving" @click="saveProfile">
-              {{ editSaving ? '保存中...' : '保存' }}
+              {{ editSaving ? 'Saving...' : 'Save' }}
             </button>
           </div>
         </div>

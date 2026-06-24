@@ -26,7 +26,7 @@ onMounted(async () => {
     )
     cats.value = details
   } catch (err) {
-    error.value = '加载失败'
+    error.value = 'Failed to load'
   } finally {
     loading.value = false
   }
@@ -39,15 +39,15 @@ const goToDetail = (id) => router.push(`/cat/${id}`)
   <div class="follows-page">
     <section class="follows-hero">
       <div class="container">
-        <span class="eyebrow">关注</span>
-        <h1 class="follows-title">我关注的猫咪</h1>
+        <span class="eyebrow">Following</span>
+        <h1 class="follows-title">Cats I Follow</h1>
       </div>
     </section>
 
     <section class="follows-content">
       <div class="container">
         <div v-if="loading" class="empty-state">
-          <p class="empty-text">加载中...</p>
+          <p class="empty-text">Loading...</p>
         </div>
 
         <div v-else-if="error" class="empty-state">
@@ -56,8 +56,8 @@ const goToDetail = (id) => router.push(`/cat/${id}`)
 
         <div v-else-if="cats.length === 0" class="empty-state">
           <span class="empty-icon">🐱</span>
-          <p class="empty-text">还没有关注任何猫咪</p>
-          <button class="btn-pill accent" @click="router.push('/')">去发现猫咪</button>
+          <p class="empty-text">Not following any cats yet</p>
+          <button class="btn-pill accent" @click="router.push('/')">Discover cats</button>
         </div>
 
         <div v-else class="follows-grid">

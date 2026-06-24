@@ -9,9 +9,8 @@ const isScrolled = ref(false)
 const user = ref(null)
 
 const navLinks = [
-  { name: '猫咪', path: '/' },
-  { name: '搜索', path: '/search' },
-  { name: '关于', path: '/about' },
+  { name: 'Cats', path: '/' },
+  { name: 'Search', path: '/search' },
 ]
 
 const checkUser = () => {
@@ -65,7 +64,7 @@ onMounted(() => {
       <div class="nav-inner">
         <router-link to="/" class="nav-brand">
           <span class="brand-icon">🐱</span>
-          <span class="brand-text">南信猫友记</span>
+          <span class="brand-text">NanXin CatBook</span>
         </router-link>
 
         <div class="nav-links-desktop">
@@ -82,13 +81,13 @@ onMounted(() => {
 
         <div class="nav-actions">
           <template v-if="user">
-            <router-link to="/my" class="nav-link" :class="{ active: route.path === '/my' }">我的</router-link>
-            <button class="nav-logout" @click="logout">退出</button>
+            <router-link to="/my" class="nav-link" :class="{ active: route.path === '/my' }">Me</router-link>
+            <button class="nav-logout" @click="logout">Logout</button>
           </template>
-          <router-link v-else to="/login" class="nav-link">登录</router-link>
+          <router-link v-else to="/login" class="nav-link">Login</router-link>
         </div>
 
-        <button class="hamburger" @click="toggleMenu" aria-label="菜单">
+        <button class="hamburger" @click="toggleMenu" aria-label="Menu">
           <span class="hamburger-line" :class="{ open: isMenuOpen }" />
           <span class="hamburger-line" :class="{ open: isMenuOpen }" />
         </button>
@@ -111,18 +110,18 @@ onMounted(() => {
             </button>
             <template v-if="user">
               <button class="menu-link" :class="{ active: route.path === '/my' }" @click="navigate('/my')">
-                我的
+                Me
               </button>
               <button class="menu-link menu-logout" @click="logout">
-                退出登录
+                Logout
               </button>
             </template>
             <template v-else>
               <button class="menu-link" :class="{ active: route.path === '/login' }" @click="navigate('/login')">
-                登录
+                Login
               </button>
               <button class="menu-link" :class="{ active: route.path === '/register' }" @click="navigate('/register')">
-                注册
+                Register
               </button>
             </template>
           </div>
@@ -143,8 +142,8 @@ onMounted(() => {
     <footer class="footer">
       <div class="container">
         <div class="footer-inner">
-          <p class="footer-text">南信猫友记 &copy; 2025</p>
-          <p class="footer-sub">南京信息工程大学 &middot; 软件工程课程项目</p>
+          <p class="footer-text">NanXin CatBook &copy; 2025</p>
+          <p class="footer-sub">NUIST &middot; Software Engineering Course Project</p>
         </div>
       </div>
     </footer>

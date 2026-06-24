@@ -12,18 +12,18 @@ const loading = ref(false)
 const SIZE = 50
 
 const statuses = [
-  { key: '', label: '全部' },
-  { key: 'ACTIVE', label: '在校' },
-  { key: 'SEEKING_ADOPT', label: '待领养' },
-  { key: 'MISSING', label: '失踪' },
-  { key: 'DECEASED', label: '喵星' },
+  { key: '', label: 'All' },
+  { key: 'ACTIVE', label: 'On Campus' },
+  { key: 'SEEKING_ADOPT', label: 'Adoptable' },
+  { key: 'MISSING', label: 'Missing' },
+  { key: 'DECEASED', label: 'Deceased' },
 ]
 
 const locations = [
-  { key: '', label: '全部区域' },
-  { key: '中苑', label: '中苑' },
-  { key: '西苑', label: '西苑' },
-  { key: '东苑', label: '东苑' },
+  { key: '', label: 'All Areas' },
+  { key: '中苑', label: 'Central' },
+  { key: '西苑', label: 'West' },
+  { key: '东苑', label: 'East' },
 ]
 
 let debounceTimer = null
@@ -62,7 +62,7 @@ const switchLocation = (key) => {
 const goToDetail = (id) => router.push(`/cat/${id}`)
 
 const statusLabel = (s) => {
-  const map = { ACTIVE: '在校', SEEKING_ADOPT: '待领养', MISSING: '失踪', DECEASED: '离世' }
+  const map = { ACTIVE: 'On Campus', SEEKING_ADOPT: 'Adoptable', MISSING: 'Missing', DECEASED: 'Deceased' }
   return map[s] || s
 }
 
@@ -75,14 +75,14 @@ onMounted(() => {
   <div class="search-page">
     <section class="search-hero">
       <div class="container">
-        <span class="eyebrow">找一只猫</span>
-        <h1 class="search-title">搜索猫咪</h1>
+        <span class="eyebrow">Find a Cat</span>
+        <h1 class="search-title">Search Cats</h1>
         <div class="search-bar">
           <input
             v-model="keyword"
             type="text"
             class="search-input"
-            placeholder="输入猫咪名字、毛色..."
+            placeholder="Search by name, color..."
             @input="onInput"
           />
           <span v-if="keyword" class="search-clear" @click="keyword = ''; loadCats()">✕</span>
@@ -91,7 +91,7 @@ onMounted(() => {
         <!-- Status Tabs -->
         <div class="filter-row">
           <div class="filter-group">
-            <span class="filter-label">状态</span>
+            <span class="filter-label">Status</span>
             <div class="filter-chips">
               <button
                 v-for="s in statuses"
@@ -105,7 +105,7 @@ onMounted(() => {
 
           <!-- Location Chips -->
           <div class="filter-group">
-            <span class="filter-label">区域</span>
+            <span class="filter-label">Area</span>
             <div class="filter-chips">
               <button
                 v-for="loc in locations"
@@ -123,12 +123,12 @@ onMounted(() => {
     <section class="search-results">
       <div class="container">
         <div v-if="loading" class="empty-state">
-          <p class="empty-text">加载中...</p>
+          <p class="empty-text">Loading...</p>
         </div>
 
         <div v-else-if="cats.length === 0" class="empty-state">
           <span class="empty-icon">🐱</span>
-          <p class="empty-text">没有找到匹配的猫咪</p>
+          <p class="empty-text">No cats found</p>
         </div>
 
         <div v-else class="results-grid">

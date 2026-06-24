@@ -12,7 +12,7 @@ const loading = ref(false)
 const login = async () => {
   error.value = ''
   if (!username.value || !password.value) {
-    error.value = '请输入用户名和密码'
+    error.value = 'Please enter username and password'
     return
   }
   loading.value = true
@@ -22,7 +22,7 @@ const login = async () => {
     localStorage.setItem('user', JSON.stringify(res.data.user))
     router.push('/')
   } catch (err) {
-    error.value = err.response?.data?.message || '登录失败'
+    error.value = err.response?.data?.message || 'Login failed'
   } finally {
     loading.value = false
   }
@@ -32,17 +32,17 @@ const login = async () => {
 <template>
   <div class="auth-page">
     <div class="auth-card">
-      <span class="eyebrow">南信猫友记</span>
-      <h1 class="auth-title">登录</h1>
+      <span class="eyebrow">NanXin CatBook</span>
+      <h1 class="auth-title">Login</h1>
       <div class="auth-form">
-        <input v-model="username" type="text" class="auth-input" placeholder="用户名" @keyup.enter="login" />
-        <input v-model="password" type="password" class="auth-input" placeholder="密码" @keyup.enter="login" />
+        <input v-model="username" type="text" class="auth-input" placeholder="Username" @keyup.enter="login" />
+        <input v-model="password" type="password" class="auth-input" placeholder="Password" @keyup.enter="login" />
         <p v-if="error" class="auth-error">{{ error }}</p>
         <button class="btn-pill accent auth-btn" :disabled="loading" @click="login">
-          {{ loading ? '登录中...' : '登录' }}
+          {{ loading ? 'Logging in...' : 'Login' }}
         </button>
         <p class="auth-switch">
-          还没有账号？<router-link to="/register" class="auth-link">注册</router-link>
+          No account? <router-link to="/register" class="auth-link">Register</router-link>
         </p>
       </div>
     </div>
