@@ -195,6 +195,7 @@ def md_to_docx(md_path, docx_path):
                 cell = table.rows[0].cells[j]
                 cell.text = h
                 for paragraph in cell.paragraphs:
+                    paragraph.paragraph_format.first_line_indent = Pt(0)
                     for run in paragraph.runs:
                         run.bold = True
                         run.font.size = Pt(10)
@@ -208,6 +209,7 @@ def md_to_docx(md_path, docx_path):
                         cell = table.rows[ri + 1].cells[j]
                         cell.text = cell_text
                         for paragraph in cell.paragraphs:
+                            paragraph.paragraph_format.first_line_indent = Pt(0)
                             for run in paragraph.runs:
                                 run.font.size = Pt(10)
                                 run.font.name = 'Times New Roman'
