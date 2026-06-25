@@ -81,27 +81,27 @@ def md_to_docx(md_path, docx_path):
     pf.space_after = Pt(0)
     pf.first_line_indent = Pt(24)  # 首行缩进2字符
 
-    # ===== 标题样式 =====
-    # 一级标题：三号黑体居中
-    # 二级标题：四号黑体左顶格
-    # 三级标题：小四号黑体左顶格
+    # ===== 标题样式（撰写规范）=====
+    # 一级：黑体四号(14pt)顶格
+    # 二级：黑体小四号(12pt)顶格
+    # 三级+：宋体小四号(12pt)顶格
     for level in range(1, 5):
         hs = doc.styles[f'Heading {level}']
         hf = hs.font
         hf.name = 'Times New Roman'
-        hf.bold = True
         hf.color.rgb = RGBColor(0, 0, 0)
-        hs.element.rPr.rFonts.set(qn('w:eastAsia'), '黑体')
-        if level == 1:
-            hf.size = Pt(16)  # 三号
-            hs.paragraph_format.alignment = WD_ALIGN_PARAGRAPH.CENTER
-        elif level == 2:
-            hf.size = Pt(14)  # 四号
-        elif level == 3:
-            hf.size = Pt(12)  # 小四
-        else:
-            hf.size = Pt(12)
+        hs.element.rPr.rFonts.set(qn('w:eastAsia'), '黑体' if level <= 2 else '宋体')
         hs.paragraph_format.first_line_indent = Pt(0)
+        hs.paragraph_format.alignment = WD_ALIGN_PARAGRAPH.LEFT
+        if level == 1:
+            hf.size = Pt(14)  # 四号
+            hf.bold = True
+        elif level == 2:
+            hf.size = Pt(12)  # 小四
+            hf.bold = True
+        else:
+            hf.size = Pt(12)  # 小四，宋体不加粗
+            hf.bold = False
 
     i = 0
     in_code_block = False
