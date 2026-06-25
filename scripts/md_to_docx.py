@@ -4,10 +4,11 @@ import os
 import tempfile
 import hashlib
 from docx import Document
-from docx.shared import Pt, Inches, RGBColor
+from docx.shared import Pt, Inches, Cm, RGBColor
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.enum.table import WD_TABLE_ALIGNMENT
-from docx.oxml.ns import qn
+from docx.oxml.ns import qn, nsdecls
+from docx.oxml import parse_xml
 
 try:
     import cairosvg
@@ -58,29 +59,49 @@ def md_to_docx(md_path, docx_path):
 
     doc = Document()
     
-    # 设置默认字体
+    # ===== 页面设置：A4, 2.5cm边距 =====
+    for section in doc.sections:
+        section.page_width = Cm(21.0)
+        section.page_height = Cm(29.7)
+        section.top_margin = Cm(2.5)
+        section.bottom_margin = Cm(2.5)
+        section.left_margin = Cm(2.5)
+        section.right_margin = Cm(2.5)
+
+    # ===== 默认字体：宋体/ Times New Roman 小四 =====
     style = doc.styles['Normal']
     font = style.font
-    font.name = 'Microsoft YaHei'
-    font.size = Pt(11)
-    style.element.rPr.rFonts.set(qn('w:eastAsia'), 'Microsoft YaHei')
+    font.name = 'Times New Roman'
+    font.size = Pt(12)  # 小四号 = 12pt
+    style.element.rPr.rFonts.set(qn('w:eastAsia'), '宋体')
+    # 1.5倍行距
+    pf = style.paragraph_format
+    pf.line_spacing = 1.5
+    pf.space_before = Pt(0)
+    pf.space_after = Pt(0)
+    pf.first_line_indent = Pt(24)  # 首行缩进2字符
 
-    # 设置标题样式
+    # ===== 标题样式 =====
+    # 一级标题：三号黑体居中
+    # 二级标题：四号黑体左顶格
+    # 三级标题：小四号黑体左顶格
     for level in range(1, 5):
         hs = doc.styles[f'Heading {level}']
         hf = hs.font
-        hf.name = 'Microsoft YaHei'
+        hf.name = 'Times New Roman'
         hf.bold = True
         hf.color.rgb = RGBColor(0, 0, 0)
-        hs.element.rPr.rFonts.set(qn('w:eastAsia'), 'Microsoft YaHei')
+        hs.element.rPr.rFonts.set(qn('w:eastAsia'), '黑体')
         if level == 1:
-            hf.size = Pt(18)
+            hf.size = Pt(16)  # 三号
+            hs.paragraph_format.alignment = WD_ALIGN_PARAGRAPH.CENTER
         elif level == 2:
-            hf.size = Pt(15)
+            hf.size = Pt(14)  # 四号
         elif level == 3:
-            hf.size = Pt(13)
+            hf.size = Pt(12)  # 小四
         else:
-            hf.size = Pt(11)
+            hf.size = Pt(12)
+        hs.paragraph_format.first_line_indent = Pt(0)
 
     i = 0
     in_code_block = False
@@ -98,7 +119,7 @@ def md_to_docx(md_path, docx_path):
                 p = doc.add_paragraph()
                 p.paragraph_format.left_indent = Inches(0.3)
                 run = p.add_run('\n'.join(code_buffer))
-                run.font.name = 'Consolas'
+                run.font.name = 'Courier New'
                 run.font.size = Pt(9)
                 run.font.color.rgb = RGBColor(100, 100, 100)
                 code_buffer = []
@@ -163,8 +184,8 @@ def md_to_docx(md_path, docx_path):
                     for run in paragraph.runs:
                         run.bold = True
                         run.font.size = Pt(10)
-                        run.font.name = 'Microsoft YaHei'
-                        run.element.rPr.rFonts.set(qn('w:eastAsia'), 'Microsoft YaHei')
+                        run.font.name = 'Times New Roman'
+                        run.element.rPr.rFonts.set(qn('w:eastAsia'), '宋体')
             
             # 填充数据
             for ri, row_data in enumerate(data_rows):
@@ -175,8 +196,8 @@ def md_to_docx(md_path, docx_path):
                         for paragraph in cell.paragraphs:
                             for run in paragraph.runs:
                                 run.font.size = Pt(10)
-                                run.font.name = 'Microsoft YaHei'
-                                run.element.rPr.rFonts.set(qn('w:eastAsia'), 'Microsoft YaHei')
+                                run.font.name = 'Times New Roman'
+                                run.element.rPr.rFonts.set(qn('w:eastAsia'), '宋体')
             
             doc.add_paragraph()  # 表后间距
             continue
@@ -206,9 +227,9 @@ def md_to_docx(md_path, docx_path):
                 else:
                     p.add_run(part)
             for run in p.runs:
-                run.font.name = 'Microsoft YaHei'
-                run.font.size = Pt(11)
-                run.element.rPr.rFonts.set(qn('w:eastAsia'), 'Microsoft YaHei')
+                run.font.name = 'Times New Roman'
+                run.font.size = Pt(12)
+                run.element.rPr.rFonts.set(qn('w:eastAsia'), '宋体')
             i += 1
             continue
 
@@ -233,6 +254,11 @@ def md_to_docx(md_path, docx_path):
         text = line.strip()
         if text:
             p = doc.add_paragraph()
+            # 表题/图题居中
+            if text.startswith('**表') or text.startswith('**图'):
+                p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+                p.paragraph_format.first_line_indent = Pt(0)
+
             parts = re.split(r'(\*\*[^*]+\*\*|`[^`]+`)', text)
             for part in parts:
                 if part.startswith('**') and part.endswith('**'):
@@ -240,13 +266,13 @@ def md_to_docx(md_path, docx_path):
                     run.bold = True
                 elif part.startswith('`') and part.endswith('`'):
                     run = p.add_run(part[1:-1])
-                    run.font.name = 'Consolas'
+                    run.font.name = 'Courier New'
                     run.font.size = Pt(9.5)
                 else:
                     run = p.add_run(part)
-                run.font.name = 'Microsoft YaHei'
-                run.font.size = Pt(11)
-                run.element.rPr.rFonts.set(qn('w:eastAsia'), 'Microsoft YaHei')
+                run.font.name = 'Times New Roman'
+                run.font.size = Pt(12)
+                run.element.rPr.rFonts.set(qn('w:eastAsia'), '宋体')
 
         i += 1
 
