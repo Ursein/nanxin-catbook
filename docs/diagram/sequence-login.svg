@@ -1,0 +1,121 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 700">
+  
+
+  <defs><pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse"><rect width="20" height="20" fill="none" stroke="#f1f5f9" stroke-width="0.5"/></pattern></defs><rect width="100%" height="100%" fill="#ffffff"/>
+  <rect width="1100" height="700" fill="#ffffff"/>
+  <rect width="1100" height="700" fill="url(#grid)"/>
+
+  <text x="550" y="30" fill="#1e293b" font-size="15" font-weight="700" text-anchor="middle">时序图：用户注册与登录（JWT 鉴权）</text>
+  <text x="550" y="48" fill="#475569" font-size="9" text-anchor="middle">展示用户从注册到登录再到携带 Token 访问资源的完整流程</text>
+
+  <!-- Actors / Lifelines -->
+  <!-- 用户 -->
+  <rect x="40" y="75" width="70" height="40" rx="20" fill="#1e293b" stroke="#22d3ee" stroke-width="2"/>
+  <text x="75" y="100" fill="#22d3ee" font-size="10" font-weight="600" text-anchor="middle">用户</text>
+  <line x1="75" y1="115" x2="75" y2="660" stroke="#22d3ee" stroke-width="1" stroke-dasharray="6,4"/>
+
+  <!-- 浏览器 -->
+  <rect x="200" y="75" width="70" height="40" rx="20" fill="#1e293b" stroke="#34d399" stroke-width="2"/>
+  <text x="235" y="100" fill="#34d399" font-size="10" font-weight="600" text-anchor="middle">浏览器</text>
+  <line x1="235" y1="115" x2="235" y2="660" stroke="#34d399" stroke-width="1" stroke-dasharray="6,4"/>
+
+  <!-- AuthController -->
+  <rect x="370" y="75" width="105" height="40" rx="6" fill="#1e293b" stroke="#f59e0b" stroke-width="2"/>
+  <text x="423" y="100" fill="#f59e0b" font-size="10" font-weight="600" text-anchor="middle">AuthController</text>
+  <line x1="423" y1="115" x2="423" y2="660" stroke="#f59e0b" stroke-width="1" stroke-dasharray="6,4"/>
+
+  <!-- UserService -->
+  <rect x="570" y="75" width="90" height="40" rx="6" fill="#1e293b" stroke="#a78bfa" stroke-width="2"/>
+  <text x="615" y="100" fill="#a78bfa" font-size="10" font-weight="600" text-anchor="middle">UserService</text>
+  <line x1="615" y1="115" x2="615" y2="660" stroke="#a78bfa" stroke-width="1" stroke-dasharray="6,4"/>
+
+  <!-- JwtConfig -->
+  <rect x="760" y="75" width="90" height="40" rx="6" fill="#1e293b" stroke="#fb923c" stroke-width="2"/>
+  <text x="805" y="100" fill="#fb923c" font-size="10" font-weight="600" text-anchor="middle">JwtConfig</text>
+  <line x1="805" y1="115" x2="805" y2="660" stroke="#fb923c" stroke-width="1" stroke-dasharray="6,4"/>
+
+  <!-- MySQL -->
+  <rect x="960" y="75" width="70" height="40" rx="6" fill="#1e293b" stroke="#f472b6" stroke-width="2"/>
+  <text x="995" y="100" fill="#f472b6" font-size="10" font-weight="600" text-anchor="middle">MySQL</text>
+  <line x1="995" y1="115" x2="995" y2="660" stroke="#f472b6" stroke-width="1" stroke-dasharray="6,4"/>
+
+  <!-- === REGISTRATION === -->
+
+  <text x="500" y="148" fill="#64748b" font-size="10" font-weight="600" text-anchor="middle">—— 注册流程 ——</text>
+
+  <!-- 1. 填写注册信息 -->
+  <line x1="75" y1="170" x2="235" y2="170" stroke="#22d3ee" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="85" y="163" fill="#22d3ee" font-size="9">1. 填写注册信息</text>
+
+  <!-- 2. POST /auth/register -->
+  <line x1="235" y1="195" x2="423" y2="195" stroke="#34d399" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="245" y="188" fill="#34d399" font-size="9">2. POST /auth/register</text>
+
+  <!-- 3. register() -->
+  <line x1="423" y1="220" x2="615" y2="220" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="433" y="213" fill="#f59e0b" font-size="9">3. register(userData)</text>
+
+  <!-- 4. BCrypt 加密 -->
+  <rect x="610" y="235" width="140" height="20" rx="4" fill="#2d1b69" stroke="#a78bfa" stroke-width="1"/>
+  <text x="680" y="249" fill="#a78bfa" font-size="9" text-anchor="middle">4. BCrypt 加密密码</text>
+
+  <!-- 5. INSERT user -->
+  <line x1="615" y1="270" x2="995" y2="270" stroke="#a78bfa" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="730" y="263" fill="#a78bfa" font-size="9">5. INSERT INTO user</text>
+  <line x1="995" y1="290" x2="615" y2="290" stroke="#f472b6" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
+  <text x="780" y="283" fill="#f472b6" font-size="9">注册成功</text>
+
+  <!-- 6. 返回成功 -->
+  <line x1="615" y1="315" x2="423" y2="315" stroke="#a78bfa" stroke-width="2" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
+  <text x="480" y="308" fill="#a78bfa" font-size="9">6. 注册成功</text>
+
+  <!-- 7. 返回 201 -->
+  <line x1="423" y1="340" x2="235" y2="340" stroke="#f59e0b" stroke-width="2" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
+  <text x="300" y="333" fill="#f59e0b" font-size="9">7. 201 Created</text>
+
+  <line x1="235" y1="365" x2="75" y2="365" stroke="#34d399" stroke-width="2" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
+  <text x="100" y="358" fill="#34d399" font-size="9">8. 注册成功提示</text>
+
+  <!-- === LOGIN === -->
+
+  <text x="500" y="400" fill="#64748b" font-size="10" font-weight="600" text-anchor="middle">—— 登录流程 ——</text>
+
+  <!-- 9. 填写登录 -->
+  <line x1="75" y1="420" x2="235" y2="420" stroke="#22d3ee" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="85" y="413" fill="#22d3ee" font-size="9">9. 填写用户名密码</text>
+
+  <!-- 10. POST /auth/login -->
+  <line x1="235" y1="445" x2="423" y2="445" stroke="#34d399" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="245" y="438" fill="#34d399" font-size="9">10. POST /auth/login</text>
+
+  <!-- 11. login() -->
+  <line x1="423" y1="470" x2="615" y2="470" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="433" y="463" fill="#f59e0b" font-size="9">11. login(username, password)</text>
+
+  <!-- 12. SELECT user -->
+  <line x1="615" y1="495" x2="995" y2="495" stroke="#a78bfa" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="730" y="488" fill="#a78bfa" font-size="9">12. SELECT user WHERE username=?</text>
+  <line x1="995" y1="515" x2="615" y2="515" stroke="#f472b6" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
+  <text x="780" y="508" fill="#f472b6" font-size="9">用户记录</text>
+
+  <!-- 13. BCrypt 校验 -->
+  <rect x="610" y="535" width="140" height="20" rx="4" fill="#2d1b69" stroke="#a78bfa" stroke-width="1"/>
+  <text x="680" y="549" fill="#a78bfa" font-size="9" text-anchor="middle">13. BCrypt 校验密码</text>
+
+  <!-- 14. 生成 JWT -->
+  <line x1="615" y1="570" x2="805" y2="570" stroke="#a78bfa" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="630" y="563" fill="#a78bfa" font-size="9">14. generateToken(userId, role)</text>
+  <line x1="805" y1="590" x2="615" y2="590" stroke="#fb923c" stroke-width="2" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
+  <text x="690" y="583" fill="#fb923c" font-size="9">15. 返回 JWT Token</text>
+
+  <!-- 16. 返回 Token + 用户信息 -->
+  <line x1="615" y1="615" x2="423" y2="615" stroke="#a78bfa" stroke-width="2" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
+  <text x="480" y="608" fill="#a78bfa" font-size="9">16. 返回 Token + 用户信息</text>
+
+  <!-- 17. 返回 200 -->
+  <line x1="423" y1="640" x2="235" y2="640" stroke="#f59e0b" stroke-width="2" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
+  <text x="300" y="633" fill="#f59e0b" font-size="9">17. 200 OK (Token)</text>
+
+  <line x1="235" y1="660" x2="75" y2="660" stroke="#34d399" stroke-width="2" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
+  <text x="100" y="653" fill="#34d399" font-size="9">18. 登录成功，进入首页</text>
+</svg>

@@ -1,0 +1,168 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 1000">
+  
+
+  <defs><pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse"><rect width="20" height="20" fill="none" stroke="#f1f5f9" stroke-width="0.5"/></pattern></defs><rect width="100%" height="100%" fill="#ffffff"/>
+  <rect width="1400" height="1000" fill="#ffffff"/>
+  <rect width="1400" height="1000" fill="url(#grid)"/>
+
+  <!-- Title -->
+  <text x="700" y="35" fill="#1e293b" font-size="16" font-weight="700" text-anchor="middle">用例图（Use Case Diagram）- 南信猫友记</text>
+  <text x="700" y="55" fill="#475569" font-size="9" text-anchor="middle">展示系统参与者与用例之间的关系</text>
+
+  <!-- ===== System Boundary ===== -->
+  <rect x="250" y="80" width="900" height="880" rx="20" fill="none" stroke="#334155" stroke-width="2" stroke-dasharray="8,4"/>
+  <text x="700" y="105" fill="#64748b" font-size="13" font-weight="600" text-anchor="middle">南信猫友记系统</text>
+
+  <!-- ===== ACTORS ===== -->
+
+  <!-- Actor 1: 访客（左侧） -->
+  <!-- Stick figure -->
+  <circle cx="130" cy="200" r="18" fill="none" stroke="#22d3ee" stroke-width="2.5"/>
+  <line x1="130" y1="218" x2="130" y2="270" stroke="#22d3ee" stroke-width="2.5"/>
+  <line x1="100" y1="240" x2="160" y2="240" stroke="#22d3ee" stroke-width="2.5"/>
+  <line x1="130" y1="270" x2="105" y2="310" stroke="#22d3ee" stroke-width="2.5"/>
+  <line x1="130" y1="270" x2="155" y2="310" stroke="#22d3ee" stroke-width="2.5"/>
+  <text x="130" y="335" fill="#22d3ee" font-size="11" font-weight="600" text-anchor="middle">访客</text>
+  <text x="130" y="350" fill="#64748b" font-size="9" text-anchor="middle">（未登录用户）</text>
+
+  <!-- Arrow from Actor 1 to use cases -->
+  <line x1="168" y1="240" x2="250" y2="240" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Actor 2: 用户（上方） -->
+  <circle cx="130" cy="530" r="18" fill="none" stroke="#34d399" stroke-width="2.5"/>
+  <line x1="130" y1="548" x2="130" y2="600" stroke="#34d399" stroke-width="2.5"/>
+  <line x1="100" y1="570" x2="160" y2="570" stroke="#34d399" stroke-width="2.5"/>
+  <line x1="130" y1="600" x2="105" y2="640" stroke="#34d399" stroke-width="2.5"/>
+  <line x1="130" y1="600" x2="155" y2="640" stroke="#34d399" stroke-width="2.5"/>
+  <text x="130" y="665" fill="#34d399" font-size="11" font-weight="600" text-anchor="middle">已登录用户</text>
+  <text x="130" y="680" fill="#64748b" font-size="9" text-anchor="middle">（含 VERIFIED）</text>
+
+  <!-- Arrow from Actor 2 -->
+  <line x1="168" y1="570" x2="250" y2="570" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Actor 3: 管理员（下方） -->
+  <circle cx="130" cy="850" r="18" fill="none" stroke="#f59e0b" stroke-width="2.5"/>
+  <line x1="130" y1="868" x2="130" y2="920" stroke="#f59e0b" stroke-width="2.5"/>
+  <line x1="100" y1="890" x2="160" y2="890" stroke="#f59e0b" stroke-width="2.5"/>
+  <line x1="130" y1="920" x2="105" y2="960" stroke="#f59e0b" stroke-width="2.5"/>
+  <line x1="130" y1="920" x2="155" y2="960" stroke="#f59e0b" stroke-width="2.5"/>
+  <text x="130" y="985" fill="#f59e0b" font-size="11" font-weight="600" text-anchor="middle">管理员</text>
+
+  <!-- Arrow from Actor 3 -->
+  <line x1="168" y1="890" x2="250" y2="890" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- ===== USE CASE OVALS ===== -->
+
+  <!-- Row 1: Visitor use cases -->
+  <!-- UC01 注册 -->
+  <ellipse cx="420" cy="200" rx="90" ry="25" fill="#1e293b" stroke="#22d3ee" stroke-width="1.5"/>
+  <text x="420" y="205" fill="#22d3ee" font-size="10" text-anchor="middle">注册账号</text>
+
+  <!-- UC02 浏览 -->
+  <ellipse cx="630" cy="200" rx="105" ry="25" fill="#1e293b" stroke="#22d3ee" stroke-width="1.5"/>
+  <text x="630" y="205" fill="#22d3ee" font-size="10" text-anchor="middle">浏览猫咪列表</text>
+
+  <!-- UC03 搜索 -->
+  <ellipse cx="850" cy="200" rx="85" ry="25" fill="#1e293b" stroke="#22d3ee" stroke-width="1.5"/>
+  <text x="850" y="205" fill="#22d3ee" font-size="10" text-anchor="middle">搜索猫咪</text>
+
+  <!-- UC04 查看详情 -->
+  <ellipse cx="1050" cy="200" rx="95" ry="25" fill="#1e293b" stroke="#22d3ee" stroke-width="1.5"/>
+  <text x="1050" y="205" fill="#22d3ee" font-size="10" text-anchor="middle">查看猫咪详情</text>
+
+  <!-- Lines from actor to visitor use cases -->
+  <line x1="250" y1="240" x2="330" y2="200" stroke="#64748b" stroke-width="1" marker-end="url(#arrow)"/>
+  <line x1="250" y1="240" x2="525" y2="200" stroke="#64748b" stroke-width="1" marker-end="url(#arrow)"/>
+  <line x1="250" y1="240" x2="765" y2="200" stroke="#64748b" stroke-width="1" marker-end="url(#arrow)"/>
+  <line x1="250" y1="240" x2="955" y2="200" stroke="#64748b" stroke-width="1" marker-end="url(#arrow)"/>
+
+  <!-- Row 2: Login user use cases (middle rows) -->
+  <!-- extends arrow from 注册 to 登录 -->
+  <path d="M 420 225 Q 420 260 330 270" fill="none" stroke="#64748b" stroke-width="1"/>
+  <polygon points="330,268 338,270 330,272" fill="#64748b"/>
+  <text x="365" y="258" fill="#64748b" font-size="8" text-anchor="middle">«include»</text>
+
+  <!-- UC05 登录 -->
+  <ellipse cx="420" cy="310" rx="85" ry="25" fill="#1e293b" stroke="#34d399" stroke-width="1.5"/>
+  <text x="420" y="315" fill="#34d399" font-size="10" text-anchor="middle">用户登录</text>
+
+  <!-- UC06 添加猫咪 -->
+  <ellipse cx="630" cy="310" rx="90" ry="25" fill="#1e293b" stroke="#34d399" stroke-width="1.5"/>
+  <text x="630" y="315" fill="#34d399" font-size="10" text-anchor="middle">添加猫咪</text>
+
+  <!-- UC07 编辑猫咪 -->
+  <ellipse cx="420" cy="400" rx="90" ry="25" fill="#1e293b" stroke="#34d399" stroke-width="1.5"/>
+  <text x="420" y="405" fill="#34d399" font-size="10" text-anchor="middle">编辑/删除猫咪</text>
+
+  <!-- UC08 上传照片 -->
+  <ellipse cx="630" cy="400" rx="85" ry="25" fill="#1e293b" stroke="#34d399" stroke-width="1.5"/>
+  <text x="630" y="405" fill="#34d399" font-size="10" text-anchor="middle">上传照片</text>
+
+  <!-- UC09 点赞照片 -->
+  <ellipse cx="850" cy="310" rx="85" ry="25" fill="#1e293b" stroke="#34d399" stroke-width="1.5"/>
+  <text x="850" y="315" fill="#34d399" font-size="10" text-anchor="middle">点赞照片</text>
+
+  <!-- UC10 发表评论 -->
+  <ellipse cx="850" cy="400" rx="90" ry="25" fill="#1e293b" stroke="#34d399" stroke-width="1.5"/>
+  <text x="850" y="405" fill="#34d399" font-size="10" text-anchor="middle">发表评论</text>
+
+  <!-- UC11 关注猫咪 -->
+  <ellipse cx="1050" cy="310" rx="85" ry="25" fill="#1e293b" stroke="#34d399" stroke-width="1.5"/>
+  <text x="1050" y="315" fill="#34d399" font-size="10" text-anchor="middle">关注猫咪</text>
+
+  <!-- UC12 评分猫咪 -->
+  <ellipse cx="1050" cy="400" rx="90" ry="25" fill="#1e293b" stroke="#34d399" stroke-width="1.5"/>
+  <text x="1050" y="405" fill="#34d399" font-size="10" text-anchor="middle">猫友评分</text>
+
+  <!-- UC13 个人信息 -->
+  <ellipse cx="630" cy="490" rx="95" ry="25" fill="#1e293b" stroke="#34d399" stroke-width="1.5"/>
+  <text x="630" y="495" fill="#34d399" font-size="10" text-anchor="middle">管理个人信息</text>
+
+  <!-- Lines from user actor to user use cases -->
+  <!-- UC05 -->
+  <line x1="250" y1="570" x2="335" y2="310" stroke="#64748b" stroke-width="1" marker-end="url(#arrow)"/>
+  <!-- UC06 -->
+  <line x1="250" y1="570" x2="540" y2="310" stroke="#64748b" stroke-width="1" marker-end="url(#arrow)"/>
+  <!-- UC07 -->
+  <line x1="250" y1="570" x2="330" y2="400" stroke="#64748b" stroke-width="1" marker-end="url(#arrow)"/>
+  <!-- UC08 -->
+  <line x1="250" y1="570" x2="545" y2="400" stroke="#64748b" stroke-width="1" marker-end="url(#arrow)"/>
+  <!-- UC09 -->
+  <line x1="250" y1="570" x2="765" y2="310" stroke="#64748b" stroke-width="1" marker-end="url(#arrow)"/>
+  <!-- UC10 -->
+  <line x1="250" y1="570" x2="760" y2="400" stroke="#64748b" stroke-width="1" marker-end="url(#arrow)"/>
+  <!-- UC11 -->
+  <line x1="250" y1="570" x2="965" y2="310" stroke="#64748b" stroke-width="1" marker-end="url(#arrow)"/>
+  <!-- UC12 -->
+  <line x1="250" y1="570" x2="960" y2="400" stroke="#64748b" stroke-width="1" marker-end="url(#arrow)"/>
+  <!-- UC13 -->
+  <line x1="250" y1="570" x2="535" y2="490" stroke="#64748b" stroke-width="1" marker-end="url(#arrow)"/>
+
+  <!-- Row 3: Admin use cases -->
+  <!-- UC14 审核照片 -->
+  <ellipse cx="550" cy="750" rx="90" ry="25" fill="#1e293b" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="550" y="755" fill="#f59e0b" font-size="10" text-anchor="middle">审核照片</text>
+
+  <!-- UC15 删除评论 -->
+  <ellipse cx="750" cy="750" rx="90" ry="25" fill="#1e293b" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="750" y="755" fill="#f59e0b" font-size="10" text-anchor="middle">删除评论</text>
+
+  <!-- UC16 管理猫咪 -->
+  <ellipse cx="650" cy="830" rx="120" ry="25" fill="#1e293b" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="650" y="835" fill="#f59e0b" font-size="10" text-anchor="middle">管理任意猫咪档案</text>
+
+  <!-- Lines from admin actor -->
+  <line x1="250" y1="890" x2="460" y2="750" stroke="#64748b" stroke-width="1" marker-end="url(#arrow)"/>
+  <line x1="250" y1="890" x2="660" y2="750" stroke="#64748b" stroke-width="1" marker-end="url(#arrow)"/>
+  <line x1="250" y1="890" x2="530" y2="830" stroke="#64748b" stroke-width="1" marker-end="url(#arrow)"/>
+
+  <!-- ===== Legend ===== -->
+  <rect x="30" y="420" width="180" height="90" rx="8" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+  <text x="120" y="440" fill="#475569" font-size="9" font-weight="600" text-anchor="middle">图例</text>
+  <circle cx="55" cy="460" r="6" fill="none" stroke="#22d3ee" stroke-width="2"/>
+  <text x="70" y="464" fill="#22d3ee" font-size="9">访客用例</text>
+  <circle cx="55" cy="480" r="6" fill="none" stroke="#34d399" stroke-width="2"/>
+  <text x="70" y="484" fill="#34d399" font-size="9">用户用例</text>
+  <circle cx="55" cy="500" r="6" fill="none" stroke="#f59e0b" stroke-width="2"/>
+  <text x="70" y="504" fill="#f59e0b" font-size="9">管理员用例</text>
+</svg>

@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 780" font-family="Microsoft YaHei, SimHei, sans-serif">
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10" fill="#007bff"/></marker>
+    <marker id="ar" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10" fill="#dc3545"/></marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10" fill="#28a745"/></marker>
+  </defs>
+  <rect width="720" height="780" fill="#ffffff" rx="8"/>
+  <text x="360" y="32" text-anchor="middle" fill="#1a1a2e" font-size="17" font-weight="bold">M8 评分管理流程图</text>
+
+  <ellipse cx="360" cy="62" rx="55" ry="18" fill="#d4edda" stroke="#28a745" stroke-width="2"/>
+  <text x="360" y="68" text-anchor="middle" fill="#155724" font-size="14" font-weight="bold">开　始</text>
+  <line x1="360" y1="78" x2="360" y2="102" stroke="#007bff" stroke-width="1.5" marker-end="url(#a)"/>
+
+  <rect x="240" y="105" width="240" height="36" rx="6" fill="#e8f0fe" stroke="#007bff" stroke-width="1.5"/>
+  <text x="360" y="128" text-anchor="middle" fill="#0056b3" font-size="14">收到评分请求</text>
+  <line x1="360" y1="141" x2="360" y2="168" stroke="#007bff" stroke-width="1.5" marker-end="url(#a)"/>
+
+  <polygon points="360,174 440,212 360,250 280,212" fill="#fff3cd" stroke="#856404" stroke-width="1.5"/>
+  <text x="360" y="208" text-anchor="middle" fill="#856404" font-size="13">操作类型？</text>
+  <text x="310" y="228" text-anchor="middle" fill="#856404" font-size="11">POST 提交评分</text>
+  <text x="415" y="228" text-anchor="middle" fill="#856404" font-size="11">GET 查询统计</text>
+
+  <!-- POST -->
+  <line x1="310" y1="225" x2="175" y2="285" stroke="#007bff" stroke-width="1.5" marker-end="url(#a)"/>
+  <rect x="80" y="285" width="190" height="36" rx="6" fill="#e8f0fe" stroke="#007bff" stroke-width="1.5"/>
+  <text x="175" y="308" text-anchor="middle" fill="#0056b3" font-size="13">校验登录状态</text>
+  <line x1="175" y1="321" x2="175" y2="350" stroke="#007bff" stroke-width="1.5" marker-end="url(#a)"/>
+
+  <polygon points="175,356 235,392 175,428 115,392" fill="#fff3cd" stroke="#856404" stroke-width="1.5"/>
+  <text x="175" y="390" text-anchor="middle" fill="#856404" font-size="12">已评过分？</text>
+  <text x="140" y="408" text-anchor="middle" fill="#856404" font-size="11">是</text>
+  <text x="210" y="408" text-anchor="middle" fill="#856404" font-size="11">否</text>
+
+  <line x1="115" y1="392" x2="55" y2="392" stroke="#dc3545" stroke-width="1.5" marker-end="url(#ar)"/>
+  <rect x="10" y="380" width="45" height="24" rx="4" fill="#f8d7da" stroke="#dc3545" stroke-width="1"/>
+  <text x="32" y="397" text-anchor="middle" fill="#721c24" font-size="10">已评分</text>
+
+  <line x1="235" y1="392" x2="290" y2="440" stroke="#28a745" stroke-width="1.5" marker-end="url(#ag)"/>
+  <rect x="235" y="440" width="170" height="36" rx="6" fill="#e8f0fe" stroke="#007bff" stroke-width="1.5"/>
+  <text x="320" y="463" text-anchor="middle" fill="#0056b3" font-size="13">校验五维评分（1-5）</text>
+  <line x1="320" y1="476" x2="320" y2="502" stroke="#007bff" stroke-width="1.5" marker-end="url(#a)"/>
+
+  <polygon points="320,508 378,542 320,576 262,542" fill="#fff3cd" stroke="#856404" stroke-width="1.5"/>
+  <text x="320" y="540" text-anchor="middle" fill="#856404" font-size="12">范围有效？</text>
+  <text x="285" y="558" text-anchor="middle" fill="#856404" font-size="11">否</text>
+  <text x="355" y="558" text-anchor="middle" fill="#856404" font-size="11">是</text>
+
+  <line x1="262" y1="542" x2="220" y2="542" stroke="#dc3545" stroke-width="1.5" marker-end="url(#ar)"/>
+  <rect x="190" y="530" width="30" height="24" rx="4" fill="#f8d7da" stroke="#dc3545" stroke-width="1"/>
+  <text x="205" y="547" text-anchor="middle" fill="#721c24" font-size="10">400</text>
+
+  <line x1="378" y1="542" x2="440" y2="590" stroke="#28a745" stroke-width="1.5" marker-end="url(#ag)"/>
+  <rect x="440" y="590" width="180" height="36" rx="6" fill="#d4edda" stroke="#28a745" stroke-width="1.5"/>
+  <text x="530" y="613" text-anchor="middle" fill="#155724" font-size="13">写入 rating 表</text>
+  <text x="530" y="624" text-anchor="middle" fill="#6c757d" font-size="10">五维评分数据</text>
+  <line x1="530" y1="626" x2="530" y2="655" stroke="#007bff" stroke-width="1.5"/>
+  <rect x="440" y="658" width="180" height="36" rx="6" fill="#e8f0fe" stroke="#007bff" stroke-width="1.5"/>
+  <text x="530" y="681" text-anchor="middle" fill="#0056b3" font-size="13">更新 cat.avg_rating</text>
+
+  <!-- GET -->
+  <line x1="410" y1="225" x2="570" y2="285" stroke="#007bff" stroke-width="1.5" marker-end="url(#a)"/>
+  <rect x="500" y="285" width="140" height="36" rx="6" fill="#e8f0fe" stroke="#007bff" stroke-width="1.5"/>
+  <text x="570" y="308" text-anchor="middle" fill="#0056b3" font-size="13">查询评分统计</text>
+  <line x1="570" y1="321" x2="570" y2="360" stroke="#007bff" stroke-width="1.5"/>
+  <rect x="500" y="362" width="140" height="36" rx="6" fill="#d4edda" stroke="#28a745" stroke-width="1.5"/>
+  <text x="570" y="385" text-anchor="middle" fill="#155724" font-size="13">返回五维平均分</text>
+  <text x="570" y="396" text-anchor="middle" fill="#6c757d" font-size="10">+ 评分人数</text>
+
+  <!-- 汇合 -->
+  <line x1="530" y1="694" x2="530" y2="720" stroke="#007bff" stroke-width="1.5"/>
+  <line x1="570" y1="398" x2="570" y2="450" stroke="#007bff" stroke-width="1.5"/>
+  <line x1="530" y1="720" x2="360" y2="720" stroke="#007bff" stroke-width="1.5"/>
+  <line x1="360" y1="720" x2="570" y2="450" stroke="#007bff" stroke-width="1.5"/>
+  <line x1="360" y1="720" x2="360" y2="745" stroke="#007bff" stroke-width="1.5" marker-end="url(#a)"/>
+
+  <ellipse cx="360" cy="768" rx="55" ry="18" fill="#d4edda" stroke="#28a745" stroke-width="2"/>
+  <text x="360" y="774" text-anchor="middle" fill="#155724" font-size="14" font-weight="bold">结　束</text>
+</svg>

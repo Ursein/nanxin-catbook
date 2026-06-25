@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 720" font-family="Microsoft YaHei, SimHei, sans-serif">
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0,0 L10,5 L0,10" fill="#007bff"/></marker>
+    <marker id="ar" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0,0 L10,5 L0,10" fill="#dc3545"/></marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0,0 L10,5 L0,10" fill="#28a745"/></marker>
+  </defs>
+  <rect width="600" height="720" fill="#ffffff" rx="8"/>
+  <text x="300" y="32" text-anchor="middle" fill="#1a1a2e" font-size="15" font-weight="bold">JWT 登录鉴权流程图</text>
+  <text x="300" y="48" text-anchor="middle" fill="#6c757d" font-size="10">JwtInterceptor + JwtConfig — 请求拦截与 Token 校验</text>
+
+  <ellipse cx="300" cy="70" rx="50" ry="16" fill="#d4edda" stroke="#28a745" stroke-width="2"/>
+  <text x="300" y="75" text-anchor="middle" fill="#155724" font-size="12" font-weight="bold">开　始</text>
+  <line x1="300" y1="86" x2="300" y2="108" stroke="#007bff" stroke-width="1.5" marker-end="url(#a)"/>
+
+  <rect x="220" y="111" width="160" height="32" rx="6" fill="#e8f0fe" stroke="#007bff" stroke-width="1.5"/>
+  <text x="300" y="132" text-anchor="middle" fill="#0056b3" font-size="12">客户端发请求</text>
+  <text x="300" y="142" text-anchor="middle" fill="#6c757d" font-size="9">携带 Authorization: Bearer &lt;token&gt;</text>
+  <line x1="300" y1="143" x2="300" y2="165" stroke="#007bff" stroke-width="1.5" marker-end="url(#a)"/>
+
+  <rect x="210" y="168" width="180" height="32" rx="6" fill="#e8f0fe" stroke="#007bff" stroke-width="1.5"/>
+  <text x="300" y="189" text-anchor="middle" fill="#0056b3" font-size="12">JwtInterceptor.preHandle()</text>
+  <line x1="300" y1="200" x2="300" y2="222" stroke="#007bff" stroke-width="1.5" marker-end="url(#a)"/>
+
+  <polygon points="300,228 370,262 300,296 230,262" fill="#fff3cd" stroke="#856404" stroke-width="1.5"/>
+  <text x="300" y="258" text-anchor="middle" fill="#856404" font-size="12">路径放行？</text>
+  <text x="250" y="278" text-anchor="middle" fill="#856404" font-size="11">否（拦截）</text>
+  <text x="350" y="278" text-anchor="middle" fill="#856404" font-size="11">是（放过）</text>
+
+  <line x1="350" y1="262" x2="430" y2="310" stroke="#28a745" stroke-width="1.5" marker-end="url(#ag)"/>
+  <rect x="430" y="310" width="140" height="32" rx="6" fill="#d4edda" stroke="#28a745" stroke-width="1.5"/>
+  <text x="500" y="331" text-anchor="middle" fill="#155724" font-size="12">放行到 Controller</text>
+
+  <line x1="250" y1="262" x2="100" y2="262" stroke="#007bff" stroke-width="1.5" marker-end="url(#a)"/>
+
+  <polygon points="100,268 165,302 100,336 35,302" fill="#fff3cd" stroke="#856404" stroke-width="1.5"/>
+  <text x="100" y="298" text-anchor="middle" fill="#856404" font-size="12">header 有空？</text>
+  <text x="60" y="318" text-anchor="middle" fill="#856404" font-size="11">是</text>
+  <text x="140" y="318" text-anchor="middle" fill="#856404" font-size="11">否</text>
+
+  <line x1="60" y1="315" x2="25" y2="360" stroke="#dc3545" stroke-width="1.5" marker-end="url(#ar)"/>
+  <rect x="6" y="360" width="60" height="28" rx="4" fill="#f8d7da" stroke="#dc3545" stroke-width="1"/>
+  <text x="36" y="379" text-anchor="middle" fill="#721c24" font-size="10">返回401</text>
+
+  <line x1="165" y1="302" x2="250" y2="360" stroke="#007bff" stroke-width="1.5" marker-end="url(#a)"/>
+  <rect x="210" y="360" width="160" height="32" rx="6" fill="#e8f0fe" stroke="#007bff" stroke-width="1.5"/>
+  <text x="290" y="381" text-anchor="middle" fill="#0056b3" font-size="12">提取 Token 字符串</text>
+  <line x1="290" y1="392" x2="290" y2="418" stroke="#007bff" stroke-width="1.5" marker-end="url(#a)"/>
+
+  <rect x="210" y="420" width="160" height="32" rx="6" fill="#e8f0fe" stroke="#007bff" stroke-width="1.5"/>
+  <text x="290" y="441" text-anchor="middle" fill="#0056b3" font-size="12">解析 JWT Token</text>
+  <text x="290" y="452" text-anchor="middle" fill="#6c757d" font-size="9">JwtConfig.parseToken()</text>
+  <line x1="290" y1="452" x2="290" y2="478" stroke="#007bff" stroke-width="1.5" marker-end="url(#a)"/>
+
+  <polygon points="290,484 355,518 290,552 225,518" fill="#fff3cd" stroke="#856404" stroke-width="1.5"/>
+  <text x="290" y="514" text-anchor="middle" fill="#856404" font-size="12">解析成功？</text>
+  <text x="250" y="534" text-anchor="middle" fill="#856404" font-size="11">否</text>
+  <text x="330" y="534" text-anchor="middle" fill="#856404" font-size="11">是</text>
+
+  <line x1="225" y1="518" x2="170" y2="518" stroke="#dc3545" stroke-width="1.5" marker-end="url(#ar)"/>
+  <rect x="110" y="506" width="60" height="24" rx="4" fill="#f8d7da" stroke="#dc3545" stroke-width="1"/>
+  <text x="140" y="523" text-anchor="middle" fill="#721c24" font-size="10">返回401</text>
+
+  <line x1="355" y1="518" x2="430" y2="570" stroke="#28a745" stroke-width="1.5" marker-end="url(#ag)"/>
+  <rect x="430" y="570" width="140" height="32" rx="6" fill="#d4edda" stroke="#28a745" stroke-width="1.5"/>
+  <text x="500" y="589" text-anchor="middle" fill="#155724" font-size="11">存入 userId</text>
+  <text x="500" y="600" text-anchor="middle" fill="#6c757d" font-size="9">request.setAttribute()</text>
+  <line x1="500" y1="602" x2="500" y2="630" stroke="#007bff" stroke-width="1.5"/>
+
+  <!-- 合流 -->
+  <line x1="500" y1="630" x2="300" y2="630" stroke="#007bff" stroke-width="1.5"/>
+  <line x1="300" y1="630" x2="300" y2="660" stroke="#007bff" stroke-width="1.5" marker-end="url(#a)"/>
+
+  <rect x="230" y="662" width="140" height="32" rx="6" fill="#e8f0fe" stroke="#007bff" stroke-width="1.5"/>
+  <text x="300" y="683" text-anchor="middle" fill="#0056b3" font-size="12">放行到 Controller</text>
+  <ellipse cx="300" cy="708" rx="50" ry="16" fill="#d4edda" stroke="#28a745" stroke-width="2"/>
+  <text x="300" y="713" text-anchor="middle" fill="#155724" font-size="12" font-weight="bold">结　束</text>
+</svg>

@@ -1,0 +1,126 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 720" font-family="'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif">
+  
+
+  <!-- Background -->
+  <rect width="800" height="720" fill="#ffffff"/>
+
+  <!-- Title -->
+  <text x="400" y="36" text-anchor="middle" fill="#1e293b" font-size="18" font-weight="700" letter-spacing="2">M2 猫咪管理模块流程图</text>
+  <line x1="240" y1="46" x2="560" y2="46" stroke="#585b70" stroke-width="1" opacity="0.5"/>
+
+  <!-- START (green pill) -->
+  <rect x="320" y="62" width="160" height="36" rx="18" ry="18" fill="url(#startEnd)" filter="url(#shadow)"/>
+  <text x="400" y="85" text-anchor="middle" fill="#ffffff" font-size="14" font-weight="700">开 始</text>
+
+  <!-- Arrow: START → 接收请求 -->
+  <line x1="400" y1="98" x2="400" y2="128" stroke="#585b70" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- 接收请求 (process) -->
+  <rect x="290" y="130" width="220" height="40" rx="6" ry="6" fill="url(#process)" filter="url(#shadow)"/>
+  <text x="400" y="155" text-anchor="middle" fill="#1a1a2e" font-size="13" font-weight="600">接收 HTTP 请求</text>
+
+  <!-- Arrow: 接收请求 → 校验权限 -->
+  <line x1="400" y1="170" x2="400" y2="200" stroke="#585b70" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- 校验权限 (process) -->
+  <rect x="290" y="202" width="220" height="40" rx="6" ry="6" fill="url(#process)" filter="url(#shadow)"/>
+  <text x="400" y="227" text-anchor="middle" fill="#1a1a2e" font-size="13" font-weight="600">校验管理员权限</text>
+
+  <!-- Arrow: 校验权限 → 参数校验 -->
+  <line x1="400" y1="242" x2="400" y2="272" stroke="#585b70" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- 参数校验 (process) -->
+  <rect x="290" y="274" width="220" height="40" rx="6" ry="6" fill="url(#process)" filter="url(#shadow)"/>
+  <text x="400" y="299" text-anchor="middle" fill="#1a1a2e" font-size="13" font-weight="600">参数校验与解析</text>
+
+  <!-- Arrow: 参数校验 → 路由分支 -->
+  <line x1="400" y1="314" x2="400" y2="348" stroke="#585b70" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- 路由分支 (decision diamond) -->
+  <polygon points="400,350 500,395 400,440 300,395" fill="url(#decision)" filter="url(#shadow)"/>
+  <text x="400" y="399" text-anchor="middle" fill="#1a1a2e" font-size="12" font-weight="700">路由选择</text>
+
+  <!-- Branch labels -->
+  <!-- Left: 创建 -->
+  <line x1="300" y1="395" x2="160" y2="395" stroke="#585b70" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="230" y="388" text-anchor="middle" fill="#16a34a" font-size="11" font-weight="600">POST /cats</text>
+  <rect x="80" y="378" width="80" height="34" rx="6" ry="6" fill="url(#process)" filter="url(#shadow)"/>
+  <text x="120" y="399" text-anchor="middle" fill="#1a1a2e" font-size="12" font-weight="600">创建猫咪</text>
+
+  <!-- Top-Right: 查询列表 -->
+  <line x1="490" y1="370" x2="570" y2="320" stroke="#585b70" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="564" y="338" text-anchor="middle" fill="#16a34a" font-size="11" font-weight="600">GET /cats</text>
+  <rect x="570" y="296" width="90" height="34" rx="6" ry="6" fill="url(#process)" filter="url(#shadow)"/>
+  <text x="615" y="317" text-anchor="middle" fill="#1a1a2e" font-size="12" font-weight="600">猫咪列表</text>
+
+  <!-- Right: 查询详情 -->
+  <line x1="500" y1="395" x2="570" y2="395" stroke="#585b70" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="570" y="388" text-anchor="middle" fill="#16a34a" font-size="11" font-weight="600">GET /cats/{id}</text>
+  <rect x="570" y="378" width="90" height="34" rx="6" ry="6" fill="url(#process)" filter="url(#shadow)"/>
+  <text x="615" y="399" text-anchor="middle" fill="#1a1a2e" font-size="12" font-weight="600">猫咪详情</text>
+
+  <!-- Bottom-Right: 搜索 -->
+  <line x1="490" y1="420" x2="570" y2="470" stroke="#585b70" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="558" y="453" text-anchor="middle" fill="#16a34a" font-size="11" font-weight="600">GET /cats/search</text>
+  <rect x="570" y="460" width="90" height="34" rx="6" ry="6" fill="url(#process)" filter="url(#shadow)"/>
+  <text x="615" y="481" text-anchor="middle" fill="#1a1a2e" font-size="12" font-weight="600">关键词搜索</text>
+
+  <!-- Bottom: 软删除 -->
+  <line x1="400" y1="440" x2="400" y2="478" stroke="#585b70" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="416" y="466" text-anchor="middle" fill="#16a34a" font-size="11" font-weight="600">PUT /cats/{id}</text>
+  <rect x="340" y="480" width="120" height="34" rx="6" ry="6" fill="url(#process)" filter="url(#shadow)"/>
+  <text x="400" y="501" text-anchor="middle" fill="#1a1a2e" font-size="12" font-weight="600">软删除猫咪</text>
+
+  <!-- Merge arrows from left branch -->
+  <line x1="160" y1="412" x2="160" y2="540" stroke="#585b70" stroke-width="2"/>
+  <line x1="160" y1="540" x2="400" y2="540" stroke="#585b70" stroke-width="2"/>
+
+  <!-- Merge arrows from top-right branch -->
+  <line x1="615" y1="330" x2="615" y2="540" stroke="#585b70" stroke-width="2"/>
+  <line x1="615" y1="540" x2="400" y2="540" stroke="#585b70" stroke-width="2"/>
+
+  <!-- Merge arrows from right branch -->
+  <line x1="660" y1="412" x2="660" y2="540" stroke="#585b70" stroke-width="2"/>
+  <line x1="660" y1="540" x2="400" y2="540" stroke="#585b70" stroke-width="2"/>
+
+  <!-- Merge arrows from bottom-right branch -->
+  <line x1="615" y1="494" x2="615" y2="540" stroke="#585b70" stroke-width="2"/>
+  <line x1="615" y1="540" x2="400" y2="540" stroke="#585b70" stroke-width="2"/>
+
+  <!-- Arrow from bottom branch to merge point -->
+  <line x1="400" y1="514" x2="400" y2="540" stroke="#585b70" stroke-width="2"/>
+
+  <!-- Arrow from merge to DB -->
+  <line x1="400" y1="540" x2="400" y2="570" stroke="#585b70" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- 数据库操作 (process) -->
+  <rect x="280" y="572" width="240" height="40" rx="6" ry="6" fill="url(#db)" filter="url(#shadow)"/>
+  <text x="400" y="597" text-anchor="middle" fill="#1a1a2e" font-size="13" font-weight="600">数据库读写操作</text>
+
+  <!-- Arrow: DB → 返回结果 -->
+  <line x1="400" y1="612" x2="400" y2="642" stroke="#585b70" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- 返回结果 (process) -->
+  <rect x="290" y="644" width="220" height="40" rx="6" ry="6" fill="url(#process)" filter="url(#shadow)"/>
+  <text x="400" y="669" text-anchor="middle" fill="#1a1a2e" font-size="13" font-weight="600">返回 JSON 响应</text>
+
+  <!-- Arrow: 返回 → END -->
+  <line x1="400" y1="684" x2="400" y2="696" stroke="#585b70" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- END (green pill) -->
+  <rect x="320" y="698" width="160" height="36" rx="18" ry="18" fill="url(#startEnd)" filter="url(#shadow)"/>
+  <text x="400" y="721" text-anchor="middle" fill="#1a1a2e" font-size="14" font-weight="700">结 束</text>
+
+  <!-- Legend -->
+  <rect x="22" y="64" width="130" height="102" rx="8" fill="#1a1a2e" stroke="#313244" stroke-width="1" opacity="0.9"/>
+  <text x="87" y="84" text-anchor="middle" fill="#1e293b" font-size="11" font-weight="600">图 例</text>
+  <line x1="34" y1="92" x2="62" y2="92" stroke="#585b70" stroke-width="1"/>
+  <rect x="34" y="98" width="18" height="12" rx="3" fill="url(#startEnd)"/>
+  <text x="60" y="108" fill="#a6adc8" font-size="10">开始 / 结束</text>
+  <rect x="34" y="114" width="18" height="12" rx="3" fill="url(#process)"/>
+  <text x="60" y="124" fill="#a6adc8" font-size="10">处理过程</text>
+  <polygon points="43,130 52,142 43,154 34,142" fill="url(#decision)"/>
+  <text x="60" y="148" fill="#a6adc8" font-size="10">决策分支</text>
+  <rect x="34" y="158" width="18" height="12" rx="3" fill="url(#db)"/>
+  <text x="60" y="168" fill="#a6adc8" font-size="10">数据库操作</text>
+</svg>

@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 780" font-family="Microsoft YaHei, SimHei, sans-serif">
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10" fill="#007bff"/></marker>
+    <marker id="ar" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10" fill="#dc3545"/></marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10" fill="#28a745"/></marker>
+  </defs>
+  <rect width="720" height="780" fill="#ffffff" rx="8"/>
+  <text x="360" y="35" text-anchor="middle" fill="#1a1a2e" font-size="17" font-weight="bold">M3 搜索浏览流程图</text>
+
+  <ellipse cx="360" cy="65" rx="55" ry="20" fill="#d4edda" stroke="#28a745" stroke-width="2"/>
+  <text x="360" y="71" text-anchor="middle" fill="#155724" font-size="14" font-weight="bold">开　始</text>
+  <line x1="360" y1="85" x2="360" y2="110" stroke="#007bff" stroke-width="1.5" marker-end="url(#a)"/>
+
+  <rect x="220" y="112" width="280" height="38" rx="6" fill="#e8f0fe" stroke="#007bff" stroke-width="1.5"/>
+  <text x="360" y="136" text-anchor="middle" fill="#0056b3" font-size="14">进入猫咪列表页</text>
+  <line x1="360" y1="150" x2="360" y2="178" stroke="#007bff" stroke-width="1.5" marker-end="url(#a)"/>
+
+  <polygon points="360,184 450,226 360,268 270,226" fill="#fff3cd" stroke="#856404" stroke-width="1.5"/>
+  <text x="360" y="222" text-anchor="middle" fill="#856404" font-size="14" font-weight="bold">是否有关键词？</text>
+  <text x="305" y="242" text-anchor="middle" fill="#856404" font-size="12">否</text>
+  <text x="415" y="242" text-anchor="middle" fill="#856404" font-size="12">是</text>
+
+  <!-- 否：分页查询 -->
+  <line x1="305" y1="240" x2="175" y2="300" stroke="#007bff" stroke-width="1.5" marker-end="url(#a)"/>
+  <rect x="60" y="300" width="230" height="38" rx="6" fill="#e8f0fe" stroke="#007bff" stroke-width="1.5"/>
+  <text x="175" y="324" text-anchor="middle" fill="#0056b3" font-size="13">分页查询活跃猫咪</text>
+  <text x="175" y="336" text-anchor="middle" fill="#6c757d" font-size="10">page=0, size=20, status=ACTIVE</text>
+
+  <!-- 是：关键词搜索 -->
+  <line x1="415" y1="240" x2="550" y2="300" stroke="#007bff" stroke-width="1.5" marker-end="url(#a)"/>
+  <rect x="460" y="300" width="180" height="38" rx="6" fill="#e8f0fe" stroke="#007bff" stroke-width="1.5"/>
+  <text x="550" y="324" text-anchor="middle" fill="#0056b3" font-size="13">关键词模糊搜索</text>
+  <text x="550" y="336" text-anchor="middle" fill="#6c757d" font-size="10">name/breed/colour_tags</text>
+
+  <!-- 汇合到数据库查询 -->
+  <line x1="175" y1="338" x2="175" y2="370" stroke="#007bff" stroke-width="1.5"/>
+  <line x1="550" y1="338" x2="550" y2="370" stroke="#007bff" stroke-width="1.5"/>
+  <line x1="175" y1="370" x2="360" y2="370" stroke="#007bff" stroke-width="1.5"/>
+  <line x1="360" y1="370" x2="550" y2="370" stroke="#007bff" stroke-width="1.5"/>
+  <line x1="360" y1="370" x2="360" y2="398" stroke="#007bff" stroke-width="1.5" marker-end="url(#a)"/>
+
+  <rect x="245" y="400" width="230" height="38" rx="6" fill="#e8f0fe" stroke="#007bff" stroke-width="1.5"/>
+  <text x="360" y="424" text-anchor="middle" fill="#0056b3" font-size="14">数据库查询（SELECT）</text>
+  <line x1="360" y1="438" x2="360" y2="465" stroke="#007bff" stroke-width="1.5" marker-end="url(#a)"/>
+
+  <polygon points="360,472 440,512 360,552 280,512" fill="#fff3cd" stroke="#856404" stroke-width="1.5"/>
+  <text x="360" y="508" text-anchor="middle" fill="#856404" font-size="13">有搜索结果？</text>
+  <text x="310" y="528" text-anchor="middle" fill="#856404" font-size="12">无</text>
+  <text x="410" y="528" text-anchor="middle" fill="#856404" font-size="12">有</text>
+
+  <!-- 无结果 -->
+  <line x1="280" y1="512" x2="100" y2="512" stroke="#dc3545" stroke-width="1.5" marker-end="url(#ar)"/>
+  <rect x="25" y="498" width="75" height="28" rx="4" fill="#f8d7da" stroke="#dc3545" stroke-width="1.5"/>
+  <text x="62" y="517" text-anchor="middle" fill="#721c24" font-size="13">返回空列表</text>
+  <line x1="62" y1="526" x2="62" y2="730" stroke="#dc3545" stroke-width="1.5"/>
+  <ellipse cx="62" cy="752" rx="40" ry="16" fill="#d4edda" stroke="#28a745" stroke-width="1.5"/>
+  <text x="62" y="757" text-anchor="middle" fill="#155724" font-size="12" font-weight="bold">结束</text>
+
+  <!-- 有结果 -->
+  <line x1="440" y1="512" x2="520" y2="570" stroke="#28a745" stroke-width="1.5" marker-end="url(#ag)"/>
+  <rect x="465" y="570" width="180" height="38" rx="6" fill="#d4edda" stroke="#28a745" stroke-width="1.5"/>
+  <text x="555" y="592" text-anchor="middle" fill="#155724" font-size="13">封装 CatItem 列表</text>
+  <text x="555" y="604" text-anchor="middle" fill="#6c757d" font-size="10">含 name/photo/location</text>
+  <line x1="555" y1="608" x2="555" y2="650" stroke="#007bff" stroke-width="1.5"/>
+  <line x1="555" y1="650" x2="375" y2="650" stroke="#007bff" stroke-width="1.5"/>
+  <line x1="375" y1="650" x2="375" y2="720" stroke="#007bff" stroke-width="1.5" marker-end="url(#a)"/>
+
+  <!-- 统一结束 -->
+  <rect x="265" y="720" width="220" height="36" rx="6" fill="#e8f0fe" stroke="#007bff" stroke-width="1.5"/>
+  <text x="375" y="743" text-anchor="middle" fill="#0056b3" font-size="14">返回 JSON → 结束</text>
+</svg>

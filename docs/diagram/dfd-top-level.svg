@@ -1,62 +1,42 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 750">
-  <defs>
-    <style>
-      @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&amp;display=swap');
-      text { font-family: 'JetBrains Mono', 'Noto Sans SC', 'PingFang SC', sans-serif; }
-    </style>
-    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#1e293b" stroke-width="0.5"/>
-    </pattern>
-    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="#64748b"/>
-    </marker>
-    <marker id="arrow-cyan" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="#22d3ee"/>
-    </marker>
-    <marker id="arrow-violet" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="#a78bfa"/>
-    </marker>
-    <!-- External entity symbol: rectangle with left/right shadows (DeMarco/Yourdon style) -->
-    <filter id="shadow">
-      <feDropShadow dx="2" dy="2" stdDeviation="1" flood-color="#000" flood-opacity="0.3"/>
-    </filter>
-  </defs>
+  
 
   <!-- Background -->
-  <rect width="1200" height="750" fill="#0f172a"/>
+  <defs><pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse"><rect width="20" height="20" fill="none" stroke="#f1f5f9" stroke-width="0.5"/></pattern></defs><rect width="100%" height="100%" fill="#ffffff"/>
+  <rect width="1200" height="750" fill="#ffffff"/>
   <rect width="1200" height="750" fill="url(#grid)"/>
 
   <!-- Title -->
-  <text x="600" y="35" fill="white" font-size="16" font-weight="700" text-anchor="middle">顶层数据流图（上下文图）- 南信猫友记</text>
+  <text x="600" y="35" fill="#1e293b" font-size="16" font-weight="700" text-anchor="middle">顶层数据流图（上下文图）- 南信猫友记</text>
 
   <!-- ========== External Entity: 普通用户 (Left) ========== -->
   <!-- Shadow -->
   <rect x="55" y="240" width="190" height="110" rx="4" fill="rgba(0,0,0,0.2)"/>
   <rect x="65" y="250" width="190" height="110" rx="4" fill="rgba(0,0,0,0.2)"/>
   <!-- Box -->
-  <rect x="60" y="240" width="190" height="110" rx="4" fill="#0f172a"/>
+  <rect x="60" y="240" width="190" height="110" rx="4" fill="#1a1a2e"/>
   <rect x="60" y="240" width="190" height="110" rx="4" fill="rgba(8,51,68,0.6)" stroke="#22d3ee" stroke-width="2"/>
-  <text x="155" y="280" fill="white" font-size="13" font-weight="700" text-anchor="middle">普通用户</text>
-  <text x="155" y="298" fill="#94a3b8" font-size="10" text-anchor="middle">Regular User</text>
-  <text x="155" y="322" fill="#94a3b8" font-size="9" text-anchor="middle">浏览器访问系统</text>
+  <text x="155" y="280" fill="#1e293b" font-size="13" font-weight="700" text-anchor="middle">普通用户</text>
+  <text x="155" y="298" fill="#475569" font-size="10" text-anchor="middle">Regular User</text>
+  <text x="155" y="322" fill="#475569" font-size="9" text-anchor="middle">浏览器访问系统</text>
 
   <!-- ========== External Entity: 管理员 (Right) ========== -->
   <rect x="935" y="240" width="190" height="110" rx="4" fill="rgba(0,0,0,0.2)"/>
   <rect x="945" y="250" width="190" height="110" rx="4" fill="rgba(0,0,0,0.2)"/>
-  <rect x="940" y="240" width="190" height="110" rx="4" fill="#0f172a"/>
+  <rect x="940" y="240" width="190" height="110" rx="4" fill="#1a1a2e"/>
   <rect x="940" y="240" width="190" height="110" rx="4" fill="rgba(76,29,149,0.4)" stroke="#a78bfa" stroke-width="2"/>
-  <text x="1035" y="280" fill="white" font-size="13" font-weight="700" text-anchor="middle">管理员</text>
-  <text x="1035" y="298" fill="#94a3b8" font-size="10" text-anchor="middle">Admin</text>
-  <text x="1035" y="322" fill="#94a3b8" font-size="9" text-anchor="middle">系统维护与数据管理</text>
+  <text x="1035" y="280" fill="#1e293b" font-size="13" font-weight="700" text-anchor="middle">管理员</text>
+  <text x="1035" y="298" fill="#475569" font-size="10" text-anchor="middle">Admin</text>
+  <text x="1035" y="322" fill="#475569" font-size="9" text-anchor="middle">系统维护与数据管理</text>
 
   <!-- ========== Central Process: 南信猫友记系统 ========== -->
   <!-- Process bubble (rounded rect for process) -->
-  <rect x="370" y="210" width="460" height="170" rx="20" fill="#0f172a"/>
+  <rect x="370" y="210" width="460" height="170" rx="20" fill="#1a1a2e"/>
   <rect x="370" y="210" width="460" height="170" rx="20" fill="rgba(6,78,59,0.4)" stroke="#34d399" stroke-width="2.5"/>
-  <text x="600" y="265" fill="white" font-size="15" font-weight="700" text-anchor="middle">南信猫友记系统</text>
-  <text x="600" y="285" fill="#94a3b8" font-size="10" text-anchor="middle">NanXin CatBook System</text>
-  <text x="600" y="312" fill="#94a3b8" font-size="9" text-anchor="middle">P1 用户管理 / P2 猫咪管理 / P3 浏览搜索</text>
-  <text x="600" y="328" fill="#94a3b8" font-size="9" text-anchor="middle">P4 照片管理 / P5 评论管理 / P6 推荐计算</text>
+  <text x="600" y="265" fill="#1e293b" font-size="15" font-weight="700" text-anchor="middle">南信猫友记系统</text>
+  <text x="600" y="285" fill="#475569" font-size="10" text-anchor="middle">NanXin CatBook System</text>
+  <text x="600" y="312" fill="#475569" font-size="9" text-anchor="middle">P1 用户管理 / P2 猫咪管理 / P3 浏览搜索</text>
+  <text x="600" y="328" fill="#475569" font-size="9" text-anchor="middle">P4 照片管理 / P5 评论管理 / P6 推荐计算</text>
   <text x="600" y="350" fill="#64748b" font-size="8" text-anchor="middle">数据存储：D1用户 D2猫咪 D3照片 D4评论 D5日志</text>
 
   <!-- ========== DATA FLOWS ========== -->
@@ -117,13 +97,13 @@
   <text x="880" y="303" fill="#a78bfa" font-size="8" text-anchor="middle">系统数据</text>
 
   <!-- Legend -->
-  <rect x="870" y="580" width="290" height="140" rx="8" fill="#0f172a"/>
+  <rect x="870" y="580" width="290" height="140" rx="8" fill="#1a1a2e"/>
   <rect x="870" y="580" width="290" height="140" rx="8" fill="rgba(30,41,59,0.5)" stroke="#94a3b8" stroke-width="1"/>
-  <text x="1015" y="598" fill="#94a3b8" font-size="9" font-weight="600" text-anchor="middle">图例 Legend</text>
+  <text x="1015" y="598" fill="#475569" font-size="9" font-weight="600" text-anchor="middle">图例 Legend</text>
   <rect x="890" y="610" width="30" height="14" rx="2" fill="rgba(8,51,68,0.6)" stroke="#22d3ee" stroke-width="1"/>
-  <text x="930" y="621" fill="#94a3b8" font-size="8">外部实体（用户/管理员）</text>
+  <text x="930" y="621" fill="#475569" font-size="8">外部实体（用户/管理员）</text>
   <rect x="890" y="632" width="30" height="14" rx="8" fill="rgba(6,78,59,0.4)" stroke="#34d399" stroke-width="1"/>
-  <text x="930" y="643" fill="#94a3b8" font-size="8">处理（系统功能）</text>
+  <text x="930" y="643" fill="#475569" font-size="8">处理（系统功能）</text>
   <text x="930" y="665" fill="#22d3ee" font-size="8">→ 数据流（输入）</text>
   <text x="930" y="687" fill="#34d399" font-size="8">→ 数据流（输出）</text>
 

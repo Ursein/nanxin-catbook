@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 750 750" width="750" height="750">
+  
+
+  <!-- Background -->
+  <rect width="750" height="750" fill="#ffffff" rx="8"/>
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- ARROWS (drawn first so they sit behind nodes) -->
+  <!-- ════════════════════════════════════════════ -->
+
+  <!-- 1. START → 进入猫咪列表页 -->
+  <line x1="375" y1="49" x2="375" y2="71" stroke="#cdd6f4" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- 2. 进入猫咪列表页 → 是否有关键词？ -->
+  <line x1="375" y1="117" x2="375" y2="138" stroke="#cdd6f4" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- 3. 是否有关键词？ — 否 → 分页查询活跃猫咪 -->
+  <path d="M295,175 L170,175 L170,251" fill="none" stroke="#cdd6f4" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="230" y="166" text-anchor="middle" fill="#f9e2af" font-family="sans-serif" font-size="12" font-weight="bold">否</text>
+
+  <!-- 4. 是否有关键词？ — 是 → 关键词模糊搜索 -->
+  <path d="M455,175 L580,175 L580,251" fill="none" stroke="#cdd6f4" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="520" y="166" text-anchor="middle" fill="#f9e2af" font-family="sans-serif" font-size="12" font-weight="bold">是</text>
+
+  <!-- 5. 分页查询 → 数据库查询 (merge left → center) -->
+  <path d="M170,297 L170,328 L375,328 L375,341" fill="none" stroke="#cdd6f4" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- 6. 关键词搜索 → 数据库查询 (merge right → center) -->
+  <path d="M580,297 L580,328 L375,328 L375,341" fill="none" stroke="#cdd6f4" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- 7. 数据库查询 → 是否有结果？ -->
+  <line x1="375" y1="387" x2="375" y2="418" stroke="#cdd6f4" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- 8. 是否有结果？ — 否 → 返回空列表 -->
+  <path d="M295,455 L170,455 L170,531" fill="none" stroke="#cdd6f4" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="230" y="446" text-anchor="middle" fill="#f9e2af" font-family="sans-serif" font-size="12" font-weight="bold">否</text>
+
+  <!-- 9. 是否有结果？ — 是 → 封装CatItem列表 -->
+  <path d="M455,455 L580,455 L580,531" fill="none" stroke="#cdd6f4" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="520" y="446" text-anchor="middle" fill="#f9e2af" font-family="sans-serif" font-size="12" font-weight="bold">是</text>
+
+  <!-- 10. 返回空列表 → 返回JSON (merge left → center) -->
+  <path d="M170,577 L170,610 L375,610 L375,621" fill="none" stroke="#cdd6f4" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- 11. 封装CatItem列表 → 返回JSON (merge right → center) -->
+  <path d="M580,577 L580,610 L375,610 L375,621" fill="none" stroke="#cdd6f4" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- 12. 返回JSON → END -->
+  <line x1="375" y1="667" x2="375" y2="699" stroke="#cdd6f4" stroke-width="2" marker-end="url(#arrow)"/>
+
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- NODES -->
+  <!-- ════════════════════════════════════════════ -->
+
+  <!-- START (green / oval) -->
+  <ellipse cx="375" cy="30" rx="46" ry="20" fill="#16a34a" fill-opacity="0.92" filter="url(#shadow)"/>
+  <text x="375" y="35" text-anchor="middle" fill="#1a1a2e" font-family="sans-serif" font-size="13" font-weight="bold">START</text>
+
+  <!-- 进入猫咪列表页 (blue / process) -->
+  <rect x="285" y="73" width="180" height="44" rx="8" fill="#2563eb" fill-opacity="0.88" filter="url(#shadow)"/>
+  <text x="375" y="100" text-anchor="middle" fill="#1a1a2e" font-family="sans-serif" font-size="13" font-weight="bold">进入猫咪列表页</text>
+
+  <!-- 是否有关键词？ (yellow / diamond) -->
+  <polygon points="375,140 455,175 375,210 295,175" fill="#f9e2af" fill-opacity="0.88" filter="url(#shadow)"/>
+  <text x="375" y="172" text-anchor="middle" fill="#1a1a2e" font-family="sans-serif" font-size="12" font-weight="bold">是否有关键词？</text>
+  <text x="375" y="186" text-anchor="middle" fill="#1a1a2e" font-family="sans-serif" font-size="10">(keyword?)</text>
+
+  <!-- 分页查询活跃猫咪 (blue / process) — left branch -->
+  <rect x="75" y="253" width="190" height="44" rx="8" fill="#2563eb" fill-opacity="0.88" filter="url(#shadow)"/>
+  <text x="170" y="275" text-anchor="middle" fill="#1a1a2e" font-family="sans-serif" font-size="12" font-weight="bold">分页查询活跃猫咪</text>
+  <text x="170" y="290" text-anchor="middle" fill="#1a1a2e" font-family="sans-serif" font-size="10">(1-20条 / page=0)</text>
+
+  <!-- 关键词模糊搜索 (blue / process) — right branch -->
+  <rect x="470" y="253" width="220" height="44" rx="8" fill="#2563eb" fill-opacity="0.88" filter="url(#shadow)"/>
+  <text x="580" y="275" text-anchor="middle" fill="#1a1a2e" font-family="sans-serif" font-size="12" font-weight="bold">关键词模糊搜索</text>
+  <text x="580" y="290" text-anchor="middle" fill="#1a1a2e" font-family="sans-serif" font-size="10">(name/breed/colour/location)</text>
+
+  <!-- 数据库查询 (blue / process) -->
+  <rect x="305" y="343" width="140" height="44" rx="8" fill="#2563eb" fill-opacity="0.88" filter="url(#shadow)"/>
+  <text x="375" y="370" text-anchor="middle" fill="#1a1a2e" font-family="sans-serif" font-size="13" font-weight="bold">数据库查询</text>
+
+  <!-- 是否有结果？ (yellow / diamond) -->
+  <polygon points="375,420 455,455 375,490 295,455" fill="#f9e2af" fill-opacity="0.88" filter="url(#shadow)"/>
+  <text x="375" y="452" text-anchor="middle" fill="#1a1a2e" font-family="sans-serif" font-size="12" font-weight="bold">是否有结果？</text>
+  <text x="375" y="466" text-anchor="middle" fill="#1a1a2e" font-family="sans-serif" font-size="10">(any rows?)</text>
+
+  <!-- 返回空列表 (blue / process) — left branch -->
+  <rect x="100" y="533" width="140" height="44" rx="8" fill="#2563eb" fill-opacity="0.88" filter="url(#shadow)"/>
+  <text x="170" y="560" text-anchor="middle" fill="#1a1a2e" font-family="sans-serif" font-size="13" font-weight="bold">返回空列表</text>
+
+  <!-- 封装CatItem列表 (blue / process) — right branch -->
+  <rect x="495" y="533" width="170" height="44" rx="8" fill="#2563eb" fill-opacity="0.88" filter="url(#shadow)"/>
+  <text x="580" y="560" text-anchor="middle" fill="#1a1a2e" font-family="sans-serif" font-size="13" font-weight="bold">封装CatItem列表</text>
+
+  <!-- 返回JSON (blue / process) -->
+  <rect x="305" y="623" width="140" height="44" rx="8" fill="#2563eb" fill-opacity="0.88" filter="url(#shadow)"/>
+  <text x="375" y="650" text-anchor="middle" fill="#1a1a2e" font-family="sans-serif" font-size="13" font-weight="bold">返回JSON</text>
+
+  <!-- END (green / oval) -->
+  <ellipse cx="375" cy="720" rx="46" ry="20" fill="#16a34a" fill-opacity="0.92" filter="url(#shadow)"/>
+  <text x="375" y="725" text-anchor="middle" fill="#1a1a2e" font-family="sans-serif" font-size="13" font-weight="bold">END</text>
+
+</svg>

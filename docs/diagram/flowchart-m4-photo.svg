@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 850" font-family="Microsoft YaHei, SimHei, sans-serif">
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10" fill="#007bff"/></marker>
+    <marker id="ar" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10" fill="#dc3545"/></marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10" fill="#28a745"/></marker>
+  </defs>
+  <rect width="800" height="850" fill="#ffffff" rx="8"/>
+  <text x="400" y="32" text-anchor="middle" fill="#1a1a2e" font-size="17" font-weight="bold">M4 照片管理流程图</text>
+
+  <!-- ===== 子流程1：上传 ===== -->
+  <text x="120" y="58" text-anchor="middle" fill="#0056b3" font-size="13" font-weight="bold">① 上传照片</text>
+  <ellipse cx="120" cy="78" rx="40" ry="16" fill="#d4edda" stroke="#28a745" stroke-width="1.5"/>
+  <text x="120" y="83" text-anchor="middle" fill="#155724" font-size="12" font-weight="bold">开始</text>
+  <line x1="120" y1="94" x2="120" y2="112" stroke="#007bff" stroke-width="1.5" marker-end="url(#a)"/>
+  <rect x="40" y="115" width="160" height="32" rx="5" fill="#e8f0fe" stroke="#007bff" stroke-width="1.5"/>
+  <text x="120" y="135" text-anchor="middle" fill="#0056b3" font-size="11">POST /cats/{id}/photos</text>
+  <line x1="120" y1="147" x2="120" y2="165" stroke="#007bff" stroke-width="1.5" marker-end="url(#a)"/>
+  <polygon points="120,170 170,198 120,226 70,198" fill="#fff3cd" stroke="#856404" stroke-width="1"/>
+  <text x="120" y="196" text-anchor="middle" fill="#856404" font-size="10">文件合格？</text>
+  <text x="90" y="210" text-anchor="middle" fill="#856404" font-size="9">否</text>
+  <text x="150" y="210" text-anchor="middle" fill="#856404" font-size="9">是</text>
+  <line x1="70" y1="198" x2="25" y2="198" stroke="#dc3545" stroke-width="1" marker-end="url(#ar)"/>
+  <text x="20" y="192" fill="#dc3545" font-size="10">400</text>
+  <line x1="170" y1="198" x2="200" y2="230" stroke="#28a745" stroke-width="1" marker-end="url(#ag)"/>
+  <rect x="200" y="230" width="140" height="32" rx="5" fill="#d4edda" stroke="#28a745" stroke-width="1"/>
+  <text x="270" y="250" text-anchor="middle" fill="#155724" font-size="11">保存文件到磁盘</text>
+  <line x1="270" y1="262" x2="270" y2="280" stroke="#007bff" stroke-width="1" marker-end="url(#a)"/>
+  <rect x="195" y="282" width="150" height="32" rx="5" fill="#e8f0fe" stroke="#007bff" stroke-width="1"/>
+  <text x="270" y="302" text-anchor="middle" fill="#0056b3" font-size="11">创建 photo 记录</text>
+  <text x="270" y="312" text-anchor="middle" fill="#6c757d" font-size="9">status=PENDING</text>
+
+  <!-- ===== 子流程2：审核 ===== -->
+  <text x="400" y="68" text-anchor="middle" fill="#28a745" font-size="13" font-weight="bold">② 审核照片</text>
+  <ellipse cx="400" cy="88" rx="40" ry="16" fill="#d4edda" stroke="#28a745" stroke-width="1.5"/>
+  <text x="400" y="93" text-anchor="middle" fill="#155724" font-size="12" font-weight="bold">开始</text>
+  <line x1="400" y1="104" x2="400" y2="120" stroke="#007bff" stroke-width="1.5" marker-end="url(#a)"/>
+  <rect x="330" y="123" width="140" height="32" rx="5" fill="#e8f0fe" stroke="#007bff" stroke-width="1.5"/>
+  <text x="400" y="143" text-anchor="middle" fill="#0056b3" font-size="11">PUT approve/reject</text>
+  <line x1="400" y1="155" x2="400" y2="172" stroke="#007bff" stroke-width="1.5" marker-end="url(#a)"/>
+  <polygon points="400,178 455,206 400,234 345,206" fill="#fff3cd" stroke="#856404" stroke-width="1"/>
+  <text x="400" y="204" text-anchor="middle" fill="#856404" font-size="10">管理员？</text>
+  <text x="370" y="218" text-anchor="middle" fill="#856404" font-size="9">否</text>
+  <text x="432" y="218" text-anchor="middle" fill="#856404" font-size="9">是</text>
+  <line x1="345" y1="206" x2="305" y2="206" stroke="#dc3545" stroke-width="1" marker-end="url(#ar)"/>
+  <text x="300" y="200" fill="#dc3545" font-size="10">403</text>
+  <line x1="455" y1="206" x2="490" y2="240" stroke="#28a745" stroke-width="1" marker-end="url(#ag)"/>
+  <rect x="490" y="240" width="160" height="32" rx="5" fill="#d4edda" stroke="#28a745" stroke-width="1"/>
+  <text x="570" y="260" text-anchor="middle" fill="#155724" font-size="11">更新 status + reviewer_id</text>
+
+  <!-- ===== 子流程3：点赞 ===== -->
+  <text x="400" y="290" text-anchor="middle" fill="#007bff" font-size="13" font-weight="bold">③ 点赞照片</text>
+  <ellipse cx="400" cy="310" rx="40" ry="16" fill="#d4edda" stroke="#28a745" stroke-width="1.5"/>
+  <text x="400" y="315" text-anchor="middle" fill="#155724" font-size="12" font-weight="bold">开始</text>
+  <line x1="400" y1="326" x2="400" y2="345" stroke="#007bff" stroke-width="1.5" marker-end="url(#a)"/>
+  <rect x="335" y="348" width="130" height="32" rx="5" fill="#e8f0fe" stroke="#007bff" stroke-width="1.5"/>
+  <text x="400" y="368" text-anchor="middle" fill="#0056b3" font-size="11">POST /photos/{id}/like</text>
+  <line x1="400" y1="380" x2="400" y2="398" stroke="#007bff" stroke-width="1.5" marker-end="url(#a)"/>
+  <rect x="320" y="400" width="160" height="32" rx="5" fill="#e8f0fe" stroke="#007bff" stroke-width="1.5"/>
+  <text x="400" y="420" text-anchor="middle" fill="#0056b3" font-size="11">检查唯一约束</text>
+  <line x1="400" y1="432" x2="400" y2="452" stroke="#007bff" stroke-width="1.5" marker-end="url(#a)"/>
+  <polygon points="400,458 455,486 400,514 345,486" fill="#fff3cd" stroke="#856404" stroke-width="1"/>
+  <text x="400" y="484" text-anchor="middle" fill="#856404" font-size="10">已点赞？</text>
+  <text x="370" y="498" text-anchor="middle" fill="#856404" font-size="9">是</text>
+  <text x="432" y="498" text-anchor="middle" fill="#856404" font-size="9">否</text>
+  <line x1="345" y1="486" x2="290" y2="486" stroke="#dc3545" stroke-width="1" marker-end="url(#ar)"/>
+  <text x="290" y="480" fill="#dc3545" font-size="10">409</text>
+  <line x1="455" y1="486" x2="510" y2="520" stroke="#28a745" stroke-width="1" marker-end="url(#ag)"/>
+  <rect x="510" y="520" width="160" height="32" rx="5" fill="#d4edda" stroke="#28a745" stroke-width="1"/>
+  <text x="590" y="540" text-anchor="middle" fill="#155724" font-size="11">插入点赞 + like_count++</text>
+
+  <!-- ===== 全局结束 ===== -->
+  <ellipse cx="400" cy="580" rx="55" ry="20" fill="#d4edda" stroke="#28a745" stroke-width="2"/>
+  <text x="400" y="586" text-anchor="middle" fill="#155724" font-size="14" font-weight="bold">结　束</text>
+</svg>
