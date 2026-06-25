@@ -35,6 +35,10 @@ test_api.py
 
 # Reasonix
 .reasonix/
+.agents/
+
+# Skills lock
+skills-lock.json
 
 # Course file
 命题文件*
