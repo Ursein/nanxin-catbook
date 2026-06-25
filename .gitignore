@@ -30,6 +30,9 @@ test_api.py
 *.png
 *.jpg
 
+# Obsidian
+.obsidian/
+
 # Reasonix
 .reasonix/
 
