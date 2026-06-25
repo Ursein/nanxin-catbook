@@ -176,6 +176,20 @@ def md_to_docx(md_path, docx_path):
             table.alignment = WD_TABLE_ALIGNMENT.CENTER
             table.style = 'Table Grid'
             
+            # 自动调整列宽：根据各列内容最大长度分配比例
+            col_max_lens = [len(h) for h in headers]
+            for row_data in data_rows:
+                for j, cell_text in enumerate(row_data):
+                    if j < len(headers):
+                        col_max_lens[j] = max(col_max_lens[j], len(cell_text))
+            total = sum(col_max_lens) or 1
+            table.autofit = False
+            avail_cm = 16.0  # A4 21cm - 左右边距2.5cm*2 = 16cm
+            for j, clen in enumerate(col_max_lens):
+                col_width_cm = avail_cm * clen / total
+                for row in table.rows:
+                    row.cells[j].width = Cm(col_width_cm)
+            
             # 填充表头
             for j, h in enumerate(headers):
                 cell = table.rows[0].cells[j]
