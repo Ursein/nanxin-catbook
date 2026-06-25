@@ -53,7 +53,13 @@ CREATE TABLE IF NOT EXISTS `cat` (
     `follow_count` INT DEFAULT 0 COMMENT '关注数（冗余）',
     `rating_count` INT DEFAULT 0 COMMENT '评分人数（冗余）',
     `avg_rating` DECIMAL(3,2) DEFAULT 0.00 COMMENT '平均评分（冗余）',
+    `avg_r1` DECIMAL(3,2) DEFAULT 0.00 COMMENT '猫德平均分',
+    `avg_r2` DECIMAL(3,2) DEFAULT 0.00 COMMENT '颜值平均分',
+    `avg_r3` DECIMAL(3,2) DEFAULT 0.00 COMMENT '社交平均分',
+    `avg_r4` DECIMAL(3,2) DEFAULT 0.00 COMMENT '干饭平均分',
+    `avg_r5` DECIMAL(3,2) DEFAULT 0.00 COMMENT '活力平均分',
     `creator_id` BIGINT,
+    `deleted` TINYINT DEFAULT 0 COMMENT '软删除标记',
     `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
     `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (`creator_id`) REFERENCES `user`(`id`) ON DELETE SET NULL,
@@ -67,6 +73,7 @@ CREATE TABLE IF NOT EXISTS `photo` (
     `cat_id` BIGINT NOT NULL,
     `uploader_id` BIGINT NOT NULL,
     `file_path` VARCHAR(255) NOT NULL,
+    `file_path_compressed` VARCHAR(255) COMMENT '压缩图路径',
     `description` VARCHAR(200),
     `sort_order` INT DEFAULT 0,
     `status` ENUM('PENDING','APPROVED','REJECTED') DEFAULT 'PENDING',
@@ -125,15 +132,23 @@ CREATE TABLE IF NOT EXISTS `cat_follow` (
     FOREIGN KEY (`cat_id`) REFERENCES `cat`(`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- 猫咪评分表
+-- 猫咪评分表（五维评分）
 CREATE TABLE IF NOT EXISTS `cat_rating` (
     `id` BIGINT PRIMARY KEY AUTO_INCREMENT,
     `cat_id` BIGINT NOT NULL,
     `user_id` BIGINT NOT NULL,
-    `rating` TINYINT NOT NULL,
+    `r1` INT NOT NULL COMMENT '猫德',
+    `r2` INT NOT NULL COMMENT '颜值',
+    `r3` INT NOT NULL COMMENT '社交',
+    `r4` INT NOT NULL COMMENT '干饭',
+    `r5` INT NOT NULL COMMENT '活力',
     `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
     UNIQUE KEY `uk_user_cat_rating` (`user_id`, `cat_id`),
     FOREIGN KEY (`cat_id`) REFERENCES `cat`(`id`) ON DELETE CASCADE,
     FOREIGN KEY (`user_id`) REFERENCES `user`(`id`) ON DELETE CASCADE,
-    CHECK (`rating` >= 1 AND `rating` <= 5)
+    CHECK (`r1` >= 1 AND `r1` <= 5),
+    CHECK (`r2` >= 1 AND `r2` <= 5),
+    CHECK (`r3` >= 1 AND `r3` <= 5),
+    CHECK (`r4` >= 1 AND `r4` <= 5),
+    CHECK (`r5` >= 1 AND `r5` <= 5)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
