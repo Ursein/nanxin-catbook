@@ -2,7 +2,7 @@
   
 
   <!-- Background -->
-  <defs><pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse"><rect width="20" height="20" fill="none" stroke="#f1f5f9" stroke-width="0.5"/></pattern></defs><rect width="100%" height="100%" fill="#ffffff"/>
+  <defs><pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse"><rect width="20" height="20" fill="none" stroke="#f1f5f9" stroke-width="0.5"/></pattern><marker id="arrow" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10" fill="none" stroke="#64748b" stroke-width="1.2"/></marker><marker id="arrow-amber" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10" fill="none" stroke="#f59e0b" stroke-width="1.2"/></marker></defs><rect width="100%" height="100%" fill="#ffffff"/>
   <rect width="1200" height="850" fill="#ffffff"/>
   <rect width="1200" height="850" fill="url(#grid)"/>
 
