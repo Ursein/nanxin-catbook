@@ -1,0 +1,232 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 820" font-family="'Segoe UI', 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1e1e2e"/>
+      <stop offset="100%" stop-color="#181825"/>
+    </linearGradient>
+    <filter id="shadow" x="-4%" y="-4%" width="108%" height="116%">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#000" flood-opacity="0.35"/>
+    </filter>
+    <filter id="glowBlue">
+      <feDropShadow dx="0" dy="0" stdDeviation="3" flood-color="#89b4fa" flood-opacity="0.25"/>
+    </filter>
+    <filter id="glowYellow">
+      <feDropShadow dx="0" dy="0" stdDeviation="3" flood-color="#f9e2af" flood-opacity="0.25"/>
+    </filter>
+    <filter id="glowGreen">
+      <feDropShadow dx="0" dy="0" stdDeviation="3" flood-color="#a6e3a1" flood-opacity="0.25"/>
+    </filter>
+    <marker id="arrowBlue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#89b4fa"/>
+    </marker>
+    <marker id="arrowGreen" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#a6e3a1"/>
+    </marker>
+    <marker id="arrowYellow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#f9e2af"/>
+    </marker>
+    <marker id="arrowRed" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#f38ba8"/>
+    </marker>
+    <marker id="arrowDim" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6c7086"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="800" height="820" fill="url(#bg)" rx="12"/>
+
+  <!-- Title -->
+  <text x="400" y="36" text-anchor="middle" fill="#cdd6f4" font-size="20" font-weight="700" letter-spacing="1">
+    M5 · 评论管理
+  </text>
+  <text x="400" y="54" text-anchor="middle" fill="#6c7086" font-size="11" letter-spacing="2">
+    COMMENT MANAGEMENT
+  </text>
+
+  <!-- ===== START node ===== -->
+  <ellipse cx="400" cy="84" rx="46" ry="22" fill="#a6e3a1" opacity="0.15" stroke="#a6e3a1" stroke-width="2" filter="url(#glowGreen)"/>
+  <text x="400" y="89" text-anchor="middle" fill="#a6e3a1" font-size="14" font-weight="700">START</text>
+
+  <!-- arrow: START → Route -->
+  <line x1="400" y1="106" x2="400" y2="138" stroke="#6c7086" stroke-width="1.5" marker-end="url(#arrowDim)"/>
+
+  <!-- ===== Route node ===== -->
+  <rect x="142" y="140" width="516" height="52" rx="26" fill="#1e1e2e" stroke="#89b4fa" stroke-width="2" filter="url(#glowBlue)"/>
+  <text x="400" y="162" text-anchor="middle" fill="#89b4fa" font-size="12" font-weight="600" letter-spacing="0.5">ENDPOINT</text>
+  <text x="400" y="180" text-anchor="middle" fill="#cdd6f4" font-size="14" font-weight="700">GET | POST | DELETE  /cats/{id}/comments</text>
+
+  <!-- arrow: Route → Login Check -->
+  <line x1="400" y1="192" x2="400" y2="224" stroke="#6c7086" stroke-width="1.5" marker-end="url(#arrowDim)"/>
+
+  <!-- ===== Login Check node ===== -->
+  <rect x="172" y="226" width="456" height="44" rx="22" fill="#1e1e2e" stroke="#89b4fa" stroke-width="1.5" filter="url(#glowBlue)"/>
+  <text x="400" y="245" text-anchor="middle" fill="#89b4fa" font-size="12" font-weight="600">🔐 校验登录状态</text>
+  <text x="400" y="260" text-anchor="middle" fill="#a6adc8" font-size="11">POST / DELETE 需要已登录用户</text>
+
+  <!-- arrow: Login Check → Action Decision -->
+  <line x1="400" y1="270" x2="400" y2="300" stroke="#6c7086" stroke-width="1.5" marker-end="url(#arrowDim)"/>
+
+  <!-- ===== Action Decision diamond ===== -->
+  <polygon points="400,300 508,342 400,384 292,342" fill="#1e1e2e" stroke="#f9e2af" stroke-width="2" filter="url(#glowYellow)"/>
+  <text x="400" y="340" text-anchor="middle" fill="#f9e2af" font-size="12" font-weight="700">action ?</text>
+  <text x="400" y="354" text-anchor="middle" fill="#f9e2af" font-size="10">请求方法</text>
+
+  <!-- Arrow: → GET (left) -->
+  <line x1="292" y1="342" x2="140" y2="342" stroke="#89b4fa" stroke-width="1.5" marker-end="url(#arrowBlue)"/>
+  <text x="212" y="334" text-anchor="middle" fill="#89b4fa" font-size="12" font-weight="700">GET</text>
+
+  <!-- Arrow: → POST (right) -->
+  <line x1="508" y1="342" x2="660" y2="342" stroke="#f9e2af" stroke-width="1.5" marker-end="url(#arrowYellow)"/>
+  <text x="588" y="334" text-anchor="middle" fill="#f9e2af" font-size="12" font-weight="700">POST</text>
+
+  <!-- Arrow: → DELETE (down) -->
+  <line x1="400" y1="384" x2="400" y2="416" stroke="#f38ba8" stroke-width="1.5" marker-end="url(#arrowRed)"/>
+  <text x="424" y="404" text-anchor="start" fill="#f38ba8" font-size="12" font-weight="700">DELETE</text>
+
+  <!-- ========================================== -->
+  <!-- =============== GET PATH ================== -->
+  <!-- ========================================== -->
+
+  <!-- GET: List Query node -->
+  <rect x="20" y="400" width="240" height="50" rx="10" fill="#1e1e2e" stroke="#89b4fa" stroke-width="1.5" filter="url(#glowBlue)"/>
+  <text x="140" y="422" text-anchor="middle" fill="#89b4fa" font-size="12" font-weight="600">📋 查询评论列表</text>
+  <text x="140" y="440" text-anchor="middle" fill="#a6adc8" font-size="10">按时间倒序 · 分页 20 条</text>
+
+  <!-- arrow: GET list → Return list -->
+  <line x1="140" y1="450" x2="140" y2="490" stroke="#89b4fa" stroke-width="1.5" marker-end="url(#arrowBlue)"/>
+
+  <!-- GET: Return node -->
+  <rect x="30" y="492" width="220" height="44" rx="22" fill="#1e1e2e" stroke="#a6e3a1" stroke-width="1.5" filter="url(#glowGreen)"/>
+  <text x="140" y="511" text-anchor="middle" fill="#a6e3a1" font-size="12" font-weight="600">✅ 返回评论列表</text>
+  <text x="140" y="526" text-anchor="middle" fill="#a6adc8" font-size="10">200 OK</text>
+
+  <!-- arrow: GET Return → END -->
+  <line x1="140" y1="536" x2="140" y2="574" stroke="#6c7086" stroke-width="1.5" marker-end="url(#arrowDim)"/>
+  <line x1="140" y1="574" x2="400" y2="574" stroke="#6c7086" stroke-width="1.5"/>
+  <line x1="400" y1="574" x2="400" y2="756" stroke="#6c7086" stroke-width="1.5" marker-end="url(#arrowDim)"/>
+
+  <!-- ========================================== -->
+  <!-- =============== POST PATH ================ -->
+  <!-- ========================================== -->
+
+  <!-- POST: Validate content -->
+  <rect x="540" y="400" width="240" height="50" rx="10" fill="#1e1e2e" stroke="#f9e2af" stroke-width="1.5" filter="url(#glowYellow)"/>
+  <text x="660" y="422" text-anchor="middle" fill="#f9e2af" font-size="12" font-weight="600">📝 校验评论内容</text>
+  <text x="660" y="440" text-anchor="middle" fill="#a6adc8" font-size="10">不超过 500 字</text>
+
+  <!-- arrow: Validate → Content Valid? diamond -->
+  <line x1="660" y1="450" x2="660" y2="488" stroke="#f9e2af" stroke-width="1.5" marker-end="url(#arrowYellow)"/>
+
+  <!-- POST: Decision diamond -->
+  <polygon points="660,488 736,518 660,548 584,518" fill="#1e1e2e" stroke="#f9e2af" stroke-width="2" filter="url(#glowYellow)"/>
+  <text x="660" y="516" text-anchor="middle" fill="#f9e2af" font-size="11" font-weight="700">content</text>
+  <text x="660" y="530" text-anchor="middle" fill="#f9e2af" font-size="11" font-weight="700">valid ?</text>
+
+  <!-- No → 400 -->
+  <line x1="584" y1="518" x2="510" y2="518" stroke="#f38ba8" stroke-width="1.5" marker-end="url(#arrowRed)"/>
+  <text x="550" y="510" text-anchor="middle" fill="#f38ba8" font-size="11" font-weight="600">否</text>
+
+  <rect x="460" y="540" width="100" height="40" rx="20" fill="#1e1e2e" stroke="#f38ba8" stroke-width="1.5"/>
+  <text x="510" y="565" text-anchor="middle" fill="#f38ba8" font-size="12" font-weight="600">返回 400</text>
+
+  <!-- arrow: 400 → END merge -->
+  <line x1="510" y1="580" x2="510" y2="610" stroke="#6c7086" stroke-width="1.5"/>
+  <line x1="510" y1="610" x2="400" y2="610" stroke="#6c7086" stroke-width="1.5"/>
+  <line x1="400" y1="610" x2="400" y2="756" stroke="#6c7086" stroke-width="1.5" marker-end="url(#arrowDim)"/>
+
+  <!-- Yes → Write to DB -->
+  <line x1="736" y1="518" x2="800" y2="518" stroke="#a6e3a1" stroke-width="1.5"/>
+  <line x1="800" y1="518" x2="800" y2="610" stroke="#a6e3a1" stroke-width="1.5"/>
+  <line x1="800" y1="610" x2="740" y2="610" stroke="#a6e3a1" stroke-width="1.5" marker-end="url(#arrowGreen)"/>
+  <text x="770" y="510" text-anchor="middle" fill="#a6e3a1" font-size="11" font-weight="600">是</text>
+
+  <!-- Write to comment table -->
+  <rect x="540" y="588" width="200" height="44" rx="10" fill="#1e1e2e" stroke="#a6e3a1" stroke-width="1.5" filter="url(#glowGreen)"/>
+  <text x="640" y="607" text-anchor="middle" fill="#a6e3a1" font-size="12" font-weight="600">💾 写入 comment 表</text>
+  <text x="640" y="622" text-anchor="middle" fill="#a6adc8" font-size="10">创建评论记录</text>
+
+  <!-- arrow: Write → Return comment object -->
+  <line x1="640" y1="632" x2="640" y2="664" stroke="#a6e3a1" stroke-width="1.5" marker-end="url(#arrowGreen)"/>
+
+  <!-- Return comment object -->
+  <rect x="546" y="666" width="188" height="44" rx="22" fill="#1e1e2e" stroke="#a6e3a1" stroke-width="1.5" filter="url(#glowGreen)"/>
+  <text x="640" y="685" text-anchor="middle" fill="#a6e3a1" font-size="12" font-weight="600">✅ 返回评论对象</text>
+  <text x="640" y="700" text-anchor="middle" fill="#a6adc8" font-size="10">201 Created</text>
+
+  <!-- arrow: Return → END merge -->
+  <line x1="640" y1="710" x2="640" y2="740" stroke="#6c7086" stroke-width="1.5"/>
+  <line x1="640" y1="740" x2="400" y2="740" stroke="#6c7086" stroke-width="1.5"/>
+  <line x1="400" y1="740" x2="400" y2="756" stroke="#6c7086" stroke-width="1.5" marker-end="url(#arrowDim)"/>
+
+  <!-- ========================================== -->
+  <!-- ============== DELETE PATH =============== -->
+  <!-- ========================================== -->
+
+  <!-- Delete: Permission check -->
+  <rect x="280" y="430" width="240" height="50" rx="10" fill="#1e1e2e" stroke="#f38ba8" stroke-width="1.5"/>
+  <text x="400" y="452" text-anchor="middle" fill="#f38ba8" font-size="12" font-weight="600">🔑 校验本人或管理员</text>
+  <text x="400" y="470" text-anchor="middle" fill="#a6adc8" font-size="10">身份权限验证</text>
+
+  <!-- arrow: Permission → Authorized? diamond -->
+  <line x1="400" y1="480" x2="400" y2="516" stroke="#f38ba8" stroke-width="1.5" marker-end="url(#arrowRed)"/>
+
+  <!-- DELETE: Decision diamond -->
+  <polygon points="400,516 476,546 400,576 324,546" fill="#1e1e2e" stroke="#f9e2af" stroke-width="2" filter="url(#glowYellow)"/>
+  <text x="400" y="544" text-anchor="middle" fill="#f9e2af" font-size="11" font-weight="700">authorized</text>
+  <text x="400" y="558" text-anchor="middle" fill="#f9e2af" font-size="11" font-weight="700">?</text>
+
+  <!-- No → 403 -->
+  <line x1="324" y1="546" x2="260" y2="546" stroke="#f38ba8" stroke-width="1.5" marker-end="url(#arrowRed)"/>
+  <text x="296" y="538" text-anchor="middle" fill="#f38ba8" font-size="11" font-weight="600">否</text>
+
+  <rect x="220" y="558" width="100" height="40" rx="20" fill="#1e1e2e" stroke="#f38ba8" stroke-width="1.5"/>
+  <text x="270" y="583" text-anchor="middle" fill="#f38ba8" font-size="12" font-weight="600">返回 403</text>
+
+  <!-- arrow: 403 → END merge -->
+  <line x1="270" y1="598" x2="270" y2="740" stroke="#6c7086" stroke-width="1.5"/>
+  <line x1="270" y1="740" x2="400" y2="740" stroke="#6c7086" stroke-width="1.5"/>
+  <line x1="400" y1="740" x2="400" y2="756" stroke="#6c7086" stroke-width="1.5" marker-end="url(#arrowDim)"/>
+
+  <!-- Yes → Soft delete -->
+  <line x1="476" y1="546" x2="540" y2="546" stroke="#a6e3a1" stroke-width="1.5" marker-end="url(#arrowGreen)"/>
+  <text x="510" y="538" text-anchor="middle" fill="#a6e3a1" font-size="11" font-weight="600">是</text>
+
+  <!-- arrow goes down to merge area, but we route it differently -->
+  <line x1="540" y1="546" x2="540" y2="610" stroke="#a6e3a1" stroke-width="1.5"/>
+  <line x1="540" y1="610" x2="640" y2="610" stroke="#a6e3a1" stroke-width="1.5"/>
+
+  <!-- Soft delete + return success are placed in sequence -->
+  <rect x="300" y="624" width="200" height="44" rx="10" fill="#1e1e2e" stroke="#a6e3a1" stroke-width="1.5" filter="url(#glowGreen)"/>
+  <text x="400" y="643" text-anchor="middle" fill="#a6e3a1" font-size="12" font-weight="600">🗑️ 软删除评论</text>
+  <text x="400" y="658" text-anchor="middle" fill="#a6adc8" font-size="10">标记为已删除</text>
+
+  <!-- arrow: Soft delete → Return -->
+  <line x1="400" y1="668" x2="400" y2="696" stroke="#a6e3a1" stroke-width="1.5" marker-end="url(#arrowGreen)"/>
+
+  <!-- Return success -->
+  <rect x="306" y="698" width="188" height="44" rx="22" fill="#1e1e2e" stroke="#a6e3a1" stroke-width="1.5" filter="url(#glowGreen)"/>
+  <text x="400" y="717" text-anchor="middle" fill="#a6e3a1" font-size="12" font-weight="600">✅ 返回成功</text>
+  <text x="400" y="732" text-anchor="middle" fill="#a6adc8" font-size="10">200 OK</text>
+
+  <!-- arrow: success → END -->
+  <line x1="400" y1="742" x2="400" y2="756" stroke="#a6e3a1" stroke-width="1.5" marker-end="url(#arrowGreen)"/>
+
+  <!-- ===== END node ===== -->
+  <ellipse cx="400" cy="778" rx="46" ry="22" fill="#a6e3a1" opacity="0.15" stroke="#a6e3a1" stroke-width="2" filter="url(#glowGreen)"/>
+  <text x="400" y="783" text-anchor="middle" fill="#a6e3a1" font-size="14" font-weight="700">END</text>
+
+  <!-- ===== LEGEND ===== -->
+  <g transform="translate(20, 746)">
+    <rect x="0" y="0" width="160" height="54" rx="8" fill="#181825" stroke="#313244" stroke-width="1"/>
+    <text x="80" y="16" text-anchor="middle" fill="#6c7086" font-size="9" font-weight="600">图例</text>
+    <rect x="8" y="24" width="28" height="10" rx="3" fill="#1e1e2e" stroke="#89b4fa" stroke-width="1.5"/>
+    <text x="42" y="33" fill="#a6adc8" font-size="9">GET 路径</text>
+    <rect x="88" y="24" width="28" height="10" rx="3" fill="#1e1e2e" stroke="#f9e2af" stroke-width="1.5"/>
+    <text x="122" y="33" fill="#a6adc8" font-size="9">POST</text>
+    <rect x="8" y="40" width="28" height="10" rx="3" fill="#1e1e2e" stroke="#f38ba8" stroke-width="1.5"/>
+    <text x="42" y="49" fill="#a6adc8" font-size="9">DELETE</text>
+    <rect x="88" y="40" width="28" height="10" rx="3" fill="#1e1e2e" stroke="#a6e3a1" stroke-width="1.5"/>
+    <text x="122" y="49" fill="#a6adc8" font-size="9">成功/结束</text>
+  </g>
+</svg>

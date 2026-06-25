@@ -74,10 +74,17 @@ const loadTabData = async (tab) => {
       const idsRes = await followApi.myFollows()
       const ids = idsRes.data
       if (ids.length > 0) {
-        const details = await Promise.all(
-          ids.map(id => catApi.detail(id).then(r => r.data))
+        const results = await Promise.all(
+          ids.map(async id => {
+            try {
+              const r = await catApi.detail(id)
+              return r.data
+            } catch {
+              return null // 跳过已删除的猫咪
+            }
+          })
         )
-        myFollows.value = details
+        myFollows.value = results.filter(Boolean)
       } else {
         myFollows.value = []
       }
