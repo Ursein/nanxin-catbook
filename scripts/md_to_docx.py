@@ -175,24 +175,7 @@ def md_to_docx(md_path, docx_path):
             table = doc.add_table(rows=1 + len(data_rows), cols=len(headers))
             table.alignment = WD_TABLE_ALIGNMENT.CENTER
             table.style = 'Table Grid'
-            
-            # 自动调整列宽：根据各列视觉宽度分配比例（中文≈2，英文/数字≈1）
-            def visual_len(s):
-                return sum(2 if ord(c) > 127 else 1 for c in s)
-            col_max_lens = [visual_len(h) for h in headers]
-            for row_data in data_rows:
-                for j, cell_text in enumerate(row_data):
-                    if j < len(headers):
-                        col_max_lens[j] = max(col_max_lens[j], visual_len(cell_text))
-            # 最少留 3cm 给内容列，防止过窄
-            min_cm = 3.0
-            total = sum(col_max_lens) or 1
-            table.autofit = False
-            avail_cm = 16.0  # A4 21cm - 左右边距2.5cm*2 = 16cm
-            for j, clen in enumerate(col_max_lens):
-                col_width_cm = max(min_cm, avail_cm * clen / total)
-                for row in table.rows:
-                    row.cells[j].width = Cm(col_width_cm)
+            table.autofit = True
             
             # 填充表头
             for j, h in enumerate(headers):
